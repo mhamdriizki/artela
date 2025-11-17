@@ -1,0 +1,70 @@
+<div class="rsvp-container">
+  @if (submitSuccess) {
+  <div class="rsvp-message rsvp-message--success">
+    <h4>Terima Kasih!</h4>
+    <p>Konfirmasi Anda telah kami terima.</p>
+  </div>
+  } @else {
+  <form class="rsvp-form" [formGroup]="rsvpForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Nama Anda</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        formControlName="name"
+        placeholder="Tulis nama Anda di sini"
+      />
+      @if (name?.invalid && (name?.dirty || name?.touched)) {
+      <div class="form-error">
+        @if (name?.errors?.['required']) {
+        <span>Nama wajib diisi.</span>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Konfirmasi Kehadiran</label>
+      <div class="form-radio-group">
+        <label>
+          <input type="radio" formControlName="attendance" value="hadir" /> Hadir
+        </label>
+        <label>
+          <input type="radio" formControlName="attendance" value="tidak_hadir" />
+          Tidak Hadir
+        </label>
+        <label>
+          <input type="radio" formControlName="attendance" value="ragu" />
+          Ragu-ragu
+        </label>
+      </div>
+    </div>
+
+    @if (attendance?.value === 'hadir') {
+    <div class="form-group">
+      <label for="guestCount">Jumlah Tamu (termasuk Anda)</label>
+      <input type="number" id="guestCount" class="form-control" formControlName="guestCount" />
+      @if (guestCount?.invalid && (guestCount?.dirty || guestCount?.touched)) {
+      <div class="form-error">
+        @if (guestCount?.errors?.['min']) {<span>Minimal 1 tamu.</span>}
+        @if (guestCount?.errors?.['max']) {<span>Maksimal 5 tamu.</span>}
+      </div>
+      }
+    </div>
+    }
+
+    <button type="submit" class="rsvp-button" [disabled]="rsvpForm.invalid || isSubmitting">
+      @if (isSubmitting) {
+      <span>Mengirim...</span>
+      } @else {
+      <span>Kirim Konfirmasi</span>
+      }
+    </button>
+
+    @if (submitError) {
+    <div class="rsvp-message rsvp-message--error">Gagal mengirim konfirmasi. Silakan coba lagi.</div>
+    }
+  </form>
+  }
+</div>

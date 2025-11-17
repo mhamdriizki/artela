@@ -1,0 +1,64 @@
+<div class="guestbook-container">
+
+  <form class="guestbook-form" [formGroup]="guestbookForm" (ngSubmit)="onSubmit()">
+    <h4>Tinggalkan Ucapan</h4>
+    <div class="form-group">
+      <label for="guestName">Nama Anda</label>
+      <input
+        type="text"
+        id="guestName"
+        class="form-control"
+        formControlName="name"
+        placeholder="Nama Anda">
+      @if (name?.invalid && (name?.dirty || name?.touched)) {
+        <div class="form-error">Nama wajib diisi.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="guestMessage">Ucapan Anda</label>
+      <textarea
+        id="guestMessage"
+        class="form-control"
+        rows="3"
+        formControlName="message"
+        placeholder="Tulis ucapan selamat di sini..."></textarea>
+      @if (message?.invalid && (message?.dirty || message?.touched)) {
+        <div class="form-error">Ucapan wajib diisi.</div>
+      }
+    </div>
+
+    <button type="submit" class="guestbook-button" [disabled]="isSubmitting">
+      @if (isSubmitting) {
+        <span>Mengirim...</span>
+      } @else {
+        <span>Kirim Ucapan</span>
+      }
+    </button>
+  </form>
+
+  <div class="guestbook-list">
+    <h4>Daftar Ucapan ({{ messages.length }})</h4>
+
+    @if (isLoading) {
+      <div class="guestbook-loading">Memuat ucapan...</div>
+    } @else {
+      @for (msg of messages; track msg.id) {
+        <div class="guestbook-entry">
+          <div class="guestbook-entry__profile-pic"
+               [style.backgroundColor]="getProfileColor(msg.name)">
+            <span>{{ getInitials(msg.name) }}</span>
+          </div>
+          <div class="guestbook-entry__content">
+            <h5 class="guestbook-entry__name">{{ msg.name }}</h5>
+            <p class="guestbook-entry__message">{{ msg.message }}</p>
+            <span class="guestbook-entry__timestamp">{{ msg.timestamp | date: 'medium' }}</span>
+          </div>
+        </div>
+      } @empty {
+        <div class="guestbook-empty">Belum ada ucapan. Jadilah yang pertama!</div>
+      }
+    }
+  </div>
+
+</div>

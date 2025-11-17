@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss (File Global) */
+
+// 1. Reset CSS dasar (Good practice)
+// Ini menghapus margin/padding default browser.
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 2. Terapkan font dan background global
+body, html {
+  height: 100%;
+
+  // Background gelap ala Netflix sebagai default
+  background-color: #141414;
+
+  // Font default yang modern (bisa diganti)
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  // Warna teks default (putih agar terbaca di background gelap)
+  color: #ffffff;
+
+  // Mencegah "bouncing" scroll horizontal di beberapa browser
+  overflow-x: hidden;
+}

@@ -1,0 +1,26 @@
+@if (isLoading) {
+  <div class="status-container">
+    <div class="loading-spinner"></div>
+    <p>Memuat undangan...</p>
+  </div>
+}
+
+@if (!isLoading && isNotFound) {
+  <div class="status-container">
+    <h2>😢<br>Undangan Tidak Ditemukan</h2>
+    <p>Link yang Anda tuju sepertinya salah atau sudah tidak tersedia.</p>
+    <a routerLink="/">Kembali ke Halaman Utama</a>
+  </div>
+}
+
+@if (!isLoading && !isNotFound && invitationData) {
+  @if (themeName === 'netflix') {
+    <app-netflix-theme [invitation]="invitationData" [guest]="guestName" />
+  }
+  @if (themeName === 'default') {
+    <div class="status-container">
+      <h1>Tema Default untuk Undangan Ini</h1>
+      <p>Tema tidak terdeteksi atau tidak diset.</p>
+    </div>
+  }
+}

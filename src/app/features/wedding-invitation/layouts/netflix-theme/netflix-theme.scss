@@ -1,0 +1,475 @@
+/* src/app/features/wedding-invitation/layouts/netflix-theme/netflix-theme.component.scss */
+
+/* ============================================== */
+/* 1. IMPORT FONT & DEFINISI VARIABEL */
+/* ============================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'); // Import Font Awesome
+
+// Variabel Warna
+$primary-red: #bb2f2c;
+$text-light: #ffffff;
+$text-dark: #333333;
+$text-muted: #aaa;
+$background-dark: #1f1f1f;
+$card-background: #2b2b2b;
+$border-color: #444444;
+
+// Variabel Font
+$font-base: 'Montserrat', sans-serif;
+$font-title: 'Bebas Neue', sans-serif;
+
+:host {
+  font-family: $font-base;
+  background-color: $background-dark;
+  color: $text-light;
+  display: block;
+  width: 100%;
+}
+
+/* ============================================== */
+/* 2. COVER PAGE STYLING */
+/* ============================================== */
+.hero-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $text-light;
+  z-index: 1000;
+  background-color: $background-dark;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    z-index: -1;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba($background-dark, 0.9) 0%, transparent 50%, rgba($background-dark, 0.9) 100%);
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    display: flex; /* Perbaikan Tombol Center */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__the-wedding {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  &__couple-names {
+    font-family: $font-title;
+    font-size: 4.5rem;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: 2px;
+  }
+
+  &__date {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-top: 10px;
+    color: lighten($text-muted, 10%);
+  }
+
+  &__button {
+    background-color: $primary-red;
+    border: none;
+    color: $text-light;
+    padding: 12px 25px;
+    margin-top: 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+      background-color: darken($primary-red, 10%);
+    }
+  }
+}
+
+/* ============================================== */
+/* 3. HALAMAN KONTEN STYLING */
+/* ============================================== */
+
+/* Kontainer utama (bukan lagi scroll-snap) */
+.netflix-content {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+
+  /* PENTING: Kontainer ini yang bisa di-scroll */
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* DIPERBARUI: Styling Navbar */
+.mini-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 4vw; // Padding kiri-kanan
+  height: 60px; // Tinggi navbar
+  background-color: rgba($background-dark, 0.9);
+  backdrop-filter: blur(5px);
+  z-index: 500;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  &__logo {
+    font-family: $font-title;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: $primary-red;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  &__nav {
+    display: none; // Sembunyikan di HP
+
+    @media (min-width: 768px) { // Tampilkan di Desktop
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li a {
+      color: $text-muted;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $text-light;
+      }
+    }
+  }
+}
+
+/* Target snap DIBUANG, diganti padding/margin biasa */
+.content-hero,
+.content-section,
+.main-footer {
+  position: relative;
+  /* min-height: 100vh; <-- DIHAPUS */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px; // Padding agar tidak tertutup mini-header
+  padding-bottom: 40px;
+}
+
+/* Hero Section (Dengan Carousel Background) */
+.content-hero {
+  height: 100vh; // Hero section tetap 100vh
+  min-height: 100vh;
+  display: flex;
+
+  /* DIPERBARUI: Teks di tengah vertikal, di kiri horizontal */
+  align-items: flex-start;
+  padding: 0 4vw 40px; // Padding kiri-kanan
+  z-index: 1;
+
+  &__background-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba($background-dark, 1) 0%, transparent 60%);
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  &__details {
+    position: relative;
+    z-index: 2;
+    max-width: 420px; // Batasi lebar teks
+  }
+
+  &__logo {
+    font-family: $font-title;
+    font-size: 2.5rem;
+    color: $primary-red;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  &__title {
+    font-family: $font-title;
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  &__meta {
+    font-size: 0.9rem;
+    color: $text-light;
+    margin-bottom: 15px;
+    span {
+      margin-right: 10px;
+    }
+  }
+
+  &__match { color: #46d369; font-weight: 600; }
+  &__rating { background-color: $border-color; padding: 2px 5px; border-radius: 3px; }
+  &__hd { border: 1px solid $text-light; padding: 2px 5px; border-radius: 3px; font-size: 0.8rem; }
+  &__coming-soon { display: none; } // Sembunyikan "Coming Soon"
+
+  &__description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: $text-light;
+    margin-bottom: 25px; // Jarak ke tombol
+  }
+}
+
+/* BARU: Styling untuk Tombol Hero */
+.hero-buttons-container {
+  display: flex;
+  gap: 15px;
+}
+
+.hero-button {
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &--play {
+    background-color: $text-light;
+    color: $text-dark;
+
+    &:hover {
+      background-color: darken($text-light, 20%);
+    }
+  }
+
+  &--info {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: $text-light;
+
+    &:hover {
+      background-color: rgba(109, 109, 110, 0.4);
+    }
+  }
+}
+
+
+/* Styling Section Generik (Breaking News, Bride, etc) */
+.content-section {
+  padding: 40px 4vw; // Ganti padding
+  max-width: 1200px; // Lebar konten maksimum
+  margin: 0 auto;
+  width: 100%;
+  min-height: auto; // Hapus min-height
+
+  &__title {
+    font-family: $font-title;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid $border-color;
+    padding-bottom: 10px;
+  }
+
+  // (Sisa styling .content-section tidak berubah)
+  &__subtitle { font-size: 1.1rem; color: $text-muted; margin-bottom: 20px; }
+  &__card { background-color: $card-background; border-radius: 8px; overflow: hidden; margin-bottom: 30px; }
+  &__image { width: 100%; height: auto; display: block; }
+  &__text {
+    padding: 25px; line-height: 1.7; font-size: 1rem;
+    &--center { text-align: center; margin-bottom: 30px; color: $text-muted; }
+  }
+  &__signature { display: block; margin-top: 20px; font-weight: 600; font-size: 1.1rem; color: $primary-red; font-family: $font-title; letter-spacing: 1px; }
+  &__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+}
+
+/* Profile Card (Bride & Groom) */
+.profile-card {
+  // (Styling tidak berubah)
+  background-color: $card-background; border-radius: 8px; overflow: hidden; text-align: center; padding-bottom: 20px;
+  &__image { width: 100%; height: 350px; object-fit: cover; margin-bottom: 15px; }
+  &__name { font-family: $font-title; font-size: 2rem; font-weight: 400; letter-spacing: 1px; margin-bottom: 5px; }
+  &__description { font-size: 0.9rem; color: $text-muted; padding: 0 15px; }
+}
+
+/* Gallery Grid */
+.gallery-grid {
+  // (Styling tidak berubah)
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;
+  &__item {
+    width: 100%; height: 180px; object-fit: cover; border-radius: 5px; cursor: zoom-in; transition: transform 0.2s;
+    &:hover { transform: scale(1.05); }
+  }
+}
+
+/* Event Card (Save The Date) */
+.event-card {
+  // (Styling tidak berubah)
+  background-color: $card-background; border-radius: 8px; overflow: hidden; margin-bottom: 30px; display: flex; flex-direction: column;
+  @media (min-width: 768px) { flex-direction: row; }
+  &__map {
+    flex: 1; min-height: 250px;
+    iframe { border: 0; width: 100%; height: 100%; min-height: 250px; }
+  }
+  &__details { flex: 1; padding: 25px; display: flex; flex-direction: column; justify-content: center; }
+  &__label { background-color: $primary-red; color: $text-light; font-size: 0.8rem; font-weight: 600; padding: 5px 10px; border-radius: 3px; display: inline-block; margin-bottom: 15px; align-self: flex-start; }
+  &__date { font-size: 1.3rem; font-weight: 600; margin-bottom: 5px; }
+  &__time { font-size: 1.1rem; margin-bottom: 10px; color: $text-muted; }
+  &__location { font-size: 0.9rem; line-height: 1.5; color: $text-muted; margin-bottom: 20px; }
+  &__map-link {
+    background-color: $text-light; color: $text-dark; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: 600; font-size: 0.9rem; text-align: center; transition: background-color 0.3s; align-self: flex-start;
+    &:hover { background-color: darken($text-light, 15%); }
+  }
+}
+
+/* Bagian Form (Pesan & RSVP) */
+.form-section {
+  display: grid; grid-template-columns: 1fr; gap: 30px;
+  @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+}
+.form-wrapper {
+  background-color: $card-background; padding: 25px; border-radius: 8px;
+  &__title { font-family: $font-title; font-size: 1.8rem; font-weight: 400; letter-spacing: 1px; margin-top: 0; margin-bottom: 20px; }
+
+  /* ::ng-deep untuk styling komponen anak */
+  ::ng-deep .form-control {
+    background-color: $background-dark !important; border-color: $border-color !important; color: $text-light !important; border-radius: 5px !important; padding: 12px 15px !important;
+    &:focus { border-color: $primary-red !important; box-shadow: none !important; }
+    &::placeholder { color: $text-muted !important; }
+  }
+  ::ng-deep .form-group label { color: $text-muted !important; font-size: 0.9rem; }
+  ::ng-deep .form-radio-group label { color: $text-light !important; }
+  ::ng-deep app-guestbook .guestbook-button {
+    background-color: $primary-red !important; color: $text-light !important; width: 100% !important; font-weight: 600 !important; border-radius: 5px !important; padding: 12px !important; font-size: 1rem !important;
+    &:hover { background-color: darken($primary-red, 10%) !important; }
+    &:disabled { background-color: $border-color !important; }
+  }
+  ::ng-deep app-rsvp-form .rsvp-button {
+    background-color: $text-light !important; color: $text-dark !important; width: 100% !important; font-weight: 600 !important; border-radius: 5px !important; padding: 12px !important; font-size: 1rem !important;
+    &:hover { background-color: darken($text-light, 15%) !important; }
+    &:disabled { background-color: $border-color !important; color: $text-muted !important; }
+  }
+  ::ng-deep .guestbook-list { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+  ::ng-deep .guestbook-entry { background-color: $background-dark !important; border-color: $border-color !important; }
+  ::ng-deep .guestbook-entry__profile-pic { width: 40px !important; height: 40px !important; }
+}
+
+/* Footer */
+.main-footer {
+  // (Styling tidak berubah)
+  min-height: auto; // Hapus min-height
+  text-align: center; padding: 40px 20px 20px; border-top: 1px solid $border-color; margin-top: 40px; color: $text-muted;
+  p { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; }
+  &__credits { font-size: 0.9rem; color: $text-muted; }
+}
+
+/* ============================================== */
+/* 4. YOUTUBE PLAYER (TERSEMBUNYI) */
+/* ============================================== */
+.music-player-hidden {
+  position: fixed;
+  top: -1000px;
+  left: -1000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}

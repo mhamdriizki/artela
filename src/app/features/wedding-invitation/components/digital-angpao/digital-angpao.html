@@ -1,0 +1,27 @@
+<div class="angpao-container">
+  <h3>Kirim Hadiah</h3>
+  <p>Bagi Anda yang ingin mengirimkan hadiah, dapat melalui:</p>
+
+  <div class="angpao-list">
+    @for (acc of accounts; track acc.number) {
+      <div class="angpao-card">
+        <div class="angpao-card__logo">
+          <span class="angpao-card__bank-name">{{ acc.name }}</span>
+        </div>
+        <div class="angpao-card__details">
+          <span class="angpao-card__number">{{ acc.number }}</span>
+          <span class="angpao-card__owner">a.n. {{ acc.owner }}</span>
+        </div>
+        <button
+          class="angpao-card__button"
+          (click)="copyToClipboard(acc.number)">
+          @if (copiedAccount === acc.number) {
+            <span>Tersalin!</span>
+          } @else {
+            <span>Salin</span>
+          }
+        </button>
+      </div>
+    }
+  </div>
+</div>

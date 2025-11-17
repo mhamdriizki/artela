@@ -1,0 +1,56 @@
+/* src/app/features/wedding-invitation/wedding-invitation.component.scss */
+
+// Wadah untuk status loading atau not found
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; // Penuhi layar
+  text-align: center;
+  padding: 20px;
+  color: #ffffff;
+}
+
+.status-container h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.status-container p {
+  font-size: 1.1rem;
+  color: #aaa;
+  max-width: 400px;
+}
+
+// Link "Kembali" untuk halaman error
+.status-container a {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #e50914; // Merah Netflix
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: lighten(#e50914, 10%);
+  }
+}
+
+// Animasi spinner sederhana untuk loading
+.loading-spinner {
+  border: 6px solid #333; // Lingkaran abu-abu
+  border-top: 6px solid #e50914; // Bagian atas merah
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

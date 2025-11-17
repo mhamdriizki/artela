@@ -1,0 +1,36 @@
+/* src/app/features/wedding-invitation/components/countdown-timer/countdown-timer.component.scss */
+
+/* BLOCK: .countdown-container */
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px; // Jarak antar blok
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* BLOCK: .countdown-block */
+.countdown-block {
+  background-color: #222; // Latar belakang gelap
+  padding: 15px 20px;
+  border-radius: 8px;
+  min-width: 80px;
+}
+
+/* ELEMENT: .countdown-block__number */
+.countdown-block__number {
+  display: block;
+  font-size: 2.5rem; // Angka besar
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* ELEMENT: .countdown-block__label */
+.countdown-block__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #aaa; // Label abu-abu
+  margin-top: 5px;
+}
