@@ -10,6 +10,12 @@
         <h1 class="hero-cover__couple-names">{{ invitation.groomName }} & {{ invitation.brideName }}</h1>
         <p class="hero-cover__date">{{ invitation.eventDetails.date | date:'EEEE, d MMMM y' }}</p>
       </div>
+      @if (guest) {
+        <div class="hero-cover__guest-container">
+          <p class="hero-cover__guest-label">Kepada Yth:</p>
+          <h2 class="hero-cover__guest-name">{{ formattedGuestName | titlecase }}</h2>
+        </div>
+      }
       <button class="hero-cover__button" (click)="openInvitation()">
         Open Invitation
       </button>

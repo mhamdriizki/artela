@@ -107,6 +107,32 @@ $font-title: 'Bebas Neue', sans-serif;
     color: color.adjust($text-muted, $lightness: 10%);
   }
 
+  &__guest-container {
+    margin-top: 2rem; /* Jarak dari tanggal */
+    margin-bottom: 1rem; /* Jarak ke tombol */
+    background: rgba(0, 0, 0, 0.5); /* Sedikit background hitam transparan */
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: 1px solid color.adjust($border-color, $lightness: -10%);
+    animation: fadeInUp 1s ease-out;
+  }
+
+  &__guest-label {
+    font-size: 0.9rem;
+    color: $text-muted;
+    margin: 0 0 5px 0;
+    font-family: $font-base;
+    letter-spacing: 1px;
+  }
+
+  &__guest-name {
+    font-size: 1.5rem;
+    color: $text-light;
+    margin: 0;
+    font-family: $font-base; /* Atau $font-title jika ingin gaya Netflix */
+    font-weight: 700;
+  }
+
   &__button {
     background-color: $primary-red;
     border: none;

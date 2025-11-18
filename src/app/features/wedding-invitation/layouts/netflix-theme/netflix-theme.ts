@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {InvitationData} from '../../../../core/services/wedding-data';
 import {RsvpForm} from '../../components/rsvp-form/rsvp-form';
-import {DatePipe} from '@angular/common';
+import {DatePipe, TitleCasePipe} from '@angular/common';
 import {Guestbook} from '../../components/guestbook/guestbook';
 import {DigitalAngpao} from '../../components/digital-angpao/digital-angpao';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
@@ -12,7 +12,8 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
     RsvpForm,
     Guestbook,
     DigitalAngpao,
-    DatePipe
+    DatePipe,
+    TitleCasePipe
   ],
   templateUrl: './netflix-theme.html',
   styleUrl: './netflix-theme.scss',
@@ -147,6 +148,12 @@ export class NetflixTheme implements OnInit, OnDestroy {
         behavior: 'smooth'
       });
     }
+  }
+
+  get formattedGuestName(): string {
+    if (!this.guest) return '';
+    // Mengganti semua tanda hubung (-) dengan spasi
+    return this.guest.replace(/-/g, ' ');
   }
 
   /**
