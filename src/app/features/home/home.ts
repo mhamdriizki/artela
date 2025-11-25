@@ -8,6 +8,16 @@ import {RouterLink} from '@angular/router';
   styleUrl: './home.scss',
 })
 export class Home {
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
 // Data Fake Reviews
   reviews = [
     {

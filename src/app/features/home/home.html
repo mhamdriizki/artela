@@ -1,172 +1,207 @@
 <div class="landing-container">
 
   <nav class="navbar">
-    <div class="navbar__logo">MyDreamWedding</div>
-    <ul class="navbar__menu">
-      <li><a href="#themes">Tema</a></li>
-      <li><a href="#features">Fitur</a></li>
-      <li><a href="#pricing">Harga</a></li> <li><a href="#reviews">Testimoni</a></li> </ul>
-    <button class="navbar__cta">Buat Undangan</button>
+    <div class="navbar__container">
+      <div class="navbar__logo">Pesan Bahagia</div>
+      <div class="navbar__toggle" (click)="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="navbar__menu" [class.active]="isMenuOpen">
+        <li><a href="#themes" (click)="closeMenu()">Tema</a></li>
+        <li><a href="#features" (click)="closeMenu()">Fitur</a></li>
+        <li><a href="#pricing" (click)="closeMenu()">Harga</a></li>
+        <li><a href="#reviews" (click)="closeMenu()">Testimoni</a></li>
+        <li class="navbar__cta-mobile"><button class="btn btn--primary">Buat Undangan</button></li>
+      </ul>
+      <button class="navbar__cta">Buat Undangan</button>
+    </div>
   </nav>
 
   <header class="hero">
     <div class="hero__content">
-      <span class="hero__badge">✨ Undangan Digital Premium</span>
+      <span class="hero__badge">✨ Undangan Digital Eksklusif</span>
       <h1 class="hero__title">
-        Bagikan Kebahagiaan <br>
-        dengan Gaya <span class="text-gradient">Sinematik</span>
+        Bagikan Momen Bahagia <br>
+        dengan <span class="text-highlight">Elegan & Berkesan</span>
       </h1>
       <p class="hero__subtitle">
-        Platform pembuatan undangan pernikahan digital dengan tema unik ala Netflix & Instagram.
-        Cepat, Elegan, dan Mudah Dibagikan.
+        Buat undangan pernikahan digital impian Anda dalam hitungan menit.
+        Tersedia tema Netflix & Instagram yang unik dan modern.
       </p>
       <div class="hero__buttons">
-        <a href="#themes" class="btn btn--primary">Lihat Pilihan Tema</a>
+        <a href="#themes" class="btn btn--primary">Lihat Tema</a>
         <a href="#pricing" class="btn btn--secondary">Lihat Harga</a>
       </div>
     </div>
-    <div class="hero__bg-glow"></div>
   </header>
 
   <section id="themes" class="section themes">
-    <div class="section__header">
-      <h2>Pilihan Tema Eksklusif</h2>
-      <p>Pilih tampilan yang paling mewakili cerita cinta Anda.</p>
-    </div>
-    <div class="themes__grid">
-      <div class="theme-card">
-        <div class="theme-card__preview netflix-bg">
-          <div class="overlay"><i class="fas fa-play-circle"></i></div>
-          <span class="badge badge--red">Best Seller</span>
-        </div>
-        <div class="theme-card__info">
-          <h3>Netflix Style</h3>
-          <p>Tampilan sinematik dengan layout streaming film. Cocok untuk pasangan yang hobi nonton.</p>
-          <a [routerLink]="['/pearly-rizki']" [queryParams]="{theme: 'netflix'}" target="_blank" class="btn btn--outline">
-            Lihat Demo Netflix
-          </a>
-        </div>
+    <div class="container">
+      <div class="section__header">
+        <span class="section__uptitle">PILIHAN TEMA</span>
+        <h2>Desain Unik & Menawan</h2>
+        <p>Pilih tema yang paling sesuai dengan gaya pernikahan Anda.</p>
       </div>
-      <div class="theme-card">
-        <div class="theme-card__preview ig-bg">
-          <div class="overlay"><i class="fab fa-instagram"></i></div>
-          <span class="badge badge--blue">New</span>
+
+      <div class="themes__grid">
+        <div class="theme-card">
+          <div class="theme-card__image netflix-bg">
+            <div class="overlay">
+              <i class="fas fa-play"></i>
+              <span>Preview Netflix</span>
+            </div>
+            <span class="badge badge--hot">Best Seller</span>
+          </div>
+          <div class="theme-card__content">
+            <h3>Netflix Style</h3>
+            <p>Tampilan sinematik layaknya poster film favorit Anda. Cocok untuk pasangan yang hobi nonton.</p>
+            <a [routerLink]="['/pearly-rizki']" [queryParams]="{theme: 'netflix'}" target="_blank" class="btn-link">
+              Lihat Demo <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
         </div>
-        <div class="theme-card__info">
-          <h3>Instagram Style</h3>
-          <p>Desain modern ala sosial media dengan fitur Story & Feed. Sangat familiar dan kekinian.</p>
-          <a [routerLink]="['/rizki-pearly']" [queryParams]="{theme: 'instagram'}" target="_blank" class="btn btn--outline">
-            Lihat Demo Instagram
-          </a>
+
+        <div class="theme-card">
+          <div class="theme-card__image ig-bg">
+            <div class="overlay ig-overlay">
+              <i class="fab fa-instagram"></i>
+              <span>Preview Instagram</span>
+            </div>
+            <span class="badge">New</span>
+          </div>
+          <div class="theme-card__content">
+            <h3>Instagram Style</h3>
+            <p>Desain feed dan story yang familiar dan kekinian. Bagikan momen indah Anda layaknya selebgram.</p>
+            <a [routerLink]="['/rizki-pearly']" [queryParams]="{theme: 'instagram'}" target="_blank" class="btn-link">
+              Lihat Demo <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="features" class="section features">
-    <div class="section__header">
-      <h2>Kenapa Memilih Kami?</h2>
-    </div>
-    <div class="features__grid">
-      <div class="feature-item">
-        <div class="icon">⚡</div>
-        <h3>Fast & Responsive</h3>
-        <p>Akses super cepat dan tampilan sempurna di semua perangkat (HP, Tablet, Desktop).</p>
+    <div class="container">
+      <div class="section__header">
+        <span class="section__uptitle">FITUR UNGGULAN</span>
+        <h2>Semua yang Anda Butuhkan</h2>
       </div>
-      <div class="feature-item">
-        <div class="icon">🎵</div>
-        <h3>Background Music</h3>
-        <p>Putar lagu favorit Anda otomatis saat undangan dibuka. Mendukung YouTube.</p>
-      </div>
-      <div class="feature-item">
-        <div class="icon">💌</div>
-        <h3>RSVP & Ucapan</h3>
-        <p>Fitur konfirmasi kehadiran dan buku tamu digital secara realtime.</p>
-      </div>
-      <div class="feature-item">
-        <div class="icon">📍</div>
-        <h3>Peta Lokasi</h3>
-        <p>Integrasi Google Maps akurat agar tamu tidak tersesat menuju lokasi.</p>
+
+      <div class="features__grid">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Fast & Responsive</h3>
+          <p>Akses cepat dan tampilan sempurna di semua perangkat.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-music"></i></div>
+          <h3>Background Music</h3>
+          <p>Putar lagu romantis otomatis saat undangan dibuka.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-envelope-open-text"></i></div>
+          <h3>RSVP & Ucapan</h3>
+          <p>Konfirmasi kehadiran dan buku tamu digital realtime.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+          <h3>Peta Lokasi</h3>
+          <p>Integrasi Google Maps agar tamu mudah menemukan lokasi.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="pricing" class="section pricing">
-    <div class="section__header">
-      <h2>Paket Harga</h2>
-      <p>Tanpa biaya tersembunyi. Bayar sekali, aktif selamanya (sesuai paket).</p>
-    </div>
+    <div class="container">
+      <div class="section__header">
+        <span class="section__uptitle">HARGA PAKET</span>
+        <h2>Investasi Terbaik</h2>
+        <p>Tanpa biaya tersembunyi. Sekali bayar, aktif selamanya.</p>
+      </div>
 
-    <div class="pricing__grid">
-      @for (pkg of packages; track pkg.id) {
-        <div class="pricing-card" [class.popular]="pkg.isPopular">
-          @if (pkg.isPopular) { <span class="popular-tag">Most Popular</span> }
+      <div class="pricing__grid">
+        @for (pkg of packages; track pkg.id) {
+          <div class="pricing-card" [class.popular]="pkg.isPopular">
+            @if (pkg.isPopular) { <div class="popular-tag">Paling Laris</div> }
 
-          <h3 class="pricing-card__name">{{ pkg.name }}</h3>
-          <div class="pricing-card__price">
-            <span class="currency">Rp</span>
-            <span class="amount">{{ pkg.price }}</span>
-            <span class="period">{{ pkg.period }}</span>
+            <div class="pricing-card__header">
+              <h3 class="pricing-card__name">{{ pkg.name }}</h3>
+              <div class="pricing-card__price">
+                <span class="currency">Rp</span>
+                <span class="amount">{{ pkg.price }}</span>
+                <span class="period">/ event</span>
+              </div>
+              <p class="pricing-card__desc">{{ pkg.desc }}</p>
+            </div>
+
+            <ul class="pricing-card__features">
+              @for (feat of pkg.features; track feat) {
+                <li><i class="fas fa-check"></i> {{ feat }}</li>
+              }
+            </ul>
+
+            <button class="btn btn--block" [class.btn--primary]="pkg.isPopular" [class.btn--outline]="!pkg.isPopular">
+              {{ pkg.buttonText }}
+            </button>
           </div>
-          <p class="pricing-card__desc">{{ pkg.desc }}</p>
-
-          <hr class="pricing-card__divider">
-
-          <ul class="pricing-card__features">
-            @for (feat of pkg.features; track feat) {
-              <li><i class="fas fa-check-circle"></i> {{ feat }}</li>
-            }
-          </ul>
-
-          <button class="btn btn--block" [class.btn--primary]="pkg.isPopular" [class.btn--outline]="!pkg.isPopular">
-            {{ pkg.buttonText }}
-          </button>
-        </div>
-      }
+        }
+      </div>
     </div>
   </section>
 
   <section id="reviews" class="section reviews">
-    <div class="section__header">
-      <h2>Kata Mereka</h2>
-      <p>Pasangan yang telah mempercayakan momen bahagianya kepada kami.</p>
-    </div>
+    <div class="container">
+      <div class="section__header">
+        <span class="section__uptitle">TESTIMONI</span>
+        <h2>Kata Pasangan Bahagia</h2>
+      </div>
 
-    <div class="reviews__grid">
-      @for (review of reviews; track review.name) {
-        <div class="review-card">
-          <div class="review-card__header">
-            <img [src]="review.avatar" alt="Avatar" class="avatar">
-            <div class="info">
-              <h4>{{ review.name }}</h4>
-              <span class="date">{{ review.date }}</span>
+      <div class="reviews__grid">
+        @for (review of reviews; track review.name) {
+          <div class="review-card">
+            <div class="review-card__content">
+              <div class="stars">
+                @for (star of [1,2,3,4,5]; track star) {
+                  <i class="fas fa-star" [class.filled]="star <= review.rating"></i>
+                }
+              </div>
+              <p class="review-text">"{{ review.comment }}"</p>
             </div>
-            <div class="rating">
-              @for (star of [1,2,3,4,5]; track star) {
-                <i class="fas fa-star" [class.active]="star <= review.rating"></i>
-              }
+            <div class="review-card__footer">
+              <img [src]="review.avatar" alt="Avatar" class="avatar">
+              <div class="info">
+                <h4>{{ review.name }}</h4>
+                <span class="date">{{ review.date }}</span>
+              </div>
             </div>
           </div>
-          <p class="review-card__text">"{{ review.comment }}"</p>
-        </div>
-      }
+        }
+      </div>
     </div>
   </section>
 
   <footer class="footer">
-    <div class="footer__content">
-      <div class="footer__brand">
-        <h3>MyDreamWedding</h3>
-        <p>Platform undangan pernikahan digital kekinian.</p>
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <h3>Pesan Bahagia</h3>
+          <p>Mewujudkan undangan pernikahan impian Anda dengan sentuhan teknologi modern.</p>
+        </div>
+        <div class="footer__links">
+          <h4>Sosial Media</h4>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+          <a href="#"><i class="far fa-envelope"></i> Email</a>
+        </div>
       </div>
-      <div class="footer__links">
-        <a href="#">Instagram</a>
-        <a href="#">WhatsApp</a>
-        <a href="#">Email</a>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Pesan Bahagia. All rights reserved.</p>
       </div>
     </div>
-    <p class="footer__copyright">&copy; 2025 MyDreamWedding. All rights reserved.</p>
-    <p class="footer__credits">Built with ❤️ using Angular</p>
   </footer>
 
 </div>
