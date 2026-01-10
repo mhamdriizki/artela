@@ -1,10 +1,10 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {InvitationData} from '../../../../core/services/wedding-data';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {DatePipe, TitleCasePipe} from '@angular/common';
 import {DigitalAngpao} from '../../components/digital-angpao/digital-angpao';
 import {RsvpForm} from '../../components/rsvp-form/rsvp-form';
 import {Guestbook} from '../../components/guestbook/guestbook';
+import { InvitationData } from '../../../../core/models/invitation.model';
 
 @Component({
   selector: 'app-instagram-theme',

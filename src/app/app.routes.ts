@@ -1,14 +1,17 @@
 import { Routes } from '@angular/router';
-import {WeddingInvitation} from './features/wedding-invitation/wedding-invitation';
-import {Home} from './features/home/home';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home
+    loadComponent: () =>
+      import('./features/home/home').then((m) => m.Home),
   },
   {
-    path: ':coupleName',
-    component: WeddingInvitation
-  }
+    path: ':slug',
+    loadComponent: () =>
+      import(
+        './features/wedding-invitation/wedding-invitation'
+      ).then((m) => m.WeddingInvitation),
+  },
 ];
+
