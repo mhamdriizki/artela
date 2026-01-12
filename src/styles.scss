@@ -1,26 +1,205 @@
-/* src/styles.scss (File Global) */
+/* ========================================
+   GLOBAL STYLES & COLOR SYSTEM
+   ======================================== */
 
-// 1. Reset CSS dasar (Good practice)
-// Ini menghapus margin/padding default browser.
+/* 1. COLOR PALETTE - Global Variables */
+/* Netflix Theme Colors */
+$color-netflix-dark: #141414;
+$color-netflix-red: #e50914;
+$color-netflix-dark-hover: #221f1f;
+
+/* Instagram Theme Colors */
+$color-ig-bg: #fafafa;
+$color-ig-white: #ffffff;
+$color-ig-border: #dbdbdb;
+$color-ig-text: #262626;
+$color-ig-text-secondary: #8e8e8e;
+$color-ig-link: #00376b;
+$color-ig-blue: #0095f6;
+$color-ig-red: #ed4956;
+$color-ig-gradient: linear-gradient(
+  45deg,
+  #f09433 0%,
+  #e6683c 25%,
+  #dc2743 50%,
+  #cc2366 75%,
+  #bc1888 100%
+);
+
+/* Neutral Colors */
+$color-white: #ffffff;
+$color-text-primary: #ffffff;
+$color-text-secondary: #aaa;
+$color-text-muted: #8e8e8e;
+$color-bg-dark: #333;
+$color-border-dark: #555;
+$color-border-light: #dbdbdb;
+
+/* 2. RESET CSS - Good Practice */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-// 2. Terapkan font dan background global
-body, html {
+/* 3. BASE TYPOGRAPHY & BODY STYLES */
+body,
+html {
   height: 100%;
-
-  // Background gelap ala Netflix sebagai default
-  background-color: #141414;
-
-  // Font default yang modern (bisa diganti)
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-  // Warna teks default (putih agar terbaca di background gelap)
-  color: #ffffff;
-
-  // Mencegah "bouncing" scroll horizontal di beberapa browser
+  background-color: $color-netflix-dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  color: $color-text-primary;
   overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* 4. COMMON UTILITY STYLES */
+
+/* Status Container - Loading/Not Found */
+.status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
+  color: $color-text-primary;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $color-text-secondary;
+    max-width: 400px;
+  }
+}
+
+/* Loading Spinner Animation */
+.loading-spinner {
+  border: 6px solid #333;
+  border-top: 6px solid $color-netflix-red;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Back Link / Error Link */
+.status-link {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: $color-netflix-red;
+  color: $color-white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-block;
+
+  &:hover {
+    background-color: darken($color-netflix-red, 10%);
+  }
+}
+
+/* Common Button Style */
+.btn-primary {
+  background-color: $color-netflix-red;
+  color: $color-white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+
+  &:hover {
+    background-color: darken($color-netflix-red, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Form Controls */
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    color: $color-text-secondary;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: $color-bg-dark;
+  border: 1px solid $color-border-dark;
+  border-radius: 5px;
+  color: $color-text-primary;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-netflix-red;
+    box-shadow: 0 0 5px rgba(229, 9, 20, 0.3);
+  }
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+}
+
+/* Text Utilities */
+.text-white {
+  color: $color-white;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-muted {
+  color: $color-text-muted;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Spacing Utilities */
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mb-1 {
+  margin-bottom: 10px;
+}
+
+.p-1 {
+  padding: 10px;
 }

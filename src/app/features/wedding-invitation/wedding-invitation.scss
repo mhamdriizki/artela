@@ -1,16 +1,8 @@
-@use "sass:color";
+@use '../../../styles.scss' as *;
+@use 'sass:color';
 
-// Wadah untuk status loading atau not found
-.status-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh; // Penuhi layar
-  text-align: center;
-  padding: 20px;
-  color: #ffffff;
-}
+// Note: General status-container, loading-spinner, status-link styles
+// are defined in root styles.scss for optimization
 
 .status-container h2 {
   font-size: 2rem;
@@ -19,38 +11,24 @@
 
 .status-container p {
   font-size: 1.1rem;
-  color: #aaa;
+  color: $color-text-secondary;
   max-width: 400px;
 }
 
-// Link "Kembali" untuk halaman error
-.status-container a {
+.status-container a,
+.status-container button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #e50914; // Merah Netflix
-  color: #fff;
+  background-color: $color-netflix-red;
+  color: $color-white;
   text-decoration: none;
   border-radius: 5px;
   font-weight: 600;
   transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
 
   &:hover {
-    background-color: color.adjust(#e50914, $lightness: 10%);
+    background-color: darken($color-netflix-red, 10%);
   }
-}
-
-// Animasi spinner sederhana untuk loading
-.loading-spinner {
-  border: 6px solid #333; // Lingkaran abu-abu
-  border-top: 6px solid #e50914; // Bagian atas merah
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }

@@ -1,10 +1,11 @@
-@use "sass:color";
+@use '../../../../styles.scss' as *;
+@use 'sass:color';
 
 .angpao-container {
   width: 100%;
   max-width: 500px;
   margin: 20px auto;
-  color: #ddd;
+  color: $color-text-secondary;
   text-align: center;
 }
 
@@ -17,29 +18,29 @@
 
 /* BLOCK: .angpao-card */
 .angpao-card {
-  background-color: #222;
+  background-color: $color-bg-dark;
   border-radius: 8px;
   padding: 15px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #333;
+  border: 1px solid darken($color-bg-dark, 5%);
 }
 
 /* ELEMENT: .angpao-card__logo */
 .angpao-card__logo {
-  flex: 0 0 100px; // Lebar tetap
+  flex: 0 0 100px;
 }
 
 /* ELEMENT: .angpao-card__bank-name */
 .angpao-card__bank-name {
   font-weight: 600;
-  color: #fff;
+  color: $color-white;
 }
 
 /* ELEMENT: .angpao-card__details */
 .angpao-card__details {
-  flex-grow: 1; // Ambil sisa ruang
+  flex-grow: 1;
   text-align: left;
   margin-left: 15px;
 }
@@ -49,28 +50,28 @@
   display: block;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: $color-white;
 }
 
 /* ELEMENT: .angpao-card__owner */
 .angpao-card__owner {
   font-size: 0.9rem;
-  color: #aaa;
+  color: $color-text-secondary;
 }
 
 /* ELEMENT: .angpao-card__button */
 .angpao-card__button {
-  background-color: #e50914; // Merah Netflix
-  color: #fff;
+  background-color: $color-netflix-red;
+  color: $color-white;
   border: none;
   border-radius: 5px;
   padding: 8px 12px;
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  min-width: 80px; // Agar lebar tombol konsisten
+  min-width: 80px;
 
   &:hover {
-    background-color: color.adjust(#e50914, $lightness: 10%);
+    background-color: darken($color-netflix-red, 10%);
   }
 }

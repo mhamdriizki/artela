@@ -1,50 +1,26 @@
-@use "sass:color";
+@use '../../../../styles.scss' as *;
+@use 'sass:color';
 
-/* BLOCK: .form-group */
-.form-group {
-  margin-bottom: 20px;
-
-  label {
-    display: block;
-    color: #aaa;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-  }
-}
-
-/* BLOCK: .form-control */
-.form-control {
-  width: 100%;
-  padding: 12px 15px;
-  background-color: #333; // Latar belakang input gelap
-  border: 1px solid #555;
-  border-radius: 5px;
-  color: #fff; // Teks input putih
-  font-size: 1rem;
-
-  &:focus {
-    outline: none;
-    border-color: #e50914; // Border merah saat fokus
-  }
-}
+/* Note: Base .form-group and .form-control are defined in root styles.scss */
 
 /* BLOCK: .form-radio-group */
 .form-radio-group {
   display: flex;
   gap: 20px;
-  color: #ddd;
+  color: $color-text-secondary;
 
   label {
     display: flex;
     align-items: center;
     gap: 5px;
     cursor: pointer;
+    font-weight: 500;
   }
 }
 
 /* BLOCK: .form-error */
 .form-error {
-  color: #f8a5a5; // Merah muda untuk error
+  color: #f8a5a5;
   font-size: 0.85rem;
   margin-top: 8px;
 }
@@ -53,21 +29,21 @@
 .rsvp-button {
   width: 100%;
   padding: 15px;
-  background-color: #e50914;
+  background-color: $color-netflix-red;
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: $color-white;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: color.adjust(#e50914, $lightness: 10%);
+    background-color: darken($color-netflix-red, 10%);
   }
 
   &:disabled {
-    background-color: #555; // Tombol nonaktif
+    background-color: $color-border-dark;
     cursor: not-allowed;
   }
 }
@@ -77,16 +53,17 @@
   padding: 20px;
   border-radius: 5px;
   text-align: center;
+  font-weight: 500;
 }
 
 /* MODIFIER: .rsvp-message--success */
 .rsvp-message--success {
-  background-color: #2e7d32; // Hijau tua
-  color: #c8e6c9; // Hijau muda
+  background-color: #2e7d32;
+  color: #c8e6c9;
 }
 
 /* MODIFIER: .rsvp-message--error */
 .rsvp-message--error {
-  background-color: #c62828; // Merah tua
-  color: #ffcdd2; // Merah muda
+  background-color: #c62828;
+  color: #ffcdd2;
 }

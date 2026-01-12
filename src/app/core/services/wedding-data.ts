@@ -1,55 +1,58 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environment/environment';
+import { InvitationData } from '../models/invitation.model';
+import {
+  mapBeResponseToInvitation,
+  isApiSuccess,
+  BeApiResponse,
+  MappedInvitationData,
+} from '../utils/response-mapper';
 
-export interface InvitationData {
-  coupleName: string;
-  brideName: string;
-  groomName: string;
-  youtubeUrl: string;
-  eventDetails: any;
-  gallery: string[];
-  bridePhotoUrl: string; // <-- BARU
-  groomPhotoUrl: string; // <-- BARU,
-  theme: string
-}
-
-const DUMMY_DATA: { [key: string]: InvitationData } = {
-  'rizki-pearly': {
-    coupleName: 'rizki-pearly',
-    brideName: 'Pearly',
-    groomName: 'Rizki',
-    youtubeUrl: 'https://www.youtube.com/embed/vZYMI7BeOAg', // Ganti dengan ID lagu
-    eventDetails: { date: '2025-12-25T09:00:00', location: 'Gedung A' },
-    gallery: ['images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/4.jpg', 'images/5.jpg', 'images/6.jpg'],
-    bridePhotoUrl: 'images/5.jpg',
-    groomPhotoUrl: 'images/4.jpg',
-    theme: 'instagram'
-  },
-  'pearly-rizki': {
-    coupleName: 'rizki-pearly',
-    brideName: 'Pearly',
-    groomName: 'Rizki',
-    youtubeUrl: 'https://www.youtube.com/embed/vZYMI7BeOAg', // Ganti dengan ID lagu
-    eventDetails: { date: '2025-12-25T09:00:00', location: 'Gedung A' },
-    gallery: ['images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/4.jpg', 'images/5.jpg', 'images/6.jpg'],
-    bridePhotoUrl: 'images/5.jpg',
-    groomPhotoUrl: 'images/4.jpg',
-    theme: 'netflix'
-  },
-};
-
+/**
+ * WeddingData Service
+ * Responsible for fetching invitation data from BE API
+ * Follows SOLID: Single Responsibility Principle - only handles data fetching
+ * Clean Code: Clear method names, proper error handling
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class WeddingData {
-  constructor() { }
+  private apiUrl = `${environment.BASE_API}/api/invitation`;
 
-  getInvitationByCouple(coupleName: string): Observable<InvitationData | null> {
-    const data = DUMMY_DATA[coupleName];
-    if (data) {
-      return of(data);
-    } else {
+  constructor(private httpClient: HttpClient) {}
+
+  /**
+   * Fetch invitation data by couple slug from BE API
+   * @param slug - Couple slug (e.g., 'rizki-pearly')
+   * @returns Observable of InvitationData or null if not found
+   */
+  getInvitationByCouple(slug: string): Observable<InvitationData | null> {
+    if (!slug || slug.trim().length === 0) {
       return of(null);
     }
+
+    const url = `${this.apiUrl}/${slug}`;
+
+    return this.httpClient.get<BeApiResponse>(url).pipe(
+      map((response) => {
+        // Validate API response
+        if (!isApiSuccess(response)) {
+          console.warn('API returned non-success response:', response);
+          return null;
+        }
+
+        // Map BE response to FE model
+        const mappedData = mapBeResponseToInvitation(response);
+        return mappedData as InvitationData;
+      }),
+      catchError((error) => {
+        console.error('Error fetching invitation data:', error);
+        return of(null); // Return null on error for graceful fallback
+      })
+    );
   }
 }
