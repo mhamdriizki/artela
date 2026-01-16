@@ -2,7 +2,10 @@
    GLOBAL STYLES & COLOR SYSTEM
    ======================================== */
 
-/* 1. COLOR PALETTE - Global Variables */
+// 1. IMPORT SASS MODULES (REQUIRED FOR NEW COLOR FUNCTIONS)
+@use "sass:color";
+
+/* 2. COLOR PALETTE - Global Variables */
 /* Netflix Theme Colors */
 $color-netflix-dark: #141414;
 $color-netflix-red: #e50914;
@@ -35,14 +38,14 @@ $color-bg-dark: #333;
 $color-border-dark: #555;
 $color-border-light: #dbdbdb;
 
-/* 2. RESET CSS - Good Practice */
+/* 3. RESET CSS - Good Practice */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 3. BASE TYPOGRAPHY & BODY STYLES */
+/* 4. BASE TYPOGRAPHY & BODY STYLES */
 body,
 html {
   height: 100%;
@@ -54,7 +57,7 @@ html {
   line-height: 1.6;
 }
 
-/* 4. COMMON UTILITY STYLES */
+/* 5. COMMON UTILITY STYLES */
 
 /* Status Container - Loading/Not Found */
 .status-container {
@@ -101,6 +104,7 @@ html {
 
 /* Back Link / Error Link */
 .status-link {
+  display: inline-block;
   margin-top: 20px;
   padding: 10px 20px;
   background-color: $color-netflix-red;
@@ -108,13 +112,13 @@ html {
   text-decoration: none;
   border-radius: 5px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
   border: none;
-  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: darken($color-netflix-red, 10%);
+    // FIX: Menggunakan color.adjust sebagai pengganti darken()
+    background-color: color.adjust($color-netflix-red, $lightness: -10%);
   }
 }
 
@@ -126,12 +130,13 @@ html {
   border-radius: 5px;
   padding: 8px 12px;
   font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-weight: 600;
 
   &:hover {
-    background-color: darken($color-netflix-red, 10%);
+    // FIX: Menggunakan color.adjust sebagai pengganti darken()
+    background-color: color.adjust($color-netflix-red, $lightness: -10%);
   }
 
   &:disabled {
@@ -166,6 +171,7 @@ html {
   &:focus {
     outline: none;
     border-color: $color-netflix-red;
+    // Menggunakan rgba() manual atau color.change() jika perlu transparansi
     box-shadow: 0 0 5px rgba(229, 9, 20, 0.3);
   }
 

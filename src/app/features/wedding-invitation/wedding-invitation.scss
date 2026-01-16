@@ -29,6 +29,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: darken($color-netflix-red, 10%);
+    background-color: color.adjust($color-netflix-red, $lightness: -10%);
   }
 }
