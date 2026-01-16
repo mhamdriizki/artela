@@ -1,4 +1,4 @@
-@use '../../../../styles.scss' as *;
+@use '../../../../../styles.scss' as *;
 @use 'sass:color';
 
 /* Note: Base .form-group and .form-control are defined in root styles.scss */
@@ -39,7 +39,7 @@
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: darken($color-netflix-red, 10%);
+    background-color: color.adjust($color-netflix-red, $lightness: -10%);
   }
 
   &:disabled {
