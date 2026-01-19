@@ -1,111 +1,81 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { InvitationData } from '../../core/models/invitation.model';
-import { WeddingData } from '../../core/services/wedding-data';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+
+// Layouts
 import { NetflixTheme } from './layouts/netflix-theme/netflix-theme';
 import { InstagramTheme } from './layouts/instagram-theme/instagram-theme';
-import { CommonModule } from '@angular/common';
+import { SafeUrlPipe } from '../../shared/pipes/safe-url-pipe';
+import { InvitationService } from '../../core/services/invitation-service';
+import { Invitation } from '../../core/models/invitation.model';
 
-/**
- * WeddingInvitation Component
- * Displays wedding invitation based on couple slug
- * Implements SOLID: Single Responsibility (data fetching & display delegation)
- * Clean Code: Clear variable names, proper error handling
- */
 @Component({
   selector: 'app-wedding-invitation',
-  imports: [CommonModule, NetflixTheme, InstagramTheme],
+  standalone: true,
+  imports: [CommonModule, NetflixTheme, InstagramTheme, SafeUrlPipe],
   templateUrl: './wedding-invitation.html',
-  styleUrl: './wedding-invitation.scss',
+  styleUrls: ['./wedding-invitation.scss']
 })
-export class WeddingInvitation implements OnInit, OnDestroy {
-  // State Management
-  public isLoading: boolean = true;
-  public isNotFound: boolean = false;
+export class WeddingInvitation implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private invService = inject(InvitationService);
 
-  // Data
-  public invitationData: InvitationData | null = null;
-  public guestName: string | null = null;
-  public themeName: string = 'instagram'; // Default theme
+  invitationData: Invitation | null = null;
+  isLoading = true;
 
-  // Unsubscribe management
-  private destroy$ = new Subject<void>();
+  // Logic Musik YouTube
+  isPlaying = false;
+  youtubeEmbedUrl: string | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private weddingService: WeddingData
-  ) {}
-
-  ngOnInit(): void {
-    // Get guest name from query params
-    this.guestName = this.route.snapshot.queryParamMap.get('to');
-
-    // Fetch invitation data by slug from route params
-    // Theme will come from API response
-    this.fetchInvitationData();
+  ngOnInit() {
+    // Gunakan paramMap subscription agar jika ganti slug tanpa refresh, data tetap update
+    this.route.paramMap.subscribe(params => {
+      const slug = params.get('slug');
+      if (slug) {
+        this.fetchData(slug);
+      } else {
+        this.router.navigate(['/404']);
+      }
+    });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-  /**
-   * Fetch invitation data based on route slug parameter
-   */
-  private fetchInvitationData(): void {
-    this.route.paramMap
-      .pipe(
-        switchMap((params) => {
-          const slug = params.get('slug');
+  fetchData(slug: string) {
+    this.isLoading = true;
+    this.invService.getInvitationBySlug(slug).subscribe({
+      next: (res) => {
+        if (res && res.output_schema) {
+          this.invitationData = res.output_schema;
 
-          if (!slug) {
-            this.handleNotFound();
-            return [];
+          // Siapkan URL YouTube
+          if (this.invitationData.background_music_url) {
+            this.generateYoutubeEmbed(this.invitationData.background_music_url);
           }
-
-          return this.weddingService.getInvitationByCouple(slug);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        next: (data) => this.handleSuccess(data),
-        error: (err) => this.handleError(err),
-      });
+        } else {
+          this.router.navigate(['/404']);
+        }
+        this.isLoading = false;
+      },
+      error: () => {
+        this.router.navigate(['/404']);
+      }
+    });
   }
 
-  /**
-   * Handle successful data fetch
-   */
-  private handleSuccess(data: InvitationData | null): void {
-    if (data) {
-      this.invitationData = data;
-      // Use theme from BE API response
-      this.themeName = data.theme?.toLowerCase() || 'instagram'; // Normalize to lowercase
-      this.isNotFound = false;
-    } else {
-      this.isNotFound = true;
+  // Helper: Ubah link youtube biasa jadi Embed Autoplay
+  generateYoutubeEmbed(url: string) {
+    // Regex untuk ambil ID Video (support youtu.be dan youtube.com)
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      const videoId = match[2];
+      // Autoplay=1 & Loop=1 & Playlist=VideoID (Loop butuh playlist ID sama)
+      this.youtubeEmbedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0`;
     }
-    this.isLoading = false;
   }
 
-  /**
-   * Handle error during fetch
-   */
-  private handleError(error: any): void {
-    console.error('Error fetching invitation data:', error);
-    this.isLoading = false;
-    this.isNotFound = true;
-  }
-
-  /**
-   * Handle case when slug is missing
-   */
-  private handleNotFound(): void {
-    this.isLoading = false;
-    this.isNotFound = true;
-    this.router.navigate(['/']);
+  toggleMusic() {
+    this.isPlaying = !this.isPlaying;
   }
 }

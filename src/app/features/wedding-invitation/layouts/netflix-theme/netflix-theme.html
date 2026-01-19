@@ -2,13 +2,13 @@
 
   <header class="hero-cover" [class.hidden]="!isCoverActive">
     <div class="hero-cover__background"
-         [style.backgroundImage]="'url(' + invitation.gallery[0] + ')'">
+         [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery?.[0]?.filename) + ')'">
     </div>
     <div class="hero-cover__content">
       <div class="hero-cover__title-group">
         <span class="hero-cover__the-wedding">THE WEDDING</span>
-        <h1 class="hero-cover__couple-names">{{ invitation.groomName }} & {{ invitation.brideName }}</h1>
-        <p class="hero-cover__date">{{ invitation.eventDetails.date | date:'EEEE, d MMMM y' }}</p>
+        <h1 class="hero-cover__couple-names">{{ invitation.groom_name }} & {{ invitation.bride_name }}</h1>
+        <p class="hero-cover__date">{{ invitation.wedding_date | date:'EEEE, d MMMM y' }}</p>
       </div>
 
       @if (guest) {
@@ -29,13 +29,13 @@
     <div class="mini-header">
       <div class="mini-header__left">
         <a class="mini-header__logo" (click)="scrollToSection('home')">
-          The Wedding
+          ARTELA
         </a>
         <ul class="mini-header__nav">
           <li><a (click)="scrollToSection('home')">Home</a></li>
-          <li><a (click)="scrollToSection('bride-groom')">Bride & Groom</a></li>
+          <li><a (click)="scrollToSection('bride-groom')">Couple</a></li>
           <li><a (click)="scrollToSection('gallery')">Gallery</a></li>
-          <li><a (click)="scrollToSection('save-the-date')">Save The Date</a></li>
+          <li><a (click)="scrollToSection('save-the-date')">Event</a></li>
           <li><a (click)="scrollToSection('rsvp')">RSVP</a></li>
         </ul>
       </div>
@@ -43,9 +43,9 @@
 
     <section class="content-hero" id="home">
       <div class="content-hero__background-wrapper">
-        @for (photo of invitation.gallery; track photo; let i = $index) {
+        @for (photo of invitation.gallery; track photo.id; let i = $index) {
           <div class="content-hero__background"
-               [style.backgroundImage]="'url(' + photo + ')'"
+               [style.backgroundImage]="'url(' + getImageUrl(photo.filename) + ')'"
                [class.active]="i === currentBgIndex">
           </div>
         }
@@ -53,12 +53,12 @@
       <div class="content-hero__details">
         <div class="content-hero__logo">N</div>
         <div class="content-hero__title">
-          The Beginning of Forever: {{ invitation.groomName }} & {{ invitation.brideName }}
+          The Beginning of Forever: {{ invitation.groom_name }} & {{ invitation.bride_name }}
         </div>
         <div class="content-hero__meta">
-          <span class="content-hero__match">100% Match</span>
+          <span class="content-hero__match">98% Match</span>
           <span class="content-hero__rating">SU</span>
-          <span>{{ invitation.eventDetails.date | date:'yyyy' }}</span>
+          <span>{{ invitation.wedding_date | date:'yyyy' }}</span>
           <span class="content-hero__hd">HD</span>
         </div>
         <p class="content-hero__description">
@@ -67,11 +67,10 @@
         </p>
         <div class="hero-buttons-container">
           <button class="hero-button hero-button--play" (click)="toggleMusic()">
-            <i class="fa" [class.fa-play]="!isMusicPlaying" [class.fa-pause]="isMusicPlaying"></i>
-            {{ isMusicPlaying ? 'Pause' : 'Play' }}
+            <span>{{ isMusicPlaying ? '⏸ Pause' : '▶ Play Music' }}</span>
           </button>
           <button class="hero-button hero-button--info" (click)="scrollToSection('save-the-date')">
-            <i class="fa fa-info-circle"></i> More Info
+            <span>ℹ More Info</span>
           </button>
         </div>
       </div>
@@ -80,11 +79,12 @@
     <section class="content-section" id="breaking-news">
       <h2 class="content-section__title">Breaking News</h2>
       <div class="content-section__card">
-        <img [src]="invitation.gallery[1] || invitation.gallery[0]" alt="Breaking News" class="content-section__image">
+        <img [src]="getImageUrl(invitation.gallery?.[1]?.filename || invitation.gallery?.[0]?.filename)"
+             alt="Breaking News" class="content-section__image">
         <p class="content-section__text">
           Hai teman-teman tersayang! Dengan penuh sukacita, kami ingin membagikan kabar bahagia! ❤️
           <br><br>
-          <span class="content-section__signature">{{ invitation.groomName }} & {{ invitation.brideName }}</span>
+          <span class="content-section__signature">{{ invitation.groom_name }} & {{ invitation.bride_name }}</span>
         </p>
       </div>
     </section>
@@ -93,14 +93,14 @@
       <h2 class="content-section__title">Bride & Groom</h2>
       <div class="content-section__grid">
         <div class="profile-card">
-          <img [src]="invitation.bridePhotoUrl" alt="Bride" class="profile-card__image">
-          <h3 class="profile-card__name">{{ invitation.brideName }}</h3>
-          <p class="profile-card__description">Putri dari Bapak Surono dan Ibu Saniyati</p>
+          <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" alt="Bride" class="profile-card__image">
+          <h3 class="profile-card__name">{{ invitation.bride_name }}</h3>
+          <p class="profile-card__description">The Bride</p>
         </div>
         <div class="profile-card">
-          <img [src]="invitation.groomPhotoUrl" alt="Groom" class="profile-card__image">
-          <h3 class="profile-card__name">{{ invitation.groomName }}</h3>
-          <p class="profile-card__description">Putra dari Bapak Mustaqim dan Ibu Nurjanah</p>
+          <img [src]="invitation.groom_photo_url || 'assets/images/groom-placeholder.jpg'" alt="Groom" class="profile-card__image">
+          <h3 class="profile-card__name">{{ invitation.groom_name }}</h3>
+          <p class="profile-card__description">The Groom</p>
         </div>
       </div>
     </section>
@@ -108,23 +108,30 @@
     <section class="content-section" id="gallery">
       <h2 class="content-section__title">Our Gallery</h2>
       <div class="gallery-grid">
-        @for (photo of invitation.gallery; track photo) {
-          <img [src]="photo" alt="Gallery" class="gallery-grid__item">
+        @for (photo of invitation.gallery; track photo.id) {
+          <img [src]="getImageUrl(photo.filename)" alt="Gallery" class="gallery-grid__item">
         }
       </div>
     </section>
 
     <section class="content-section" id="save-the-date">
       <h2 class="content-section__title">Save The Date</h2>
+
       <div class="event-card">
-        <div class="event-card__map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.25303531818!2d106.7218688153443!3d-6.36142716399187!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ef21d5c46e6d%3A0x1a83f0a5f97f7a7!2sMasjid%20Baabussalam!5e0!3m2!1sid!2sid!4v1678886498529!5m2!1sid!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        <div class="event-card__details">
+          <span class="event-card__label">AKAD NIKAH</span>
+          <p class="event-card__date">{{ invitation.wedding_date | date:'EEEE, dd MMMM y' }}</p>
+          <p class="event-card__location">{{ invitation.akad_location }}</p>
+          <a [href]="invitation.akad_map_url" target="_blank" class="event-card__map-link">📍 Google Maps</a>
         </div>
+      </div>
+
+      <div class="event-card" style="margin-top: 1rem;">
         <div class="event-card__details">
           <span class="event-card__label">RESEPSI</span>
-          <p class="event-card__date">{{ invitation.eventDetails.date | date:'EEEE, dd MMMM y' }}</p>
-          <p class="event-card__location">{{ invitation.eventDetails.location }}</p>
-          <a href="https://goo.gl/maps/12345" target="_blank" class="event-card__map-link">Buka di Google Maps</a>
+          <p class="event-card__date">{{ invitation.wedding_date | date:'EEEE, dd MMMM y' }}</p>
+          <p class="event-card__location">{{ invitation.reception_location }}</p>
+          <a [href]="invitation.reception_map_url" target="_blank" class="event-card__map-link">📍 Google Maps</a>
         </div>
       </div>
     </section>
@@ -132,8 +139,7 @@
     <section class="content-section" id="gift">
       <h2 class="content-section__title">Wedding Gift</h2>
       <p class="content-section__text--center">Restu Anda adalah anugerah terindah.</p>
-      <app-digital-angpao></app-digital-angpao>
-    </section>
+      </section>
 
     <section class="content-section form-section" id="rsvp">
       <div class="form-wrapper">
@@ -142,13 +148,13 @@
       </div>
       <div class="form-wrapper">
         <h2 class="form-wrapper__title">Konfirmasi Kehadiran</h2>
-        <app-rsvp-form [invitationId]="invitation.coupleName"></app-rsvp-form>
+        <app-rsvp-form></app-rsvp-form>
       </div>
     </section>
 
     <footer class="main-footer">
       <p>Thank you! ❤️</p>
-      <p class="main-footer__credits">E-Invitation made by {{ invitation.groomName }} & {{ invitation.brideName }}</p>
+      <p class="main-footer__credits">E-Invitation made by Artela</p>
     </footer>
 
   </main>
@@ -159,18 +165,20 @@
          [class.paused]="!isMusicPlaying"
          title="Play/Pause Music">
       <div class="music-control__cd">
-        <i class="fas fa-music music-control__icon"></i>
+        <span>🎵</span>
       </div>
     </div>
   }
 
-  @if (youtubeEmbedUrl) {
+  @if (youtubeEmbedUrl && isMusicPlaying) {
     <div class="music-player-hidden">
       <iframe #youtubePlayer
               id="youtubePlayer"
               [src]="youtubeEmbedUrl"
-              allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+              width="1" height="1"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen>
       </iframe>
     </div>
   }

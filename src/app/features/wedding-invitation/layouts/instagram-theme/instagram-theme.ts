@@ -1,141 +1,129 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {DatePipe, TitleCasePipe} from '@angular/common';
-import {DigitalAngpao} from '../../components/digital-angpao/digital-angpao';
-import {RsvpForm} from '../../components/rsvp-form/rsvp-form';
-import {Guestbook} from '../../components/guestbook/guestbook';
-import { InvitationData } from '../../../../core/models/invitation.model';
+import { Component, Input, Output, EventEmitter, inject, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Invitation } from '../../../../core/models/invitation.model';
+import { environment } from '../../../../../environment/environment';
+import { DigitalAngpao } from '../../components/digital-angpao/digital-angpao';
+import { Guestbook } from '../../components/guestbook/guestbook';
+import { RsvpForm } from '../../components/rsvp-form/rsvp-form';
 
 @Component({
   selector: 'app-instagram-theme',
   standalone: true,
-  imports: [
-    TitleCasePipe,
-    DatePipe,
-    DigitalAngpao,
-    RsvpForm,
-    Guestbook
-  ],
+  imports: [CommonModule, Guestbook, RsvpForm, DigitalAngpao],
   templateUrl: './instagram-theme.html',
-  styleUrl: './instagram-theme.scss',
+  styleUrls: ['./instagram-theme.scss']
 })
-export class InstagramTheme implements OnInit, OnDestroy {
+export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
+  private sanitizer = inject(DomSanitizer);
 
-  @Input() invitation!: InvitationData;
-  @Input() guest: string | null = null;
+  @Input() data!: Invitation;
+  @Input() guest: string | null = null; // Nama tamu dari parent
+  @Output() playMusic = new EventEmitter<void>();
 
-  public isStoryActive: boolean = true;
-  public isMusicPlaying: boolean = false;
-  public youtubeEmbedUrl: SafeResourceUrl | null = null;
+  // State
+  isStoryActive = true;     // Mode Cover (Story)
+  isMusicPlaying = false;
+  storyProgress = 0;        // Progress bar di Story
+  activeGalleryIndex = 0;   // Indikator slide gallery
 
-  public storyProgress = 0;
   private storyInterval: any;
+  youtubeEmbedUrl: SafeResourceUrl | null = null;
+  baseUrl = environment.BASE_API;
 
-  // Variabel untuk melacak slide aktif di carousel
-  public activeGalleryIndex: number = 0;
-
-  @ViewChild('youtubePlayer') youtubePlayerRef!: ElementRef<HTMLIFrameElement>;
-  @ViewChild('contentContainer') contentContainer!: ElementRef<HTMLElement>;
-
-  constructor(private sanitizer: DomSanitizer) {}
-
-  ngOnInit(): void {
-    if (this.invitation?.youtubeUrl) {
-      const safeUrl = this.buildYoutubeUrl(this.invitation.youtubeUrl);
-      this.youtubeEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(safeUrl);
-    }
+  ngOnInit() {
     this.startStoryProgress();
   }
 
-  // --- Carousel Scroll Logic ---
-  onGalleryScroll(event: any) {
-    const element = event.target;
-    // Hitung index berdasarkan posisi scroll horizontal
-    const index = Math.round(element.scrollLeft / element.offsetWidth);
-    this.activeGalleryIndex = index;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && this.data?.background_music_url) {
+      this.generateYoutubeEmbed(this.data.background_music_url);
+    }
   }
 
-  // --- Story Logic ---
+  ngOnDestroy() {
+    this.stopStoryProgress();
+  }
+
+  // --- Getters ---
+  get invitation() {
+    return this.data;
+  }
+
+  get formattedGuestName(): string {
+    return this.guest || 'Tamu Undangan';
+  }
+
+  // --- Story / Cover Logic ---
   startStoryProgress() {
+    this.stopStoryProgress();
+    this.storyProgress = 0;
+
+    // Animasi loading bar 5 detik
     this.storyInterval = setInterval(() => {
-      if (this.storyProgress < 100) {
-        this.storyProgress += 1;
-      } else {
-        clearInterval(this.storyInterval);
+      this.storyProgress += 1; // nambah 1% tiap 50ms (total 5000ms)
+      if (this.storyProgress >= 100) {
+        this.openInvitation(); // Auto open jika habis waktu (opsional)
       }
     }, 50);
   }
 
+  stopStoryProgress() {
+    if (this.storyInterval) {
+      clearInterval(this.storyInterval);
+      this.storyInterval = null;
+    }
+  }
+
   openInvitation() {
+    this.stopStoryProgress();
     this.isStoryActive = false;
-    this.isMusicPlaying = true;
-    this.playMusic();
-    clearInterval(this.storyInterval);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.toggleMusic();
+
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
+
+  // --- Gallery Logic ---
+  onGalleryScroll(event: any) {
+    const element = event.target;
+    const scrollLeft = element.scrollLeft;
+    const width = element.offsetWidth;
+    // Hitung index berdasarkan posisi scroll
+    this.activeGalleryIndex = Math.round(scrollLeft / width);
+  }
+
+  // --- Helpers ---
+  getImageUrl(filename: string | undefined): string {
+    if (!filename) return 'assets/images/default.jpg';
+    const base = this.baseUrl.endsWith('/') ? this.baseUrl.slice(0, -1) : this.baseUrl;
+    return `${base}/uploads/${filename}`;
+  }
+
+  scrollToSection(id: string) {
+    const element = document.getElementById(id);
+    if (element) {
+      // Offset untuk navbar
+      const y = element.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   }
 
   // --- Music Logic ---
-  private buildYoutubeUrl(url: string): string {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-    const match = url.match(regex);
-    const videoId = match ? match[1] : '';
-
-    const baseUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
-    const urlObj = new URL(baseUrl);
-
-    urlObj.searchParams.set('enablejsapi', '1');
-    urlObj.searchParams.set('origin', window.location.origin);
-    urlObj.searchParams.set('autoplay', '1');
-    urlObj.searchParams.set('mute', '1');
-    urlObj.searchParams.set('controls', '0');
-    urlObj.searchParams.set('loop', '1');
-    urlObj.searchParams.set('playlist', videoId);
-
-    return urlObj.toString();
-  }
-
   toggleMusic() {
-    if (!this.youtubePlayerRef) return;
-    const contentWindow = this.youtubePlayerRef.nativeElement.contentWindow;
-    if (!contentWindow) return;
+    this.isMusicPlaying = !this.isMusicPlaying;
+    this.playMusic.emit();
+  }
 
-    if (this.isMusicPlaying) {
-      contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
-      this.isMusicPlaying = false;
-    } else {
-      contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
-      this.isMusicPlaying = true;
+  private generateYoutubeEmbed(url: string) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      const videoId = match[2];
+      const rawUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&enablejsapi=1`;
+      this.youtubeEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
     }
-  }
-
-  playMusic() {
-    if (!this.youtubePlayerRef) return;
-    const player = this.youtubePlayerRef.nativeElement.contentWindow;
-    if (!player) return;
-
-    player.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
-    setTimeout(() => {
-      player.postMessage(JSON.stringify({ event: 'command', func: 'unMute' }), '*');
-      player.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-    }, 500);
-  }
-
-  // --- Navigation Logic ---
-  scrollToSection(sectionId: string) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 60;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  }
-
-  get formattedGuestName(): string {
-    return this.guest ? this.guest.replace(/-/g, ' ') : 'Tamu Undangan';
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.storyInterval);
   }
 }

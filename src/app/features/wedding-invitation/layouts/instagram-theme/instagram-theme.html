@@ -2,18 +2,22 @@
 
   @if (isStoryActive) {
     <div class="ig-story-overlay" (click)="openInvitation()">
-      <div class="ig-story-bg" [style.backgroundImage]="'url(' + invitation.gallery[0] + ')'"></div>
+      <div class="ig-story-bg"
+           [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery?.[0]?.filename) + ')'">
+      </div>
+
       <div class="ig-story-header">
         <div class="progress-bars">
           <div class="bar"><div class="fill" [style.width.%]="storyProgress"></div></div>
         </div>
         <div class="user-info">
-          <img [src]="invitation.bridePhotoUrl" class="avatar" alt="Avatar">
-          <span class="username">{{ invitation.groomName }} & {{ invitation.brideName }}</span>
+          <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" class="avatar" alt="Avatar">
+          <span class="username">{{ invitation.groom_name }} & {{ invitation.bride_name }}</span>
           <span class="time">Sponsored</span>
           <i class="fas fa-ellipsis-h ms-auto text-white"></i>
         </div>
       </div>
+
       <div class="ig-story-content">
         <div class="glass-box">
           <p>Dear,</p>
@@ -21,6 +25,7 @@
           <span class="tap-hint">Tap to open <i class="fas fa-chevron-right"></i></span>
         </div>
       </div>
+
       <div class="ig-story-footer">
         <div class="reply-box">Send message...</div>
         <i class="far fa-heart"></i>
@@ -42,11 +47,15 @@
 
       <div class="ig-stories-bar">
         <div class="story-item" (click)="scrollToSection('coupleSection')">
-          <div class="ring"><img [src]="invitation.bridePhotoUrl" alt="Couple"></div>
+          <div class="ring">
+            <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" alt="Couple">
+          </div>
           <span>Couple</span>
         </div>
         <div class="story-item" (click)="scrollToSection('eventSection')">
-          <div class="ring"><img [src]="invitation.groomPhotoUrl" alt="Event"></div>
+          <div class="ring">
+            <img [src]="invitation.groom_photo_url || 'assets/images/groom-placeholder.jpg'" alt="Event">
+          </div>
           <span>Event</span>
         </div>
         <div class="story-item" (click)="scrollToSection('gallerySection')">
@@ -61,16 +70,18 @@
 
       <article class="ig-post" id="coupleSection">
         <header>
-          <img [src]="invitation.bridePhotoUrl" class="avatar" alt="Ava">
+          <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" class="avatar" alt="Ava">
           <div class="info">
-            <span class="username">{{ invitation.groomName }}_official</span>
+            <span class="username">{{ invitation.groom_name | lowercase }}_official</span>
             <span class="location">Bridal Chamber</span>
           </div>
           <i class="fas fa-ellipsis-h ms-auto"></i>
         </header>
+
         <div class="post-image">
-          <img [src]="invitation.gallery[0]" alt="Main Post">
+           <img [src]="getImageUrl(invitation.gallery?.[0]?.filename)" alt="Main Post">
         </div>
+
         <div class="actions">
           <div class="left">
             <i class="far fa-heart"></i>
@@ -79,37 +90,40 @@
           </div>
           <i class="far fa-bookmark ms-auto"></i>
         </div>
+
         <div class="content">
           <p class="likes">Liked by <b>keluarga.besar</b> and <b>others</b></p>
           <p class="caption">
-            <span class="username">{{ invitation.groomName }} & {{ invitation.brideName }}</span>
+            <span class="username">{{ invitation.groom_name }} & {{ invitation.bride_name }}</span>
             Bismillah, mohon doa restu untuk pernikahan kami. 💍
           </p>
-          <p class="time">{{ invitation.eventDetails.date | date:'longDate' }}</p>
+          <p class="time">{{ invitation.wedding_date | date:'longDate' }}</p>
         </div>
       </article>
 
       <article class="ig-post" id="eventSection">
         <header>
-          <img [src]="invitation.groomPhotoUrl" class="avatar" alt="Ava">
+          <img [src]="invitation.groom_photo_url || 'assets/images/groom-placeholder.jpg'" class="avatar" alt="Ava">
           <div class="info">
             <span class="username">save.the.date</span>
           </div>
         </header>
+
         <div class="post-content-box">
           <div class="date-display">
-            <span class="month">{{ invitation.eventDetails.date | date:'MMM' }}</span>
-            <span class="day">{{ invitation.eventDetails.date | date:'dd' }}</span>
-            <span class="year">{{ invitation.eventDetails.date | date:'yyyy' }}</span>
+            <span class="month">{{ invitation.wedding_date | date:'MMM' }}</span>
+            <span class="day">{{ invitation.wedding_date | date:'dd' }}</span>
+            <span class="year">{{ invitation.wedding_date | date:'yyyy' }}</span>
           </div>
           <div class="details text-center">
             <p><strong>AKAD & RESEPSI</strong></p>
             <p><i class="far fa-clock"></i> 08:00 WIB - Selesai</p>
             <hr class="post-hr">
-            <p><i class="fas fa-map-marker-alt"></i> {{ invitation.eventDetails.location }}</p>
-            <a href="https://goo.gl/maps/xyz" target="_blank" class="ig-btn-link">View on Maps</a>
+            <p><i class="fas fa-map-marker-alt"></i> {{ invitation.akad_location }}</p>
+            <a [href]="invitation.akad_map_url" target="_blank" class="ig-btn-link">View on Maps</a>
           </div>
         </div>
+
         <div class="actions">
           <div class="left">
             <i class="far fa-heart"></i>
@@ -121,7 +135,7 @@
 
       <article class="ig-post" id="gallerySection">
         <header>
-          <img [src]="invitation.bridePhotoUrl" class="avatar" alt="Ava">
+          <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" class="avatar" alt="Ava">
           <div class="info">
             <span class="username">our.memories</span>
             <span class="location">Everywhere</span>
@@ -131,20 +145,22 @@
 
         <div class="carousel-container">
           <div class="carousel-wrapper" (scroll)="onGalleryScroll($event)">
-            @for (photo of invitation.gallery; track $index) {
+            @for (photo of invitation.gallery; track photo.id) {
               <div class="carousel-item">
-                <img [src]="photo" alt="Gallery Photo">
+                <img [src]="getImageUrl(photo.filename)" alt="Gallery Photo">
               </div>
             }
           </div>
+
           <div class="carousel-dots">
-            @for (photo of invitation.gallery; track $index; let i = $index) {
+            @for (photo of invitation.gallery; track photo.id; let i = $index) {
               @if (invitation.gallery.length > 1) {
                 <div class="dot" [class.active]="i === activeGalleryIndex"></div>
               }
             }
           </div>
-          @if (invitation.gallery.length > 1) {
+
+          @if (invitation.gallery && invitation.gallery.length > 1) {
             <div class="multi-photo-icon"><i class="far fa-clone"></i></div>
           }
         </div>
@@ -157,6 +173,7 @@
           </div>
           <i class="far fa-bookmark ms-auto"></i>
         </div>
+
         <div class="content">
           <p class="likes">Liked by <b>you</b> and <b>others</b></p>
           <p class="caption">
@@ -168,7 +185,7 @@
 
       <article class="ig-post mb-5" id="rsvpSection">
         <header>
-          <img [src]="invitation.bridePhotoUrl" class="avatar" alt="Ava">
+          <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" class="avatar" alt="Ava">
           <div class="info">
             <span class="username">wedding.wishes</span>
           </div>
@@ -179,9 +196,11 @@
             <h3>Wedding Gift</h3>
             <app-digital-angpao></app-digital-angpao>
           </div>
+
           <hr class="ig-divider">
           <h4 class="section-title">Konfirmasi Kehadiran</h4>
-          <app-rsvp-form [invitationId]="invitation.coupleName"></app-rsvp-form>
+          <app-rsvp-form></app-rsvp-form>
+
           <hr class="ig-divider">
           <h4 class="section-title">Comments</h4>
           <app-guestbook></app-guestbook>
@@ -195,13 +214,13 @@
       <i class="fas fa-search"></i>
       <i class="far fa-plus-square"></i>
       <i class="far fa-heart"></i>
-      <img [src]="invitation.bridePhotoUrl" class="mini-avatar" alt="Profile">
+      <img [src]="invitation.bride_photo_url || 'assets/images/bride-placeholder.jpg'" class="mini-avatar" alt="Profile">
     </nav>
 
     <div class="music-control" (click)="toggleMusic()" [class.paused]="!isMusicPlaying">
       <div class="cd-disc">
         <div class="cd-inner"></div>
-        <img [src]="invitation.gallery[0]" alt="Album Cover" class="cd-cover">
+        <img [src]="getImageUrl(invitation.gallery?.[0]?.filename)" alt="Album Cover" class="cd-cover">
       </div>
       <div class="music-notes">
         <i class="fas fa-music note-1"></i>
@@ -210,7 +229,7 @@
     </div>
   }
 
-  @if (youtubeEmbedUrl) {
+  @if (youtubeEmbedUrl && isMusicPlaying) {
     <div class="youtube-hidden">
       <iframe #youtubePlayer
               id="youtubePlayer"

@@ -1,27 +1,48 @@
 @if (isLoading) {
-  <div class="status-container">
-    <div class="loading-spinner"></div>
-    <p>Memuat undangan...</p>
+  <div class="loading-screen">
+    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #e50914; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 10px; color: white;">Memuat Undangan...</p>
   </div>
-}
+} @else if (invitationData) {
 
-@if (!isLoading && isNotFound) {
-  <div class="status-container">
-    <h2>😢<br>Undangan Tidak Ditemukan</h2>
-    <p>Link yang Anda tuju sepertinya salah atau sudah tidak tersedia.</p>
-    <a routerLink="/">Kembali ke Halaman Utama</a>
-  </div>
-}
+  @switch (invitationData.theme) {
+    @case ('netflix') {
+      <app-netflix-theme
+        [data]="invitationData"
+        (playMusic)="toggleMusic()">
+      </app-netflix-theme>
+    }
+    @case ('instagram') {
+      <app-instagram-theme
+        [data]="invitationData"
+        (playMusic)="toggleMusic()">
+      </app-instagram-theme>
+    }
+    @default {
+      <app-netflix-theme
+        [data]="invitationData"
+        (playMusic)="toggleMusic()">
+      </app-netflix-theme>
+    }
+  }
 
-@if (!isLoading && !isNotFound && invitationData) {
-  @if (themeName === 'instagram') {
-    <app-instagram-theme [invitation]="invitationData" [guest]="guestName" />
-  } @else if (themeName === 'netflix') {
-    <app-netflix-theme [invitation]="invitationData" [guest]="guestName" />
-  } @else if (themeName === 'default') {
-    <div class="status-container">
-      <h1>Tema Default untuk Undangan Ini</h1>
-      <p>Tema tidak terdeteksi atau tidak diset.</p>
+  @if (youtubeEmbedUrl && isPlaying) {
+    <div class="music-player-hidden" style="position: fixed; top: -9999px; left: -9999px; visibility: hidden;">
+      <iframe
+        width="1"
+        height="1"
+        [src]="youtubeEmbedUrl | safeUrl"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
     </div>
   }
+
+  @if (youtubeEmbedUrl) {
+    <button class="music-fab" (click)="toggleMusic()" [class.playing]="isPlaying">
+      {{ isPlaying ? '⏸️' : '🎵' }}
+    </button>
+  }
+
 }
