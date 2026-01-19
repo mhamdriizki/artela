@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, inject, OnChanges, SimpleChange
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Invitation } from '../../../../core/models/invitation.model';
-import { environment } from '../../../../../environment/environment';
+import { environment } from '../../../../../environments/environment';
 import { CountdownTimer } from '../../components/countdown-timer/countdown-timer';
 import { Guestbook } from '../../components/guestbook/guestbook';
 import { RsvpForm } from '../../components/rsvp-form/rsvp-form';
