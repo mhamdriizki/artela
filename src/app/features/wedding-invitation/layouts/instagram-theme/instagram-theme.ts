@@ -6,11 +6,12 @@ import { environment } from '../../../../../environment/environment';
 import { DigitalAngpao } from '../../components/digital-angpao/digital-angpao';
 import { Guestbook } from '../../components/guestbook/guestbook';
 import { RsvpForm } from '../../components/rsvp-form/rsvp-form';
+import { CountdownTimer } from "../../components/countdown-timer/countdown-timer";
 
 @Component({
   selector: 'app-instagram-theme',
   standalone: true,
-  imports: [CommonModule, Guestbook, RsvpForm, DigitalAngpao],
+  imports: [CommonModule, Guestbook, RsvpForm, DigitalAngpao, CountdownTimer],
   templateUrl: './instagram-theme.html',
   styleUrls: ['./instagram-theme.scss']
 })

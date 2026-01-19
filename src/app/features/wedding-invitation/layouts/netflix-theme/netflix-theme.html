@@ -2,13 +2,17 @@
 
   <header class="hero-cover" [class.hidden]="!isCoverActive">
     <div class="hero-cover__background"
-         [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery?.[0]?.filename) + ')'">
+         [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery[0]?.filename) + ')'">
     </div>
     <div class="hero-cover__content">
       <div class="hero-cover__title-group">
         <span class="hero-cover__the-wedding">THE WEDDING</span>
         <h1 class="hero-cover__couple-names">{{ invitation.groom_name }} & {{ invitation.bride_name }}</h1>
         <p class="hero-cover__date">{{ invitation.wedding_date | date:'EEEE, d MMMM y' }}</p>
+      </div>
+
+      <div class="mb-4">
+        <app-countdown-timer [targetDate]="invitation.wedding_date"></app-countdown-timer>
       </div>
 
       @if (guest) {
@@ -79,7 +83,7 @@
     <section class="content-section" id="breaking-news">
       <h2 class="content-section__title">Breaking News</h2>
       <div class="content-section__card">
-        <img [src]="getImageUrl(invitation.gallery?.[1]?.filename || invitation.gallery?.[0]?.filename)"
+        <img [src]="getImageUrl(invitation.gallery[1]?.filename || invitation.gallery[0]?.filename)"
              alt="Breaking News" class="content-section__image">
         <p class="content-section__text">
           Hai teman-teman tersayang! Dengan penuh sukacita, kami ingin membagikan kabar bahagia! ❤️
@@ -117,6 +121,10 @@
     <section class="content-section" id="save-the-date">
       <h2 class="content-section__title">Save The Date</h2>
 
+      <div style="margin-bottom: 20px;">
+        <app-countdown-timer [targetDate]="invitation.wedding_date"></app-countdown-timer>
+      </div>
+
       <div class="event-card">
         <div class="event-card__details">
           <span class="event-card__label">AKAD NIKAH</span>
@@ -135,11 +143,6 @@
         </div>
       </div>
     </section>
-
-    <section class="content-section" id="gift">
-      <h2 class="content-section__title">Wedding Gift</h2>
-      <p class="content-section__text--center">Restu Anda adalah anugerah terindah.</p>
-      </section>
 
     <section class="content-section form-section" id="rsvp">
       <div class="form-wrapper">

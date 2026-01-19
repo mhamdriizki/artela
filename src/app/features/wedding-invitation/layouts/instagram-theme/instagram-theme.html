@@ -3,7 +3,7 @@
   @if (isStoryActive) {
     <div class="ig-story-overlay" (click)="openInvitation()">
       <div class="ig-story-bg"
-           [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery?.[0]?.filename) + ')'">
+           [style.backgroundImage]="'url(' + getImageUrl(invitation.gallery[0]?.filename) + ')'">
       </div>
 
       <div class="ig-story-header">
@@ -22,7 +22,11 @@
         <div class="glass-box">
           <p>Dear,</p>
           <h2>{{ formattedGuestName | titlecase }}</h2>
-          <span class="tap-hint">Tap to open <i class="fas fa-chevron-right"></i></span>
+          <div class="mt-3">
+             <small style="color: white; display: block; margin-bottom: 5px;">Menuju Halal:</small>
+             <app-countdown-timer [targetDate]="invitation.wedding_date"></app-countdown-timer>
+          </div>
+          <span class="tap-hint mt-3 d-block">Tap to open <i class="fas fa-chevron-right"></i></span>
         </div>
       </div>
 
@@ -79,7 +83,7 @@
         </header>
 
         <div class="post-image">
-           <img [src]="getImageUrl(invitation.gallery?.[0]?.filename)" alt="Main Post">
+          <img [src]="getImageUrl(invitation.gallery[0]?.filename)" alt="Main Post">
         </div>
 
         <div class="actions">
@@ -115,7 +119,12 @@
             <span class="day">{{ invitation.wedding_date | date:'dd' }}</span>
             <span class="year">{{ invitation.wedding_date | date:'yyyy' }}</span>
           </div>
+
           <div class="details text-center">
+            <div class="mb-3">
+                <app-countdown-timer [targetDate]="invitation.wedding_date"></app-countdown-timer>
+            </div>
+
             <p><strong>AKAD & RESEPSI</strong></p>
             <p><i class="far fa-clock"></i> 08:00 WIB - Selesai</p>
             <hr class="post-hr">
@@ -160,7 +169,7 @@
             }
           </div>
 
-          @if (invitation.gallery && invitation.gallery.length > 1) {
+          @if (invitation.gallery.length > 1) {
             <div class="multi-photo-icon"><i class="far fa-clone"></i></div>
           }
         </div>
@@ -220,7 +229,7 @@
     <div class="music-control" (click)="toggleMusic()" [class.paused]="!isMusicPlaying">
       <div class="cd-disc">
         <div class="cd-inner"></div>
-        <img [src]="getImageUrl(invitation.gallery?.[0]?.filename)" alt="Album Cover" class="cd-cover">
+        <img [src]="getImageUrl(invitation.gallery[0]?.filename)" alt="Album Cover" class="cd-cover">
       </div>
       <div class="music-notes">
         <i class="fas fa-music note-1"></i>
