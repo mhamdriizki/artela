@@ -5,29 +5,38 @@ export interface GalleryItem {
   created_at?: string;
 }
 
+// Model Baru: Guestbook
+export interface Guestbook {
+  id?: string;
+  name: string;
+  message: string;
+  created_at?: string;
+}
+
 export interface Invitation {
   id?: string;
   slug: string;
-  theme: 'netflix' | 'instagram' | string; // Bisa ditambah tema lain
+  theme: 'netflix' | 'instagram' | string;
   couple_name: string;
 
   // Data Mempelai
   groom_name: string;
+  groom_photo?: string;
   bride_name: string;
-  groom_photo_url?: string; // Jika ada di backend
-  bride_photo_url?: string; // Jika ada di backend
+  bride_photo?: string;
 
-  // Detail Acara & Lokasi
-  wedding_date: string;     // Format: "2025-08-17T00:00:00Z"
+  // Detail Acara
+  wedding_date: string;
   akad_location: string;
   akad_map_url: string;
   reception_location: string;
   reception_map_url: string;
 
   // Multimedia
-  youtube_url?: string;         // Video utama (opsional)
-  background_music_url: string; // Link Youtube untuk backsound
+  youtube_url?: string;
+  background_music_url: string;
 
   // Relasi
   gallery: GalleryItem[];
+  guestbooks: Guestbook[]; // Field Baru
 }

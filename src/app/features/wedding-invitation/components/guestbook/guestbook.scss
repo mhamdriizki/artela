@@ -1,181 +1,129 @@
-@use "sass:color";
-
-// Variabel (bisa disesuaikan atau diimpor dari file global)
-$card-background: #2b2b2b;
-$background-dark: #1f1f1f;
-$border-color: #444444;
-$text-light: #ffffff;
-$text-muted: #aaa;
-$primary-red: #bb2f2c;
-
-/* ============================================== */
-/* GUESTBOOK CONTAINER */
-/* ============================================== */
 .guestbook-container {
-  width: 100%;
-  color: $text-light;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
-/* ============================================== */
-/* FORM PENGIRIMAN UCAPAN */
-/* ============================================== */
-.guestbook-form {
-  // Anda bisa membungkus form ini di dalam .form-wrapper
-  // di 'netflix-theme' atau beri style langsung di sini.
-  // Style ini mengasumsikan form-nya polos:
+/* FORM STYLES */
+.gb-form-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   margin-bottom: 30px;
-}
+  border: 1px solid rgba(0,0,0,0.05);
 
-/* BLOCK: .form-group */
-.form-group {
-  margin-bottom: 20px;
+  .form-group {
+    margin-bottom: 15px;
+  }
 
-  label {
-    display: block;
-    color: $text-muted;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
+  .form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: 0.2s;
+    background: #fff;
+
+    &:focus {
+      outline: none;
+      border-color: #333;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    }
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background: #333;
+      transform: translateY(-1px);
+    }
   }
 }
 
-/* BLOCK: .form-control */
-.form-control {
-  width: 100%;
-  padding: 12px 15px;
-  background-color: $background-dark; // Latar belakang input
-  border: 1px solid $border-color;
-  border-radius: 5px;
-  color: $text-light; // Teks input putih
-  font-size: 1rem;
-  font-family: 'Montserrat', sans-serif; // Pastikan font konsisten
-
-  &:focus {
-    outline: none;
-    border-color: $primary-red; // Border merah saat fokus
+/* LIST STYLES */
+.gb-list {
+  .empty-state {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
   }
 
-  &::placeholder {
-    color: $text-muted;
-  }
-}
-
-/* BLOCK: .form-error */
-.form-error {
-  color: #f8a5a5; // Merah muda untuk error
-  font-size: 0.85rem;
-  margin-top: 8px;
-}
-
-/* BLOCK: .guestbook-button */
-.guestbook-button {
-  width: 100%;
-  padding: 12px 15px;
-  background-color: $primary-red;
-  border: none;
-  border-radius: 5px;
-  color: $text-light;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: color.adjust($primary-red, $lightness: -10%);
+  .comments-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 5px; // Space for scrollbar
   }
 
-  &:disabled {
-    background-color: $border-color; // Tombol nonaktif
-    cursor: not-allowed;
+  .comment-item {
+    display: flex;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #f0f0f0;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: #f0f0f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #555;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .content {
+      flex: 1;
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+
+        .name {
+          font-weight: 600;
+          color: #111;
+          font-size: 0.95rem;
+        }
+
+        .date {
+          font-size: 0.75rem;
+          color: #999;
+        }
+      }
+
+      .message {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #444;
+        line-height: 1.4;
+      }
+    }
   }
-}
-
-/* ============================================== */
-/* DAFTAR UCAPAN YANG MASUK */
-/* ============================================== */
-.guestbook-list {
-  h4 {
-    color: $text-light;
-    border-bottom: 1px solid $border-color;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
-  }
-
-  // Atur max-height jika ingin scrollable di dalam form-wrapper
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 10px; // Jarak untuk scrollbar
-}
-
-/* Status Loading & Kosong */
-.guestbook-loading,
-.guestbook-empty {
-  text-align: center;
-  color: $text-muted;
-  padding: 30px;
-  font-style: italic;
-}
-
-/* BLOCK: .guestbook-entry */
-.guestbook-entry {
-  background-color: $background-dark;
-  border: 1px solid $border-color;
-  padding: 15px 20px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-
-  display: flex; // Menggunakan Flexbox
-  align-items: flex-start; // Rata atas
-  gap: 15px; // Jarak antara foto dan teks
-}
-
-/* ELEMENT: .guestbook-entry__profile-pic */
-.guestbook-entry__profile-pic {
-  width: 40px; // Ukuran profile pic
-  height: 40px;
-  border-radius: 5px; // Kotak rounded ala Netflix
-  background-color: $primary-red; // Warna default (akan ditimpa oleh [style])
-  color: $text-light;
-
-  // Untuk menengahkan inisial
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 1.1rem;
-  font-weight: 600;
-  flex-shrink: 0; // Agar tidak mengecil
-}
-
-/* ELEMENT: .guestbook-entry__content */
-.guestbook-entry__content {
-  flex-grow: 1; // Ambil sisa ruang
-  min-width: 0; // Mencegah text overflow
-}
-
-/* ELEMENT: .guestbook-entry__name */
-.guestbook-entry__name {
-  color: $text-light;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 5px 0;
-  word-wrap: break-word; // Pecah nama jika terlalu panjang
-}
-
-/* ELEMENT: .guestbook-entry__message */
-.guestbook-entry__message {
-  color: $text-light;
-  margin: 0;
-  line-height: 1.5;
-  white-space: pre-wrap; // Agar line break (Enter) dari user terlihat
-  word-wrap: break-word; // Pecah pesan jika terlalu panjang
-}
-
-/* ELEMENT: .guestbook-entry__timestamp */
-.guestbook-entry__timestamp {
-  display: block;
-  text-align: right;
-  font-size: 0.8rem;
-  color: $text-muted;
-  margin-top: 10px;
 }

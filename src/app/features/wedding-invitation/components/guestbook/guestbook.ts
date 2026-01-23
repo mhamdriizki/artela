@@ -1,124 +1,69 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-
-interface GuestMessage {
-  id?: string; // ID dari backend
-  name: string;
-  message: string;
-  timestamp: Date;
-}
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Guestbook } from '../../../../core/models/invitation.model';
+import { InvitationService } from '../../../../core/services/invitation-service';
 
 @Component({
   selector: 'app-guestbook',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './guestbook.html',
-  styleUrl: './guestbook.scss',
+  styleUrls: ['./guestbook.scss']
 })
-export class Guestbook implements OnInit {
+export class GuestbookComponent implements OnChanges {
+  private fb = inject(FormBuilder);
+  private invService = inject(InvitationService);
 
-  public guestbookForm!: FormGroup;
-  public messages: GuestMessage[] = []; // Array untuk menampung pesan
-  public isLoading = true; // Status loading saat ambil data
-  public isSubmitting = false;
-  private profileColors = [
-    '#e50914', // Merah
-    '#00a8e1', // Biru
-    '#f9c500', // Kuning
-    '#34a853', // Hijau
-    '#7a00c4', // Ungu
-    '#e87c03', // Oranye
-    '#b909f0'  // Pink
-  ];
+  @Input() slug: string = ''; // Butuh slug untuk API call
+  @Input() comments: Guestbook[] = []; // Data awal dari parent
 
-  constructor(private fb: FormBuilder) { }
+  isSubmitting = false;
 
-  ngOnInit(): void {
-    // 1. Inisialisasi form untuk pesan baru
-    this.guestbookForm = this.fb.group({
-      name: ['', Validators.required],
-      message: ['', Validators.required]
-    });
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    message: ['', [Validators.required, Validators.minLength(5)]]
+  });
 
-    // 2. Ambil data pesan yang sudah ada (Simulasi)
-    this.fetchMessages();
-  }
-
-  fetchMessages(): void {
-    this.isLoading = true;
-
-    // --- SIMULASI AMBIL DATA DARI BACKEND ---
-    // GANTI INI DENGAN HTTP CALL KE FIREBASE
-    setTimeout(() => {
-      // Data dummy
-      this.messages = [
-        { name: 'Bapak Dito', message: 'Selamat ya Rizki & Pearly!', timestamp: new Date() },
-        { name: 'Susi', message: 'Semoga lancar sampai hari H.', timestamp: new Date() }
-      ];
-      this.isLoading = false;
-    }, 1500); // Simulasi delay 1.5 detik
-  }
-
-  onSubmit(): void {
-    if (this.guestbookForm.invalid) {
-      this.guestbookForm.markAllAsTouched();
-      return;
+  ngOnChanges(changes: SimpleChanges): void {
+    // Pastikan comments terurut dari yang terbaru (jika backend belum sort)
+    if (changes['comments'] && this.comments) {
+      this.sortComments();
     }
+  }
+
+  sortComments() {
+    // Sort descending by created_at (asumsi string ISO)
+    this.comments.sort((a, b) => {
+      const dateA = new Date(a.created_at || 0).getTime();
+      const dateB = new Date(b.created_at || 0).getTime();
+      return dateB - dateA;
+    });
+  }
+
+  onSubmit() {
+    if (this.form.invalid || !this.slug) return;
 
     this.isSubmitting = true;
-    const newPost: GuestMessage = {
-      name: this.guestbookForm.value.name,
-      message: this.guestbookForm.value.message,
-      timestamp: new Date()
-    };
+    const { name, message } = this.form.value;
 
-    console.log('Kirim pesan baru:', newPost);
+    this.invService.createGuestbook(this.slug, name!, message!).subscribe({
+      next: (res) => {
+        // Tambahkan komentar baru ke list paling atas (Realtime feel)
+        const newComment = res.output_schema;
+        // Backend Go return created_at, jika belum ada kita pakai waktu sekarang untuk display
+        if (!newComment.created_at) newComment.created_at = new Date().toISOString();
 
-    // --- SIMULASI KIRIM DATA KE BACKEND ---
-    setTimeout(() => {
-      // Tambahkan pesan baru ke array (di awal)
-      this.messages.unshift(newPost);
+        this.comments.unshift(newComment);
 
-      this.isSubmitting = false;
-      this.guestbookForm.reset();
-    }, 1000);
+        this.form.reset();
+        this.isSubmitting = false;
+      },
+      error: (err) => {
+        console.error('Gagal kirim komentar', err);
+        alert('Maaf, gagal mengirim pesan. Silakan coba lagi.');
+        this.isSubmitting = false;
+      }
+    });
   }
-
-  // Getter untuk validasi di HTML
-  get name() { return this.guestbookForm.get('name'); }
-  get message() { return this.guestbookForm.get('message'); }
-
-  getProfileColor(name: string): string {
-    if (!name) return this.profileColors[0];
-
-    // Buat 'hash' sederhana dari nama
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    // Modulo untuk mendapatkan index warna yang konsisten
-    const index = Math.abs(hash % this.profileColors.length);
-    return this.profileColors[index];
-  }
-
-  // -- FUNGSI BARU: Mendapatkan 1 atau 2 inisial dari nama --
-  getInitials(name: string): string {
-    if (!name) return '?';
-
-    const words = name.split(' ').filter(Boolean); // Pisah nama & hapus spasi ganda
-
-    if (words.length === 0) return '?';
-
-    if (words.length === 1) {
-      // Satu kata: ambil 1 huruf pertama
-      return words[0][0].toUpperCase();
-    } else {
-      // Banyak kata: ambil huruf pertama dari 2 kata pertama
-      return (words[0][0] + words[1][0]).toUpperCase();
-    }
-  }
-
 }

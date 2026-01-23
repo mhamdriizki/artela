@@ -1,63 +1,45 @@
 <div class="guestbook-container">
 
-  <form class="guestbook-form" [formGroup]="guestbookForm" (ngSubmit)="onSubmit()">
-    <h4>Tinggalkan Ucapan</h4>
-    <div class="form-group">
-      <label for="guestName">Nama Anda</label>
-      <input
-        type="text"
-        id="guestName"
-        class="form-control"
-        formControlName="name"
-        placeholder="Nama Anda">
-      @if (name?.invalid && (name?.dirty || name?.touched)) {
-        <div class="form-error">Nama wajib diisi.</div>
-      }
-    </div>
+  <div class="gb-form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text" formControlName="name" placeholder="Nama Anda" class="form-input">
+      </div>
+      <div class="form-group">
+        <textarea formControlName="message" placeholder="Tulis ucapan & doa..." rows="3" class="form-input"></textarea>
+      </div>
+      <button type="submit" class="btn-submit" [disabled]="form.invalid || isSubmitting">
+        @if (isSubmitting) {
+          <span>Mengirim...</span>
+        } @else {
+          <span>Kirim Ucapan</span>
+        }
+      </button>
+    </form>
+  </div>
 
-    <div class="form-group">
-      <label for="guestMessage">Ucapan Anda</label>
-      <textarea
-        id="guestMessage"
-        class="form-control"
-        rows="3"
-        formControlName="message"
-        placeholder="Tulis ucapan selamat di sini..."></textarea>
-      @if (message?.invalid && (message?.dirty || message?.touched)) {
-        <div class="form-error">Ucapan wajib diisi.</div>
-      }
-    </div>
-
-    <button type="submit" class="guestbook-button" [disabled]="isSubmitting">
-      @if (isSubmitting) {
-        <span>Mengirim...</span>
-      } @else {
-        <span>Kirim Ucapan</span>
-      }
-    </button>
-  </form>
-
-  <div class="guestbook-list">
-    <h4>Daftar Ucapan ({{ messages.length }})</h4>
-
-    @if (isLoading) {
-      <div class="guestbook-loading">Memuat ucapan...</div>
+  <div class="gb-list">
+    @if (comments.length === 0) {
+      <div class="empty-state">
+        <p>Belum ada ucapan. Jadilah yang pertama mengirim doa! ✨</p>
+      </div>
     } @else {
-      @for (msg of messages; track msg.id) {
-        <div class="guestbook-entry">
-          <div class="guestbook-entry__profile-pic"
-               [style.backgroundColor]="getProfileColor(msg.name)">
-            <span>{{ getInitials(msg.name) }}</span>
+      <div class="comments-wrapper">
+        @for (item of comments; track item.id) {
+          <div class="comment-item">
+            <div class="avatar">
+              {{ item.name.charAt(0) | uppercase }}
+            </div>
+            <div class="content">
+              <div class="header">
+                <span class="name">{{ item.name }}</span>
+                <span class="date">{{ item.created_at | date:'mediumDate' }}</span>
+              </div>
+              <p class="message">{{ item.message }}</p>
+            </div>
           </div>
-          <div class="guestbook-entry__content">
-            <h5 class="guestbook-entry__name">{{ msg.name }}</h5>
-            <p class="guestbook-entry__message">{{ msg.message }}</p>
-            <span class="guestbook-entry__timestamp">{{ msg.timestamp | date: 'medium' }}</span>
-          </div>
-        </div>
-      } @empty {
-        <div class="guestbook-empty">Belum ada ucapan. Jadilah yang pertama!</div>
-      }
+        }
+      </div>
     }
   </div>
 

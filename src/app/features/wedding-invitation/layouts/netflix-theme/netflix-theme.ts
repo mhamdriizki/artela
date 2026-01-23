@@ -4,13 +4,13 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Invitation } from '../../../../core/models/invitation.model';
 import { environment } from '../../../../../environments/environment';
 import { CountdownTimer } from '../../components/countdown-timer/countdown-timer';
-import { Guestbook } from '../../components/guestbook/guestbook';
+import { GuestbookComponent } from '../../components/guestbook/guestbook';
 import { RsvpForm } from '../../components/rsvp-form/rsvp-form';
 
 @Component({
   selector: 'app-netflix-theme',
   standalone: true,
-  imports: [CommonModule, CountdownTimer, Guestbook, RsvpForm],
+  imports: [CommonModule, CountdownTimer, RsvpForm, GuestbookComponent],
   templateUrl: './netflix-theme.html',
   styleUrls: ['./netflix-theme.scss']
 })
