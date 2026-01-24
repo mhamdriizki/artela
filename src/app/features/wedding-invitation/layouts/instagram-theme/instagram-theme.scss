@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // --- VARIABLES (INSTAGRAM LIGHT THEME) ---
 $ig-bg-color: #ffffff;          // Background Putih
 $ig-card-color: #ffffff;        // Card Putih
@@ -7,10 +9,10 @@ $ig-border-color: #dbdbdb;      // Border Abu-abu halus
 $ig-blue: #0095f6;
 $ig-red: #ed4956;
 
-// Reset Host
+// Reset Host & Body
 :host {
   display: block;
-  background-color: $ig-bg-color;
+  background-color: #fafafa; // Background luar abu-abu muda
   min-height: 100vh;
 }
 
@@ -22,10 +24,14 @@ $ig-red: #ed4956;
   margin: 0 auto;
   position: relative;
   min-height: 100vh;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05); // Sedikit bayangan di container agar elegan di desktop
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  overflow-x: hidden;
+  padding-bottom: 60px; // Space untuk bottom nav
 }
 
-/* --- STORY OVERLAY (Tetap Gelap untuk Fokus Foto) --- */
+/* ========================================= */
+/* STORY OVERLAY (Always Dark Mode)          */
+/* ========================================= */
 .ig-story-overlay {
   position: fixed;
   top: 0;
@@ -33,10 +39,10 @@ $ig-red: #ed4956;
   width: 100%;
   height: 100%;
   z-index: 2000;
-  background-color: #1a1a1a; // Gelap untuk overlay story
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
-  color: white; // Teks di overlay selalu putih
+  color: white;
 
   &.specific-story {
     cursor: pointer;
@@ -50,7 +56,7 @@ $ig-red: #ed4956;
     height: 100%;
     background-size: cover;
     background-position: center;
-    filter: brightness(0.8);
+    filter: brightness(0.7); // Gelapkan agar teks terbaca
     z-index: -1;
     animation: zoomEffect 10s infinite alternate ease-in-out;
   }
@@ -72,7 +78,8 @@ $ig-red: #ed4956;
       .avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; border: 1px solid rgba(255,255,255,0.5); object-fit: cover;}
       .username { font-weight: 600; font-size: 14px; margin-right: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
       .time { color: rgba(255,255,255,0.8); font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
-      i { font-size: 16px; cursor: pointer; color: white; }
+      .close-icon { font-size: 20px; cursor: pointer; color: white; padding: 5px; margin-left: auto; }
+      .fa-ellipsis-h { font-size: 16px; cursor: pointer; color: white; margin-left: auto; }
     }
   }
 
@@ -80,9 +87,11 @@ $ig-red: #ed4956;
     flex: 1;
     display: flex; align-items: center; justify-content: center;
     padding: 20px; z-index: 2;
+    flex-direction: column;
 
+    // -- Cover Glass Box --
     .glass-box {
-      background: rgba(0, 0, 0, 0.4); // Semi transparan gelap
+      background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       padding: 30px 20px;
@@ -93,9 +102,40 @@ $ig-red: #ed4956;
       max-width: 85%;
       color: white;
 
-      p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
-      h2 { margin: 10px 0 20px; font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; }
-      .tap-hint { font-size: 0.9rem; opacity: 0.8; animation: pulse 1.5s infinite; i { font-size: 0.8rem; margin-left: 5px; } }
+      &.text-left { text-align: left; }
+
+      // Typography Khusus Cover
+      .to-label { font-size: 1.1rem; font-style: italic; opacity: 0.9; margin-bottom: 5px; font-family: 'Times New Roman', serif; }
+      .guest-name {
+          font-size: 2.2rem; font-weight: 800; margin: 0 0 20px;
+          text-shadow: 0 0 10px rgba(255,255,255,0.4);
+          letter-spacing: 0.5px;
+          line-height: 1.2;
+      }
+
+      .wedding-title-box {
+          border-top: 1px solid rgba(255,255,255,0.5); border-bottom: 1px solid rgba(255,255,255,0.5);
+          padding: 15px 0; margin-bottom: 20px;
+          span { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 5px; opacity: 0.9; }
+          h3 { font-size: 1.4rem; margin: 0; font-weight: 600; }
+      }
+
+      .tap-hint {
+          font-size: 0.85rem; animation: pulse 1.5s infinite; cursor: pointer;
+          border: 1px solid rgba(255,255,255,0.8); padding: 8px 16px; border-radius: 20px;
+          display: inline-block; background: rgba(0,0,0,0.2);
+          i { margin-left: 5px; font-size: 0.7rem; }
+      }
+
+      // Typography Event Story
+      .story-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid $ig-red; display: inline-block; padding-bottom: 5px; }
+      .label-red { color: $ig-red; background: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-right: 5px; }
+    }
+
+    // -- Gallery Tap Guide --
+    .tap-guide {
+        font-size: 0.85rem; opacity: 0.7; position: absolute; bottom: 80px;
+        background: rgba(0,0,0,0.5); padding: 5px 12px; border-radius: 15px;
     }
   }
 
@@ -107,10 +147,11 @@ $ig-red: #ed4956;
 }
 
 
-/* --- MAIN FEED STYLES (LIGHT MODE) --- */
+/* ========================================= */
+/* MAIN FEED STYLES (Light Mode)             */
+/* ========================================= */
 .ig-feed {
-  background-color: #fafafa; // Background abu-abu sangat muda khas IG web
-  padding-bottom: 60px;
+  background-color: #fafafa;
   min-height: 100vh;
 }
 
@@ -119,11 +160,7 @@ $ig-red: #ed4956;
   padding: 10px 15px; border-bottom: 1px solid $ig-border-color;
   background: $ig-bg-color; position: sticky; top: 0; z-index: 100;
 
-  .logo {
-    font-family: 'Billabong', cursive;
-    font-size: 28px;
-    color: $ig-text-primary;
-  }
+  .logo { font-family: 'Billabong', cursive; font-size: 28px; color: $ig-text-primary; }
   .actions i { font-size: 24px; margin-left: 20px; cursor: pointer; color: $ig-text-primary; }
 }
 
@@ -139,7 +176,7 @@ $ig-red: #ed4956;
     display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0;
     .ring {
       width: 64px; height: 64px; border-radius: 50%; padding: 2px;
-      // Gradient IG
+      // Gradient IG Ring
       background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 
       img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid $ig-bg-color; object-fit: cover; }
@@ -149,13 +186,12 @@ $ig-red: #ed4956;
   }
 }
 
-/* --- POST Styles --- */
+/* --- POST STYLES --- */
 .ig-post {
   background: $ig-bg-color;
-  border: 1px solid $ig-border-color; // Border kotak
-  margin-bottom: 20px; // Spasi antar post
+  border: 1px solid $ig-border-color;
+  margin-bottom: 20px;
 
-  // Hapus margin di mobile full width
   @media (max-width: 480px) {
     border-left: none; border-right: none; margin-bottom: 0; border-top: none;
   }
@@ -164,30 +200,24 @@ $ig-red: #ed4956;
     display: flex; align-items: center; padding: 10px 15px;
     .avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; object-fit: cover; border: 1px solid $ig-border-color;}
     .info { display: flex; flex-direction: column; .username { font-weight: 600; font-size: 14px; color: $ig-text-primary; } .location { font-size: 12px; color: $ig-text-primary; } }
-    i { font-size: 14px; cursor: pointer; color: $ig-text-primary; }
+    i { font-size: 14px; cursor: pointer; color: $ig-text-primary; margin-left: auto; }
   }
 
   .post-image img { width: 100%; display: block; }
 
-  // Event Section
+  // -- Event Section Details --
   .post-content-box {
     padding: 30px 20px; background-color: #ffffff;
+
     .date-display {
-      text-align: center; margin-bottom: 20px;
+      text-align: center; margin-bottom: 30px;
       .month { display: block; font-size: 1.2rem; color: $ig-red; font-weight: 600; text-transform: uppercase; }
       .day { display: block; font-size: 3.5rem; font-weight: 700; line-height: 1; color: $ig-text-primary; }
       .year { color: $ig-text-secondary; }
     }
+
     .details {
-      font-size: 0.95rem; color: $ig-text-primary;
-      .post-hr { border-color: $ig-border-color; margin: 15px auto; width: 50%; }
-      i { margin-right: 8px; color: $ig-text-secondary; }
-    }
-    .ig-btn-link {
-      display: inline-block; margin-top: 15px; padding: 8px 16px;
-      border: 1px solid $ig-border-color; border-radius: 4px;
-      color: $ig-blue; text-decoration: none; font-size: 14px; font-weight: 600;
-      &:hover { background: #f0f8ff; }
+      .post-hr { border: none; border-top: 1px dashed $ig-border-color; margin: 20px 0; }
     }
   }
 
@@ -199,25 +229,136 @@ $ig-red: #ed4956;
   .content {
     padding: 0 15px 15px; font-size: 14px; color: $ig-text-primary;
     .likes { margin-bottom: 5px; font-weight: 600; }
-    .caption { .username { font-weight: 600; margin-right: 5px; } }
+    .caption { .username { font-weight: 600; margin-right: 5px; } line-height: 1.4; }
     .time { color: $ig-text-secondary; font-size: 10px; margin-top: 5px; text-transform: uppercase; }
   }
 }
 
-/* --- GALLERY CAROUSEL --- */
+/* --- CAROUSEL STYLES (Used for Gallery & Event) --- */
 .carousel-container { position: relative; }
 .carousel-wrapper {
   display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
   .carousel-item { min-width: 100%; scroll-snap-align: center; img { width: 100%; display: block; } }
 }
+
+// Special styling for Text Carousel (Event)
+.text-carousel {
+    .carousel-item {
+        display: flex; align-items: center; justify-content: center;
+        background-color: white;
+        min-height: 350px; // Ensure consistent height
+    }
+}
+
 .carousel-dots {
   position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px;
   .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); box-shadow: 0 1px 2px rgba(0,0,0,0.3); &.active { background: $ig-blue; } }
-}
-.multi-photo-icon { position: absolute; top: 15px; right: 15px; color: white; background: rgba(0,0,0,0.6); padding: 5px 8px; border-radius: 15px; font-size: 12px; }
 
-/* --- BOTTOM NAV (FIXED) --- */
+  // Dots untuk Text Carousel (Background Putih)
+  &.dark-dots {
+      .dot { background: rgba(0,0,0,0.2); box-shadow: none; &.active { background: $ig-blue; } }
+  }
+}
+
+// --- EVENT CARD STYLING INSIDE CAROUSEL ---
+.event-card-slide {
+    width: 100%; padding: 0 20px;
+    .event-title { font-size: 1rem; font-weight: 700; color: $ig-red; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+    .event-time { font-size: 0.9rem; color: $ig-text-secondary; margin-bottom: 10px; }
+    .event-loc { font-size: 0.95rem; line-height: 1.5; color: $ig-text-primary; margin-bottom: 20px; }
+    .post-hr.small { width: 40px; margin: 15px auto; border-top: 1px solid $ig-border-color; }
+
+    .ig-btn-link {
+        display: inline-block; padding: 10px 20px; border: 1px solid $ig-border-color; border-radius: 4px; color: $ig-blue; text-decoration: none; font-weight: 600; font-size: 14px;
+        &:hover { background-color: color.adjust($ig-blue, $lightness: 45%); }
+    }
+}
+
+/* --- CLEAN UP WEDDING GIFT & COMMENTS --- */
+.ig-action-section {
+    .action-buttons-grid { margin-top: 10px; }
+
+    // Style kotak Gift yang bersih
+    .gift-box-clean {
+        border: 1px solid $ig-border-color;
+        border-radius: 6px;
+        padding: 15px;
+        background: #fafafa;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+
+        .label { font-weight: 600; font-size: 12px; color: $ig-text-secondary; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        // Memaksa child component untuk style bersih
+        ::ng-deep app-digital-angpao { width: 100%; }
+        ::ng-deep .angpao-container {
+            background: transparent !important; box-shadow: none !important;
+            padding: 0 !important; border: none !important; text-align: center; color: $ig-text-primary !important;
+        }
+        ::ng-deep .bank-info { color: $ig-text-primary !important; font-weight: 600; }
+        ::ng-deep .btn-copy {
+            background: white; border: 1px solid $ig-border-color; color: $ig-text-primary;
+            padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-top: 5px; cursor: pointer;
+            &:hover { background-color: #f0f0f0; }
+        }
+    }
+}
+
+.ig-divider-thin { border-top: 1px solid #efefef; margin: 15px 0; }
+.comment-section-title { font-size: 12px; color: $ig-text-secondary; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Styling Guestbook agar seperti IG Comments */
+.ig-comments-wrapper {
+    ::ng-deep .guestbook-container { padding: 0; }
+
+    // Form Komentar (Input baris bawah)
+    ::ng-deep .gb-form-card {
+        background: transparent; box-shadow: none; border: none; padding: 0; margin-bottom: 20px;
+        display: flex; gap: 10px; align-items: flex-start;
+
+        form { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+
+        .form-group { margin-bottom: 0 !important; }
+
+        .form-input {
+            background: #fafafa; border: 1px solid $ig-border-color; border-radius: 20px;
+            padding: 10px 15px; font-size: 13px; color: $ig-text-primary;
+            &:focus { border-color: $ig-text-secondary; }
+        }
+
+        .btn-submit {
+            background: transparent; color: $ig-blue; font-weight: 600; text-align: right;
+            padding: 5px 0; width: auto; align-self: flex-end; border: none; cursor: pointer;
+            &:disabled { color: color.adjust($ig-blue, $lightness: 30%); cursor: default; }
+            &:hover:not(:disabled) { color: color.adjust($ig-blue, $lightness: -10%); }
+        }
+    }
+
+    // List Komentar (Clean List)
+    ::ng-deep .gb-list {
+        .comments-wrapper { gap: 12px; }
+        .comment-item {
+            box-shadow: none; border: none; padding: 0; margin-bottom: 5px; background: transparent;
+            align-items: flex-start; display: flex; gap: 10px;
+
+            .avatar {
+                width: 32px; height: 32px; font-size: 12px; border-radius: 50%;
+                background-color: #efefef; color: $ig-text-secondary; display: flex; align-items: center; justify-content: center;
+            }
+            .content {
+                flex: 1;
+                .header {
+                    display: flex; align-items: baseline; gap: 8px; margin-bottom: 2px;
+                    .name { font-size: 13px; font-weight: 600; color: $ig-text-primary; margin-right: 0; }
+                    .date { font-size: 11px; color: $ig-text-secondary; }
+                }
+                .message { font-size: 13px; color: $ig-text-primary; line-height: 1.4; margin: 0; }
+            }
+        }
+    }
+}
+
+/* --- FIXED ELEMENTS --- */
 .ig-bottom-nav {
   position: fixed; bottom: 0; left: 0; width: 100%; background: $ig-bg-color;
   border-top: 1px solid $ig-border-color; display: flex; justify-content: space-around; align-items: center;
@@ -226,20 +367,19 @@ $ig-red: #ed4956;
   .mini-avatar { width: 24px; height: 24px; border-radius: 50%; border: 1px solid $ig-border-color; padding: 1px; object-fit: cover; }
 }
 
-/* --- MUSIC CONTROL --- */
 .music-control {
   position: fixed; bottom: 70px; right: 15px; z-index: 1000; cursor: pointer;
   .cd-disc {
-    width: 50px; height: 50px; background: #222; border-radius: 50%; border: 3px solid #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    width: 40px; height: 40px; background: #222; border-radius: 50%; border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     display: flex; align-items: center; justify-content: center; position: relative;
     animation: spin 5s linear infinite;
-    .cd-cover { width: 30px; height: 30px; border-radius: 50%; object-fit: cover;}
+    .cd-cover { width: 24px; height: 24px; border-radius: 50%; object-fit: cover;}
   }
   &.paused .cd-disc { animation-play-state: paused; }
   .music-notes {
     position: absolute; top: 0; left: 0; pointer-events: none;
-    i { position: absolute; font-size: 18px; color: $ig-blue; opacity: 0; animation: floatNotes 2s linear infinite; }
+    i { position: absolute; font-size: 14px; color: $ig-blue; opacity: 0; animation: floatNotes 2s linear infinite; }
     .note-1 { left: 10%; animation-delay: 0s; } .note-2 { right: 10%; animation-delay: 1s; }
   }
 }
@@ -247,10 +387,13 @@ $ig-red: #ed4956;
 .youtube-hidden { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
 
 /* --- UTILS --- */
-.ms-auto { margin-left: auto; } .text-white { color: white !important; } .text-center { text-align: center; }
-.mb-3 { margin-bottom: 1rem; } .mb-5 { margin-bottom: 4rem; } .p-3 { padding: 1rem; }
-.ig-divider { border: none; border-top: 1px solid $ig-border-color; margin: 20px 0; }
-.section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: $ig-text-primary; }
+.ms-auto { margin-left: auto; }
+.text-white { color: white !important; }
+.text-center { text-align: center; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-5 { margin-bottom: 4rem; }
+.p-3 { padding: 1rem; }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
 @keyframes pulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.4; } }

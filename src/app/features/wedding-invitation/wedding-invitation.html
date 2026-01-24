@@ -14,12 +14,14 @@
     }
     @case ('instagram') {
       <app-instagram-theme
+        [guest]="guestName"
         [data]="invitationData"
         (playMusic)="toggleMusic()">
       </app-instagram-theme>
     }
     @default {
       <app-netflix-theme
+        [guest]="guestName"
         [data]="invitationData"
         (playMusic)="toggleMusic()">
       </app-netflix-theme>

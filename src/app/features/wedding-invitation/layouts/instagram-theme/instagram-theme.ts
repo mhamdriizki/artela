@@ -8,9 +8,7 @@ import { CountdownTimer } from '../../components/countdown-timer/countdown-timer
 import { DigitalAngpao } from '../../components/digital-angpao/digital-angpao';
 import { RsvpForm } from '../../components/rsvp-form/rsvp-form';
 
-
-
-type StoryType = 'cover' | 'couple' | 'event' | 'gallery' | 'rsvp' | null;
+type StoryType = 'cover' | 'gallery' | 'event' | null;
 
 @Component({
   selector: 'app-instagram-theme',
@@ -28,10 +26,14 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
 
   activeStory: StoryType = 'cover';
   isMusicPlaying = false;
+
   storyProgress = 0;
+  private storyInterval: any;
+
+  currentStoryImageIndex = 0;
+  activeEventSlideIndex = 0;
   activeGalleryIndex = 0;
 
-  private storyInterval: any;
   youtubeEmbedUrl: SafeResourceUrl | null = null;
   baseUrl = environment.BASE_API;
 
@@ -54,41 +56,83 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
   get invitation() { return this.data; }
   get formattedGuestName(): string { return this.guest || 'Tamu Undangan'; }
 
-  // --- STORY LOGIC ---
+  // --- STORY LOGIC UTAMA (CLICK HANDLER) ---
+  onOverlayClick(event: MouseEvent) {
+    if (this.activeStory === 'gallery') {
+      // Logic Tap to Next di Gallery
+      this.nextStoryImage();
+    } else {
+      // Logic Tap to Close di Cover/Event
+      this.closeStory();
+    }
+  }
+
   openSpecificStory(type: StoryType) {
     this.stopStoryProgress();
     this.activeStory = type;
+    this.storyProgress = 0;
+    this.currentStoryImageIndex = 0;
+
+    // Auto progress cepat hanya untuk cover/event, gallery manual tap (atau sangat lambat)
+    const speed = type === 'gallery' ? 100 : 50;
+    this.startStoryProgress(speed);
+
     window.scrollTo({ top: 0 });
   }
 
   closeStory() {
     this.stopStoryProgress();
-    if (this.activeStory === 'cover') {
+    if (this.activeStory === 'cover' && !this.isMusicPlaying) {
         setTimeout(() => { this.toggleMusic(); }, 300);
     }
     this.activeStory = null;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  nextStoryImage() {
+    if (this.invitation.gallery && this.invitation.gallery.length > 0) {
+        if (this.currentStoryImageIndex < this.invitation.gallery.length - 1) {
+            this.currentStoryImageIndex++;
+            this.storyProgress = 0; // Reset progress bar per slide
+        } else {
+            this.closeStory(); // Habis foto -> Tutup
+        }
+    } else {
+        this.closeStory();
+    }
+  }
+
   getStoryBackgroundImage(type: StoryType): string {
     let filename: string | undefined;
     switch (type) {
       case 'cover':
-      case 'gallery': filename = this.invitation.gallery?.[0]?.filename; break;
-      case 'couple': filename = this.invitation.bride_photo; break;
-      case 'event': filename = this.invitation.groom_photo; break;
-      case 'rsvp': filename = this.invitation.gallery?.[1]?.filename || this.invitation.gallery?.[0]?.filename; break;
+        filename = this.invitation.gallery?.[0]?.filename;
+        break;
+      case 'event':
+        filename = this.invitation.groom_photo;
+        break;
+      case 'gallery':
+        if (this.invitation.gallery && this.invitation.gallery.length > 0) {
+            filename = this.invitation.gallery[this.currentStoryImageIndex]?.filename;
+        }
+        break;
     }
     return `url('${this.getImageUrl(filename) || 'assets/images/default-cover.jpg'}')`;
   }
 
-  startStoryProgress() {
+  startStoryProgress(speedMs: number = 50) {
     this.stopStoryProgress();
     this.storyProgress = 0;
     this.storyInterval = setInterval(() => {
       this.storyProgress += 1;
-      if (this.storyProgress >= 100) this.closeStory();
-    }, 50);
+      if (this.storyProgress >= 100) {
+        if (this.activeStory === 'gallery') {
+            this.nextStoryImage();
+        } else {
+            this.closeStory();
+        }
+      }
+    }, speedMs);
   }
 
   stopStoryProgress() {
@@ -98,9 +142,15 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  // --- OTHERS ---
   onGalleryScroll(event: any) {
-    const element = event.target;
-    this.activeGalleryIndex = Math.round(element.scrollLeft / element.offsetWidth);
+    const el = event.target;
+    this.activeGalleryIndex = Math.round(el.scrollLeft / el.offsetWidth);
+  }
+
+  onEventScroll(event: any) {
+    const el = event.target;
+    this.activeEventSlideIndex = Math.round(el.scrollLeft / el.offsetWidth);
   }
 
   scrollToSection(id: string) {
