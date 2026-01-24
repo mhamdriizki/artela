@@ -3,6 +3,9 @@
 
 // Note: General status-container, loading-spinner, status-link styles
 // are defined in root styles.scss for optimization
+.music-fab {
+  display: none;
+}
 
 .status-container h2 {
   font-size: 2rem;

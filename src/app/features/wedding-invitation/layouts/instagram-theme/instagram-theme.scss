@@ -1,776 +1,258 @@
-@use '../../../../../styles.scss' as *;
-@use "sass:color";
+// --- VARIABLES (INSTAGRAM LIGHT THEME) ---
+$ig-bg-color: #ffffff;          // Background Putih
+$ig-card-color: #ffffff;        // Card Putih
+$ig-text-primary: #262626;      // Teks Utama Hitam
+$ig-text-secondary: #8e8e8e;    // Teks Sekunder Abu-abu
+$ig-border-color: #dbdbdb;      // Border Abu-abu halus
+$ig-blue: #0095f6;
+$ig-red: #ed4956;
 
-/* === VARIABLES - Using Global Variables from Root === */
-// Theme can also leverage local variables for specific Instagram styling
-
+// Reset Host
 :host {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: $color-ig-bg;
-  color: $color-ig-text;
   display: block;
-  width: 100%;
-  overflow-x: hidden;
+  background-color: $ig-bg-color;
+  min-height: 100vh;
 }
 
 .ig-container {
-  max-width: 480px;
+  background-color: $ig-bg-color;
+  color: $ig-text-primary;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  max-width: 470px;
   margin: 0 auto;
-  background-color: $color-ig-white;
-  min-height: 100vh;
   position: relative;
-  border-left: 1px solid $color-ig-border;
-  border-right: 1px solid $color-ig-border;
-  @media (max-width: 480px) {
-    border: none;
-  }
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05); // Sedikit bayangan di container agar elegan di desktop
 }
 
-/* UTILS */
-.ms-auto {
-  margin-left: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-white {
-  color: $color-ig-white;
-}
-
-.p-3 {
-  padding: 12px;
-}
-
-.mb-3 {
-  margin-bottom: 16px;
-}
-
-.mb-5 {
-  margin-bottom: 60px;
-}
-
-/* === 1. STORY MODE === */
+/* --- STORY OVERLAY (Tetap Gelap untuk Fokus Foto) --- */
 .ig-story-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9999;
-  background: #000;
-  color: #fff;
+  z-index: 2000;
+  background-color: #1a1a1a; // Gelap untuk overlay story
   display: flex;
   flex-direction: column;
-}
+  color: white; // Teks di overlay selalu putih
 
-.ig-story-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.9;
+  &.specific-story {
+    cursor: pointer;
+  }
 
-  &::after {
-    content: '';
+  .ig-story-bg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.3),
-      transparent 20%,
-      transparent 80%,
-      rgba(0, 0, 0, 0.8)
-    );
-  }
-}
-
-.ig-story-header {
-  position: relative;
-  z-index: 2;
-  padding: 8px 12px;
-
-  .progress-bars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 8px;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.8);
+    z-index: -1;
+    animation: zoomEffect 10s infinite alternate ease-in-out;
   }
 
-  .bar {
+  .ig-story-header {
+    padding: 15px;
+    z-index: 2;
+
+    .progress-bars {
+      display: flex; gap: 5px; margin-bottom: 10px;
+      .bar {
+        flex: 1; height: 2px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;
+        .fill { height: 100%; background: white; transition: width 0.1s linear; }
+      }
+    }
+
+    .user-info {
+      display: flex; align-items: center;
+      .avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; border: 1px solid rgba(255,255,255,0.5); object-fit: cover;}
+      .username { font-weight: 600; font-size: 14px; margin-right: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+      .time { color: rgba(255,255,255,0.8); font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+      i { font-size: 16px; cursor: pointer; color: white; }
+    }
+  }
+
+  .ig-story-content {
     flex: 1;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 2px;
-    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 2;
 
-    .fill {
-      height: 100%;
-      background: #fff;
-      transition: width 0.1s linear;
+    .glass-box {
+      background: rgba(0, 0, 0, 0.4); // Semi transparan gelap
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      max-width: 85%;
+      color: white;
+
+      p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
+      h2 { margin: 10px 0 20px; font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; }
+      .tap-hint { font-size: 0.9rem; opacity: 0.8; animation: pulse 1.5s infinite; i { font-size: 0.8rem; margin-left: 5px; } }
     }
   }
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-    }
-
-    .username {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .time {
-      font-size: 0.75rem;
-      opacity: 0.8;
-    }
+  .ig-story-footer {
+    padding: 15px; display: flex; align-items: center; gap: 15px; z-index: 2;
+    .reply-box { flex: 1; border: 1px solid rgba(255,255,255,0.6); border-radius: 25px; padding: 10px 20px; color: white; font-size: 14px; background: rgba(0,0,0,0.2); }
+    i { font-size: 24px; color: white; cursor: pointer; }
   }
 }
 
-.ig-story-content {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  .glass-box {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    padding: 20px 40px;
-    border-radius: 16px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-
-    p {
-      font-size: 1rem;
-      margin: 0;
-      opacity: 0.9;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      margin: 10px 0;
-      font-weight: 700;
-    }
-
-    .tap-hint {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      display: block;
-      margin-top: 10px;
-      animation: pulse 1.5s infinite;
-    }
-  }
+/* --- MAIN FEED STYLES (LIGHT MODE) --- */
+.ig-feed {
+  background-color: #fafafa; // Background abu-abu sangat muda khas IG web
+  padding-bottom: 60px;
+  min-height: 100vh;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.ig-story-footer {
-  position: relative;
-  z-index: 2;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  .reply-box {
-    flex: 1;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-
-  i {
-    font-size: 1.5rem;
-  }
-}
-
-/* === 2. FEED MODE === */
 .ig-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: $color-ig-white;
-  border-bottom: 1px solid $color-ig-border;
-  padding: 0 16px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 15px; border-bottom: 1px solid $ig-border-color;
+  background: $ig-bg-color; position: sticky; top: 0; z-index: 100;
 
   .logo {
-    font-family: 'Grand Hotel', cursive;
-    font-size: 1.8rem;
+    font-family: 'Billabong', cursive;
+    font-size: 28px;
+    color: $ig-text-primary;
   }
-
-  .actions {
-    font-size: 1.4rem;
-    display: flex;
-    gap: 20px;
-  }
+  .actions i { font-size: 24px; margin-left: 20px; cursor: pointer; color: $ig-text-primary; }
 }
 
+/* --- STORY HIGHLIGHTS BAR --- */
 .ig-stories-bar {
-  padding: 10px 0;
-  border-bottom: 1px solid $color-ig-border;
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
+  display: flex; gap: 15px; padding: 15px; overflow-x: auto;
+  border-bottom: 1px solid $ig-border-color;
+  background: $ig-bg-color;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 
   .story-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 70px;
-    cursor: pointer;
-
+    display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0;
     .ring {
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      padding: 2px;
-      background: $color-ig-gradient;
+      width: 64px; height: 64px; border-radius: 50%; padding: 2px;
+      // Gradient IG
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 
-      img,
-      i {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 2px solid $color-ig-white;
-        object-fit: cover;
-        background: #eee;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: $color-ig-text;
-      }
+      img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid $ig-bg-color; object-fit: cover; }
+      i { width: 100%; height: 100%; border-radius: 50%; border: 2px solid $ig-bg-color; background: #fafafa; color: $ig-text-primary; display: flex; align-items: center; justify-content: center; font-size: 24px; }
     }
-
-    span {
-      font-size: 0.75rem;
-      margin-top: 4px;
-      color: $color-ig-text;
-    }
+    span { font-size: 12px; margin-top: 5px; color: $ig-text-primary; }
   }
 }
 
-/* POST CARD */
+/* --- POST Styles --- */
 .ig-post {
-  padding-bottom: 10px;
-  border-bottom: 1px solid $color-ig-border;
-  background: $color-ig-white;
+  background: $ig-bg-color;
+  border: 1px solid $ig-border-color; // Border kotak
+  margin-bottom: 20px; // Spasi antar post
+
+  // Hapus margin di mobile full width
+  @media (max-width: 480px) {
+    border-left: none; border-right: none; margin-bottom: 0; border-top: none;
+  }
 
   header {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      margin-right: 10px;
-      border: 1px solid $color-ig-border;
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      font-size: 0.9rem;
-    }
-
-    .username {
-      font-weight: 600;
-      color: $color-ig-text;
-    }
-
-    .location {
-      font-size: 0.75rem;
-      color: $color-ig-text-secondary;
-    }
+    display: flex; align-items: center; padding: 10px 15px;
+    .avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; object-fit: cover; border: 1px solid $ig-border-color;}
+    .info { display: flex; flex-direction: column; .username { font-weight: 600; font-size: 14px; color: $ig-text-primary; } .location { font-size: 12px; color: $ig-text-primary; } }
+    i { font-size: 14px; cursor: pointer; color: $ig-text-primary; }
   }
 
-  .post-image {
-    width: 100%;
+  .post-image img { width: 100%; display: block; }
 
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  }
-
+  // Event Section
   .post-content-box {
-    padding: 40px 20px;
-    text-align: center;
-    background: $color-ig-bg;
-
+    padding: 30px 20px; background-color: #ffffff;
     .date-display {
-      border: 1px solid $color-ig-text;
-      display: inline-block;
-      padding: 10px 20px;
-      margin-bottom: 20px;
-
-      span {
-        display: block;
-        line-height: 1;
-        color: $color-ig-text;
-      }
-
-      .day {
-        font-size: 2.5rem;
-        font-weight: 700;
-      }
+      text-align: center; margin-bottom: 20px;
+      .month { display: block; font-size: 1.2rem; color: $ig-red; font-weight: 600; text-transform: uppercase; }
+      .day { display: block; font-size: 3.5rem; font-weight: 700; line-height: 1; color: $ig-text-primary; }
+      .year { color: $ig-text-secondary; }
     }
-
-    .details p {
-      color: $color-ig-text;
+    .details {
+      font-size: 0.95rem; color: $ig-text-primary;
+      .post-hr { border-color: $ig-border-color; margin: 15px auto; width: 50%; }
+      i { margin-right: 8px; color: $ig-text-secondary; }
     }
-
     .ig-btn-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: $color-ig-blue;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
+      display: inline-block; margin-top: 15px; padding: 8px 16px;
+      border: 1px solid $ig-border-color; border-radius: 4px;
+      color: $ig-blue; text-decoration: none; font-size: 14px; font-weight: 600;
+      &:hover { background: #f0f8ff; }
     }
   }
 
   .actions {
-    padding: 10px;
-    display: flex;
-    font-size: 1.5rem;
-
-    .left {
-      display: flex;
-      gap: 16px;
-    }
-
-    i {
-      color: $color-ig-text;
-    }
+    display: flex; justify-content: space-between; padding: 10px 15px;
+    i { font-size: 24px; cursor: pointer; color: $ig-text-primary; &:hover { color: $ig-text-secondary; } }
+    .left i { margin-right: 15px; }
   }
-
   .content {
-    padding: 0 12px;
-    font-size: 0.9rem;
-
-    .likes {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: $color-ig-text;
-    }
-
-    .caption {
-      line-height: 1.4;
-      color: $color-ig-text;
-
-      .username {
-        font-weight: 600;
-        margin-right: 5px;
-        color: $color-ig-text;
-      }
-    }
-
-    .time {
-      font-size: 0.7rem;
-      color: $color-ig-text-secondary;
-      margin-top: 6px;
-      margin-bottom: 10px;
-    }
+    padding: 0 15px 15px; font-size: 14px; color: $ig-text-primary;
+    .likes { margin-bottom: 5px; font-weight: 600; }
+    .caption { .username { font-weight: 600; margin-right: 5px; } }
+    .time { color: $ig-text-secondary; font-size: 10px; margin-top: 5px; text-transform: uppercase; }
   }
 }
 
-/* === CAROUSEL GALLERY STYLE === */
-.carousel-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 100%;
-  overflow: hidden;
-  background-color: $color-ig-bg;
-
-  .carousel-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    .carousel-item {
-      flex: 0 0 100%;
-      width: 100%;
-      height: 100%;
-      scroll-snap-align: start;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .multi-photo-icon {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.2rem;
-    z-index: 10;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-  }
-
-  .carousel-dots {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 4px;
-    z-index: 10;
-    pointer-events: none;
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.4);
-
-      &.active {
-        background-color: $color-ig-blue;
-      }
-    }
-  }
+/* --- GALLERY CAROUSEL --- */
+.carousel-container { position: relative; }
+.carousel-wrapper {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  .carousel-item { min-width: 100%; scroll-snap-align: center; img { width: 100%; display: block; } }
 }
-
-/* RSVP & Comments */
-.gift-box {
-  text-align: center;
-  background: $color-ig-bg;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid $color-ig-border;
-
-  h3 {
-    margin-top: 0;
-    color: $color-ig-text;
-    font-size: 1.2rem;
-  }
+.carousel-dots {
+  position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px;
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); box-shadow: 0 1px 2px rgba(0,0,0,0.3); &.active { background: $ig-blue; } }
 }
+.multi-photo-icon { position: absolute; top: 15px; right: 15px; color: white; background: rgba(0,0,0,0.6); padding: 5px 8px; border-radius: 15px; font-size: 12px; }
 
-.ig-divider {
-  border: 0;
-  border-top: 1px solid $color-ig-border;
-  margin: 20px 0;
-}
-
-.section-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: $color-ig-text-secondary;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* CHILD COMPONENT OVERRIDES */
-::ng-deep {
-  app-digital-angpao {
-    .angpao-card {
-      background-color: $color-ig-white !important;
-      border: 1px solid $color-ig-border !important;
-      color: $color-ig-text !important;
-      box-shadow: none !important;
-    }
-
-    .angpao-card__bank-name,
-    .angpao-card__number {
-      color: $color-ig-text !important;
-    }
-
-    .angpao-card__owner {
-      color: $color-ig-text-secondary !important;
-    }
-
-    .angpao-card__button {
-      color: $color-ig-blue !important;
-      border: 1px solid $color-ig-border !important;
-      background: transparent !important;
-    }
-  }
-
-  app-rsvp-form {
-    .form-control {
-      background: $color-ig-bg !important;
-      border: 1px solid $color-ig-border !important;
-      color: $color-ig-text !important;
-    }
-
-    label {
-      color: $color-ig-text-secondary !important;
-    }
-
-    .rsvp-button {
-      background: $color-ig-blue !important;
-      color: #fff !important;
-      border-radius: 4px !important;
-    }
-  }
-
-  app-guestbook {
-    .guestbook-form h4 {
-      display: none !important;
-    }
-
-    .guestbook-form {
-      background: transparent !important;
-      padding: 0 !important;
-      margin-bottom: 25px !important;
-      border: none !important;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-control {
-      background: $color-ig-bg !important;
-      border: 1px solid $color-ig-border !important;
-      border-radius: 4px !important;
-      padding: 10px !important;
-      color: $color-ig-text !important;
-      width: 100% !important;
-
-      &:focus {
-        border-color: $color-ig-text-secondary !important;
-        box-shadow: none !important;
-      }
-    }
-
-    .guestbook-button {
-      background: $color-ig-blue !important;
-      color: #fff !important;
-      width: 100% !important;
-      padding: 10px 0 !important;
-      font-weight: 600 !important;
-      border-radius: 4px !important;
-      margin-top: 8px !important;
-      float: none !important;
-    }
-
-    .guestbook-list {
-      margin-top: 15px !important;
-      max-height: 300px !important;
-      overflow-y: auto !important;
-      border-top: 1px solid $color-ig-border !important;
-      padding-top: 10px !important;
-    }
-
-    .guestbook-list h4 {
-      display: none !important;
-    }
-
-    .guestbook-entry {
-      background: transparent !important;
-      border: none !important;
-      margin-bottom: 10px !important;
-      display: flex !important;
-      gap: 10px !important;
-    }
-
-    .guestbook-entry__profile-pic {
-      width: 32px !important;
-      height: 32px !important;
-      border-radius: 50% !important;
-      border: 1px solid $color-ig-border !important;
-    }
-
-    .guestbook-entry__name {
-      color: $color-ig-text !important;
-      font-weight: 700 !important;
-      margin-right: 5px !important;
-    }
-
-    .guestbook-entry__message {
-      color: $color-ig-text !important;
-    }
-
-    .guestbook-entry__timestamp {
-      color: $color-ig-text-secondary !important;
-      margin-top: 2px !important;
-    }
-  }
-}
-
-/* ANIMASI CD */
-.music-control {
-  position: fixed;
-  bottom: 70px;
-  right: 20px;
-  z-index: 1000;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-
-  .cd-disc {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, #333 10%, #000 100%);
-    border: 2px solid $color-ig-white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: spin 4s linear infinite;
-
-    .cd-inner {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: #fff;
-      border-radius: 50%;
-      z-index: 2;
-    }
-
-    .cd-cover {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      opacity: 0.7;
-    }
-  }
-
-  &.paused .cd-disc {
-    animation-play-state: paused;
-    opacity: 0.7;
-    filter: grayscale(100%);
-  }
-
-  .music-notes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-
-    i {
-      position: absolute;
-      font-size: 14px;
-      color: $color-ig-text;
-      opacity: 0;
-    }
-  }
-
-  &:not(.paused) .note-1 {
-    animation: floatNote 2s infinite;
-    left: 0px;
-    top: 0px;
-    color: $color-ig-red;
-  }
-
-  &:not(.paused) .note-2 {
-    animation: floatNote 2.5s infinite 0.8s;
-    right: 0px;
-    top: 10px;
-    color: $color-ig-blue;
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes floatNote {
-  0% {
-    transform: translateY(0) rotate(0) scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-30px) rotate(20deg) scale(1.2);
-    opacity: 0;
-  }
-}
-
+/* --- BOTTOM NAV (FIXED) --- */
 .ig-bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  height: 50px;
-  background: $color-ig-white;
-  border-top: 1px solid $color-ig-border;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 1.5rem;
-  z-index: 900;
+  position: fixed; bottom: 0; left: 0; width: 100%; background: $ig-bg-color;
+  border-top: 1px solid $ig-border-color; display: flex; justify-content: space-around; align-items: center;
+  padding: 10px 0; z-index: 1000;
+  i { font-size: 24px; cursor: pointer; &.active { color: $ig-text-primary; } color: $ig-text-secondary;}
+  .mini-avatar { width: 24px; height: 24px; border-radius: 50%; border: 1px solid $ig-border-color; padding: 1px; object-fit: cover; }
+}
 
-  i {
-    color: $color-ig-text;
-    cursor: pointer;
+/* --- MUSIC CONTROL --- */
+.music-control {
+  position: fixed; bottom: 70px; right: 15px; z-index: 1000; cursor: pointer;
+  .cd-disc {
+    width: 50px; height: 50px; background: #222; border-radius: 50%; border: 3px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center; position: relative;
+    animation: spin 5s linear infinite;
+    .cd-cover { width: 30px; height: 30px; border-radius: 50%; object-fit: cover;}
   }
-
-  .mini-avatar {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 1px solid $color-ig-border;
+  &.paused .cd-disc { animation-play-state: paused; }
+  .music-notes {
+    position: absolute; top: 0; left: 0; pointer-events: none;
+    i { position: absolute; font-size: 18px; color: $ig-blue; opacity: 0; animation: floatNotes 2s linear infinite; }
+    .note-1 { left: 10%; animation-delay: 0s; } .note-2 { right: 10%; animation-delay: 1s; }
   }
 }
 
-.youtube-hidden {
-  position: absolute;
-  top: -9999px;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  visibility: hidden;
-}
+.youtube-hidden { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
+
+/* --- UTILS --- */
+.ms-auto { margin-left: auto; } .text-white { color: white !important; } .text-center { text-align: center; }
+.mb-3 { margin-bottom: 1rem; } .mb-5 { margin-bottom: 4rem; } .p-3 { padding: 1rem; }
+.ig-divider { border: none; border-top: 1px solid $ig-border-color; margin: 20px 0; }
+.section-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: $ig-text-primary; }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.4; } }
+@keyframes zoomEffect { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+@keyframes floatNotes { 0% { transform: translateY(0) rotate(0); opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateY(-40px) rotate(20deg); opacity: 0; } }

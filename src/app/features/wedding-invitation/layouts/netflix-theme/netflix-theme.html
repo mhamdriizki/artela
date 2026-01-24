@@ -44,7 +44,7 @@
     <div class="mini-header">
       <div class="mini-header__left">
         <a class="mini-header__logo" (click)="scrollToSection('home')">
-          ARTELA
+          The Wedding
         </a>
         <ul class="mini-header__nav">
           <li><a (click)="scrollToSection('home')">Home</a></li>
@@ -121,7 +121,7 @@
       <div class="content-section__grid">
         <div class="profile-card">
           <img
-            [src]="invitation.bride_photo || 'assets/images/bride-placeholder.jpg'"
+            [src]="getImageUrl(invitation.bride_photo) || 'assets/images/bride-placeholder.jpg'"
             alt="Bride"
             class="profile-card__image"
           />
@@ -130,7 +130,7 @@
         </div>
         <div class="profile-card">
           <img
-            [src]="invitation.groom_photo || 'assets/images/groom-placeholder.jpg'"
+            [src]="getImageUrl(invitation.groom_photo) || 'assets/images/groom-placeholder.jpg'"
             alt="Groom"
             class="profile-card__image"
           />
