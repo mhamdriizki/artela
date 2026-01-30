@@ -9,11 +9,11 @@
         <span></span>
       </div>
       <ul class="navbar__menu" [class.active]="isMenuOpen">
-        <li><a href="#themes" (click)="closeMenu()">Tema</a></li>
-        <li><a href="#features" (click)="closeMenu()">Fitur</a></li>
-        <li><a href="#pricing" (click)="closeMenu()">Harga</a></li>
+        <li><a (click)="scrollToSection('themes')" style="cursor: pointer;">Tema</a></li>
+        <li><a (click)="scrollToSection('features')" style="cursor: pointer;">Fitur</a></li>
+        <li><a (click)="scrollToSection('pricing')" style="cursor: pointer;">Harga</a></li>
       </ul>
-      <button class="navbar__cta">Buat Undangan</button>
+      <button class="navbar__cta" (click)="scrollToPricing()">Buat Undangan</button>
     </div>
   </nav>
 
@@ -21,16 +21,16 @@
     <div class="hero__content">
       <span class="hero__badge">✨ Undangan Digital Eksklusif</span>
       <h1 class="hero__title">
-        Bagikan Momen Bahagia <br>
-        dengan <span class="text-highlight">Elegan & Berkesan</span>
+        Undangan Pernikahan Digital<br>
+        dengan Tema <span class="text-highlight">Netflix & Instagram</span>
       </h1>
       <p class="hero__subtitle">
-        Buat undangan pernikahan digital impian Anda dalam hitungan menit.
-        Tersedia tema Netflix & Instagram yang unik dan modern.
+        Buat undangan pernikahan yang unik, modern, dan berkesan.
+        Pilih tema favoritmu dan bagikan momen bahagia dengan gaya yang berbeda.
       </p>
       <div class="hero__buttons">
-        <a href="#themes" class="btn btn--primary">Lihat Tema</a>
-        <a href="#pricing" class="btn btn--secondary">Lihat Harga</a>
+        <button (click)="scrollToSection('themes')" class="btn btn--primary">Lihat Tema</button>
+        <button (click)="scrollToSection('pricing')" class="btn btn--secondary">Lihat Harga</button>
       </div>
     </div>
   </header>
@@ -85,29 +85,29 @@
     <div class="container">
       <div class="section__header">
         <span class="section__uptitle">FITUR UNGGULAN</span>
-        <h2>Semua yang Anda Butuhkan</h2>
+        <h2>Mengapa Memilih Artela?</h2>
       </div>
 
       <div class="features__grid">
         <div class="feature-item">
           <div class="feature-icon"><i class="fas fa-bolt"></i></div>
           <h3>Fast & Responsive</h3>
-          <p>Akses cepat dan tampilan sempurna di semua perangkat.</p>
+          <p>Undangan diakses cepat tanpa loading lama, tampil sempurna di semua layar HP tamu Anda.</p>
         </div>
         <div class="feature-item">
           <div class="feature-icon"><i class="fas fa-music"></i></div>
           <h3>Background Music</h3>
-          <p>Putar lagu romantis otomatis saat undangan dibuka.</p>
+          <p>Bangun suasana romantis dengan lagu pilihan yang otomatis berputar saat undangan dibuka.</p>
         </div>
         <div class="feature-item">
           <div class="feature-icon"><i class="fas fa-envelope-open-text"></i></div>
-          <h3>RSVP & Ucapan</h3>
-          <p>Konfirmasi kehadiran dan buku tamu digital realtime.</p>
+          <h3>RSVP Realtime</h3>
+          <p>Tidak perlu chat satu-satu. Tamu konfirmasi kehadiran langsung di undangan, data masuk otomatis.</p>
         </div>
         <div class="feature-item">
           <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
-          <h3>Peta Lokasi</h3>
-          <p>Integrasi Google Maps agar tamu mudah menemukan lokasi.</p>
+          <h3>Navigasi Lokasi</h3>
+          <p>Integrasi langsung ke Google Maps memastikan tamu sampai di lokasi acara tanpa tersasar.</p>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@
             <div class="pricing-card__price">
               <span class="currency">Rp</span>
               <span class="amount">{{ pkg.price }}</span>
-              <span class="period">/ event</span>
+              <span class="period">{{ pkg.period }}</span>
             </div>
             <p class="pricing-card__desc">{{ pkg.desc }}</p>
           </div>
@@ -142,14 +142,45 @@
             }
           </ul>
 
-          <button class="btn btn--block" [class.btn--primary]="pkg.isPopular" [class.btn--outline]="!pkg.isPopular">
+          <a [href]="pkg.waLink" target="_blank" class="btn btn--block" [class.btn--primary]="pkg.isPopular"
+            [class.btn--outline]="!pkg.isPopular">
             {{ pkg.buttonText }}
-          </button>
+          </a>
         </div>
         }
       </div>
     </div>
   </section>
+
+  <section class="section trust">
+    <div class="container">
+      <div class="section__header">
+        <h2>Dipercaya Pasangan Modern</h2>
+        <p>Bergabunglah dengan ratusan pasangan yang telah membuat momen pernikahan mereka lebih berkesan.</p>
+      </div>
+      <div class="trust__items">
+        <div class="trust-item">
+          <div class="trust-content">
+            "Suka banget sama tema Netflix-nya! Unik dan beda dari yang lain. Tamu-tamu juga pada muji undangannya
+            keren."
+          </div>
+          <div class="trust-author">- Rizki & Pearly</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-content">
+            "Prosesnya cepet, adminnya ramah banget bantuin revisi. Recommended buat yang mau undangan sat-set tapi
+            hasilnya premium."
+          </div>
+          <div class="trust-author">- Budi & Rena</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <a href="https://wa.me/6285156922553?text=Halo%20saya%20ingin%20tanya" target="_blank" class="floating-wa"
+    title="Hubungi Kami via WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
 
   <footer class="footer">
@@ -161,9 +192,11 @@
         </div>
         <div class="footer__links">
           <h4>Sosial Media</h4>
-          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-          <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-          <a href="#"><i class="far fa-envelope"></i> Email</a>
+          <a href="https://www.instagram.com/artelainvite/" target="_blank"><i class="fab fa-instagram"></i>
+            Instagram</a>
+          <a href="https://x.com/artelainvite" target="_blank"><i class="fab fa-twitter"></i> X</a>
+          <a href="https://www.tiktok.com/@artelainvite" target="_blank"><i class="fab fa-tiktok"></i> Tiktok</a>
+          <a href="mailto:hello.artelainvite@gmail.com" target="_blank"><i class="far fa-envelope"></i> Email</a>
         </div>
       </div>
       <div class="footer__bottom">

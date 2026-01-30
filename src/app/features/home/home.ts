@@ -29,7 +29,7 @@ export class Home implements OnInit{
 
   updateMetaData() {
     // 1. Set Browser Title
-    const pageTitle = 'Artela - Buat Undangan Pernikahan Digital Kekinian';
+    const pageTitle = 'Artela - Undangan Pernikahan Digital Tema Netflix & Instagram';
     this.titleService.setTitle(pageTitle);
 
     // 2. Deskripsi & Keywords
@@ -76,7 +76,8 @@ export class Home implements OnInit{
         'Tidak Ada RSVP'
       ],
       isPopular: false,
-      buttonText: 'Pilih Basic'
+      buttonText: 'Pilih Basic',
+      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Basic%20dong%2C%20Ka'
     },
     {
       id: 2,
@@ -93,7 +94,8 @@ export class Home implements OnInit{
         'Peta Lokasi Interaktif'
       ],
       isPopular: true, // Highlight card ini
-      buttonText: 'Pilih Premium'
+      buttonText: 'Pilih Premium',
+      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Premium%20dong%2C%20Ka'
     },
     {
       id: 3,
@@ -110,8 +112,19 @@ export class Home implements OnInit{
         'Revisi Sepuasnya'
       ],
       isPopular: false,
-      buttonText: 'Hubungi Kami'
+      buttonText: 'Hubungi Kami',
+      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20dong%20Paket%20Exclusive%2C%20Ka'
     },
   ];
+
+  scrollToPricing() {
+    this.scrollToSection('pricing');
+  }
+
+  scrollToSection(sectionId: string) {
+    this.closeMenu();
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  }
+
 
 }
