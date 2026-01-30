@@ -75,23 +75,31 @@ export class WeddingInvitation implements OnInit {
   }
 
   updateMetaData(data: Invitation) {
-    const pageTitle = `${data.couple_name} - Artela - Invitation Digital`;
+    // 1. Title: Bride & Groom Name (Use couple_name or fallback)
+    // User request: "Rizki-Pearly"
+    const pageTitle = `${data.groom_name} & ${data.bride_name} | The Wedding`;
     this.titleService.setTitle(pageTitle);
 
+    // 2. Date Formatting
     const weddingDate = new Date(data.wedding_date).toLocaleDateString('id-ID', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    // Jika ada tamu spesifik, tambahkan di deskripsi share
-    const guestText = this.guestName ? `Spesial untuk ${this.guestName}` : '';
+    // 3. Description: Location and Date. + Guest Name
+    const eventLocation = data.akad_location || data.reception_location || 'Lokasi Acara';
+    const guestInfo = this.guestName ? `. Special Invite for: ${this.guestName}` : '';
+    
+    // Format: "Minggu, 10 Oktober 2025 di Gedung A. Special Invite for: Pak Dito"
+    const description = `Save The Date: ${weddingDate} at ${eventLocation}${guestInfo}`;
 
-    const description = `Undangan Pernikahan ${data.groom_name} & ${data.bride_name}. \n📅 ${weddingDate}. ${guestText}`;
-
+    // 4. Image: 1st Picture from Gallery
     let imageUrl = 'assets/images/default-og.jpg';
-    let filename = data.gallery?.[0]?.filename || data.bride_photo || data.groom_photo;
+    // Prioritize 1st Gallery Image -> Bride/Groom Photo
+    let filename = data.gallery?.[0]?.filename || data.groom_photo || data.bride_photo;
 
     if (filename) {
        if (!filename.startsWith('http')) {
+          // Ensure no double slash if apiUrl ends with /
           const baseUrl = this.apiUrl.endsWith('/') ? this.apiUrl.slice(0, -1) : this.apiUrl;
           imageUrl = `${baseUrl}/uploads/${filename}`;
        } else {
@@ -99,10 +107,18 @@ export class WeddingInvitation implements OnInit {
        }
     }
 
+    // Update Meta Tags
     this.metaService.updateTag({ name: 'description', content: description });
+    
+    // OpenGraph
     this.metaService.updateTag({ property: 'og:title', content: pageTitle });
     this.metaService.updateTag({ property: 'og:description', content: description });
     this.metaService.updateTag({ property: 'og:image', content: imageUrl });
+    this.metaService.updateTag({ property: 'og:type', content: 'website' });
+    this.metaService.updateTag({ property: 'og:site_name', content: 'Artela Invitation' });
+
+    // Twitter Card
+    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.metaService.updateTag({ name: 'twitter:title', content: pageTitle });
     this.metaService.updateTag({ name: 'twitter:description', content: description });
     this.metaService.updateTag({ name: 'twitter:image', content: imageUrl });
