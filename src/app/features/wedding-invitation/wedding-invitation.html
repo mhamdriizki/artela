@@ -1,50 +1,37 @@
 @if (isLoading) {
-  <div class="loading-screen">
-    <div style="border: 4px solid #f3f3f3; border-top: 4px solid #e50914; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;"></div>
-    <p style="margin-top: 10px; color: white;">Memuat Undangan...</p>
-  </div>
+<div class="loading-screen">
+  <div class="loading-heart">❤️</div>
+  <p class="loading-text">Artela Invitation</p>
+</div>
 } @else if (invitationData) {
 
-  @switch (invitationData.theme) {
-    @case ('netflix') {
-      <app-netflix-theme
-        [data]="invitationData"
-        (playMusic)="toggleMusic()">
-      </app-netflix-theme>
-    }
-    @case ('instagram') {
-      <app-instagram-theme
-        [guest]="guestName"
-        [data]="invitationData"
-        (playMusic)="toggleMusic()">
-      </app-instagram-theme>
-    }
-    @default {
-      <app-netflix-theme
-        [guest]="guestName"
-        [data]="invitationData"
-        (playMusic)="toggleMusic()">
-      </app-netflix-theme>
-    }
-  }
+@switch (invitationData.theme) {
+@case ('netflix') {
+<app-netflix-theme [guest]="guestName" [data]="invitationData" (playMusic)="toggleMusic()">
+</app-netflix-theme>
+}
+@case ('instagram') {
+<app-instagram-theme [guest]="guestName" [data]="invitationData" (playMusic)="toggleMusic()">
+</app-instagram-theme>
+}
+@default {
+<app-netflix-theme [guest]="guestName" [data]="invitationData" (playMusic)="toggleMusic()">
+</app-netflix-theme>
+}
+}
 
-  @if (youtubeEmbedUrl && isPlaying) {
-    <div class="music-player-hidden" style="position: fixed; top: -9999px; left: -9999px; visibility: hidden;">
-      <iframe
-        width="1"
-        height="1"
-        [src]="youtubeEmbedUrl | safeUrl"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>
-    </div>
-  }
+@if (youtubeEmbedUrl && isPlaying) {
+<div class="music-player-hidden" style="position: fixed; top: -9999px; left: -9999px; visibility: hidden;">
+  <iframe width="1" height="1" [src]="youtubeEmbedUrl | safeUrl" frameborder="0" allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+</div>
+}
 
-  @if (youtubeEmbedUrl) {
-    <button class="music-fab" (click)="toggleMusic()" [class.playing]="isPlaying">
-      {{ isPlaying ? '⏸️' : '🎵' }}
-    </button>
-  }
+@if (youtubeEmbedUrl) {
+<button class="music-fab" (click)="toggleMusic()" [class.playing]="isPlaying">
+  {{ isPlaying ? '⏸️' : '🎵' }}
+</button>
+}
 
 }

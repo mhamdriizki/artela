@@ -1,10 +1,53 @@
 @use '../../../styles.scss' as *;
 @use 'sass:color';
 
-// Note: General status-container, loading-spinner, status-link styles
-// are defined in root styles.scss for optimization
 .music-fab {
   display: none;
+}
+
+// Loading Screen
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-heart {
+  font-size: 3rem;
+  color: #e50914; // Artela/Netflix Red
+  animation: heartBeat 1.2s infinite ease-in-out;
+  margin-bottom: 20px;
+}
+
+.loading-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeIn 2s infinite alternate;
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(0.95); }
+  5% { transform: scale(1.1); }
+  39% { transform: scale(0.85); }
+  45% { transform: scale(1); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(0.9); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
 }
 
 .status-container h2 {

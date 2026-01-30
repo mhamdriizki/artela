@@ -60,37 +60,12 @@ export class Home implements OnInit{
     this.metaService.updateTag({ name: 'twitter:image', content: imageUrl });
   }
 
-// Data Fake Reviews
-  reviews = [
-    {
-      name: 'Sarah & Dimas',
-      date: 'Januari 2025',
-      comment: 'Tema Netflix-nya unik banget! Tamu undangan banyak yang kaget dan bilang keren. Fitur RSVP-nya juga sangat membantu pendataan catering.',
-      avatar: 'https://i.pravatar.cc/150?img=5',
-      rating: 5
-    },
-    {
-      name: 'Rina & Budi',
-      date: 'Desember 2024',
-      comment: 'Suka banget sama tema Instagram-nya. Mirip banget sama aslinya, smooth, dan fotonya bisa di-slide. Recommended!',
-      avatar: 'https://i.pravatar.cc/150?img=3',
-      rating: 5
-    },
-    {
-      name: 'Reza Rahardian',
-      date: 'Februari 2025',
-      comment: 'Proses pembuatannya cepat, adminnya ramah. Harganya sangat worth it untuk fitur sekomplit ini.',
-      avatar: 'https://i.pravatar.cc/150?img=11',
-      rating: 4
-    }
-  ];
-
-  // Data Paket Harga
+  // Data Paket Harga (Updated: Market ID 2025)
   packages = [
     {
       id: 1,
       name: 'Basic',
-      price: '149K',
+      price: '99K',
       period: '/ event',
       desc: 'Cukup untuk acara sederhana.',
       features: [
@@ -106,7 +81,7 @@ export class Home implements OnInit{
     {
       id: 2,
       name: 'Premium',
-      price: '299K',
+      price: '199K',
       period: '/ event',
       desc: 'Paling diminati pasangan.',
       features: [
@@ -123,7 +98,7 @@ export class Home implements OnInit{
     {
       id: 3,
       name: 'Exclusive',
-      price: '499K',
+      price: '349K',
       period: '/ event',
       desc: 'Fitur lengkap + Domain sendiri.',
       features: [
@@ -136,7 +111,7 @@ export class Home implements OnInit{
       ],
       isPopular: false,
       buttonText: 'Hubungi Kami'
-    }
+    },
   ];
 
 }

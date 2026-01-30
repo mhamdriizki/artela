@@ -37,7 +37,10 @@ export class WeddingInvitation implements OnInit {
       const to = params['to'];
       if (to) {
         // Ganti tanda strip (-) atau plus (+) dengan spasi
-        this.guestName = to.replace(/[-+]/g, ' ');
+        const rawName = to.replace(/[-+]/g, ' ');
+        this.guestName = rawName.toLowerCase().replace(/(?:^|\s)\w/g, function(a: string) { 
+            return a.toUpperCase(); 
+        });
       }
     });
 

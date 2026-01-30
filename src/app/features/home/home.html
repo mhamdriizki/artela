@@ -12,8 +12,6 @@
         <li><a href="#themes" (click)="closeMenu()">Tema</a></li>
         <li><a href="#features" (click)="closeMenu()">Fitur</a></li>
         <li><a href="#pricing" (click)="closeMenu()">Harga</a></li>
-        <li><a href="#reviews" (click)="closeMenu()">Testimoni</a></li>
-        <li class="navbar__cta-mobile"><button class="btn btn--primary">Buat Undangan</button></li>
       </ul>
       <button class="navbar__cta">Buat Undangan</button>
     </div>
@@ -125,64 +123,34 @@
 
       <div class="pricing__grid">
         @for (pkg of packages; track pkg.id) {
-          <div class="pricing-card" [class.popular]="pkg.isPopular">
-            @if (pkg.isPopular) { <div class="popular-tag">Paling Laris</div> }
+        <div class="pricing-card" [class.popular]="pkg.isPopular">
+          @if (pkg.isPopular) { <div class="popular-tag">Paling Laris</div> }
 
-            <div class="pricing-card__header">
-              <h3 class="pricing-card__name">{{ pkg.name }}</h3>
-              <div class="pricing-card__price">
-                <span class="currency">Rp</span>
-                <span class="amount">{{ pkg.price }}</span>
-                <span class="period">/ event</span>
-              </div>
-              <p class="pricing-card__desc">{{ pkg.desc }}</p>
+          <div class="pricing-card__header">
+            <h3 class="pricing-card__name">{{ pkg.name }}</h3>
+            <div class="pricing-card__price">
+              <span class="currency">Rp</span>
+              <span class="amount">{{ pkg.price }}</span>
+              <span class="period">/ event</span>
             </div>
-
-            <ul class="pricing-card__features">
-              @for (feat of pkg.features; track feat) {
-                <li><i class="fas fa-check"></i> {{ feat }}</li>
-              }
-            </ul>
-
-            <button class="btn btn--block" [class.btn--primary]="pkg.isPopular" [class.btn--outline]="!pkg.isPopular">
-              {{ pkg.buttonText }}
-            </button>
+            <p class="pricing-card__desc">{{ pkg.desc }}</p>
           </div>
+
+          <ul class="pricing-card__features">
+            @for (feat of pkg.features; track feat) {
+            <li><i class="fas fa-check"></i> {{ feat }}</li>
+            }
+          </ul>
+
+          <button class="btn btn--block" [class.btn--primary]="pkg.isPopular" [class.btn--outline]="!pkg.isPopular">
+            {{ pkg.buttonText }}
+          </button>
+        </div>
         }
       </div>
     </div>
   </section>
 
-  <section id="reviews" class="section reviews">
-    <div class="container">
-      <div class="section__header">
-        <span class="section__uptitle">TESTIMONI</span>
-        <h2>Kata Pasangan Bahagia</h2>
-      </div>
-
-      <div class="reviews__grid">
-        @for (review of reviews; track review.name) {
-          <div class="review-card">
-            <div class="review-card__content">
-              <div class="stars">
-                @for (star of [1,2,3,4,5]; track star) {
-                  <i class="fas fa-star" [class.filled]="star <= review.rating"></i>
-                }
-              </div>
-              <p class="review-text">"{{ review.comment }}"</p>
-            </div>
-            <div class="review-card__footer">
-              <img [src]="review.avatar" alt="Avatar" class="avatar">
-              <div class="info">
-                <h4>{{ review.name }}</h4>
-                <span class="date">{{ review.date }}</span>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  </section>
 
   <footer class="footer">
     <div class="container">
