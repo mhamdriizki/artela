@@ -34,7 +34,6 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
   activeEventSlideIndex = 0;
   activeGalleryIndex = 0;
 
-  youtubeEmbedUrl: SafeResourceUrl | null = null;
   baseUrl = environment.BASE_API;
 
   ngOnInit() {
@@ -44,9 +43,7 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] && this.data?.background_music_url) {
-      this.generateYoutubeEmbed(this.data.background_music_url);
-    }
+    // Logic on changes if needed
   }
 
   ngOnDestroy() {
@@ -173,13 +170,4 @@ export class InstagramTheme implements OnInit, OnChanges, OnDestroy {
     this.playMusic.emit();
   }
 
-  private generateYoutubeEmbed(url: string) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    if (match && match[2].length === 11) {
-      const videoId = match[2];
-      const rawUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&enablejsapi=1`;
-      this.youtubeEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-    }
-  }
 }

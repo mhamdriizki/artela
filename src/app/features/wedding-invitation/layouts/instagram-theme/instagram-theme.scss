@@ -33,6 +33,7 @@ $ig-red: #ed4956;
 /* STORY OVERLAY (Always Dark Mode)          */
 /* ========================================= */
 .ig-story-overlay {
+  -webkit-tap-highlight-color: transparent;
   position: fixed;
   top: 0;
   left: 0;
@@ -297,9 +298,36 @@ $ig-red: #ed4956;
         }
         ::ng-deep .bank-info { color: $ig-text-primary !important; font-weight: 600; }
         ::ng-deep .btn-copy {
-            background: white; border: 1px solid $ig-border-color; color: $ig-text-primary;
+            background: white !important;
+            border: 1px solid $ig-border-color !important;
+            color: $ig-text-primary !important;
             padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-top: 5px; cursor: pointer;
-            &:hover { background-color: #f0f0f0; }
+            width: auto !important;
+            &:hover { background-color: #f0f0f0 !important; }
+        }
+
+        // Paksa Override Style Inner Card Digital Angpao
+        ::ng-deep .angpao-card {
+            background-color: white !important;
+            border: 1px solid $ig-border-color !important;
+            color: $ig-text-primary !important;
+            margin-bottom: 0 !important;
+            box-shadow: none !important;
+        }
+        ::ng-deep .angpao-card__bank-name, ::ng-deep .angpao-card__number  {
+             color: $ig-text-primary !important;
+        }
+        ::ng-deep .angpao-card__owner {
+             color: $ig-text-secondary !important;
+        }
+        ::ng-deep .angpao-card__button {
+             background-color: transparent !important;
+             color: $ig-blue !important;
+             border: none !important;
+             font-weight: 600 !important;
+             padding: 0 !important;
+             min-width: auto !important;
+             &:hover { color: color.adjust($ig-blue, $lightness: -15%) !important; background-color: transparent !important; }
         }
     }
 }
@@ -327,8 +355,15 @@ $ig-red: #ed4956;
         }
 
         .btn-submit {
-            background: transparent; color: $ig-blue; font-weight: 600; text-align: right;
-            padding: 5px 0; width: auto; align-self: flex-end; border: none; cursor: pointer;
+            background: transparent;
+            color: $ig-blue; // Use IG Blue
+            font-weight: 600;
+            text-align: center; // Center text
+            padding: 10px 0;
+            width: 100%; // Full width to center easily
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
             &:disabled { color: color.adjust($ig-blue, $lightness: 30%); cursor: default; }
             &:hover:not(:disabled) { color: color.adjust($ig-blue, $lightness: -10%); }
         }

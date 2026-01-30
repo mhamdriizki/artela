@@ -34,4 +34,12 @@ export class InvitationService {
       payload
     );
   }
+
+  createRSVP(slug: string, name: string, status: string, pax: number): Observable<BaseResponse<any>> {
+    const payload = { name, status, pax };
+    return this.http.post<BaseResponse<any>>(
+      `${this.apiUrl}/api/invitation/${slug}/rsvp`,
+      payload
+    );
+  }
 }

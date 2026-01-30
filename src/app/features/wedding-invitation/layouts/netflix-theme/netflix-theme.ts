@@ -29,17 +29,12 @@ export class NetflixTheme implements OnChanges {
   currentBgIndex = 0;
 
   // Property untuk Iframe Youtube
-  youtubeEmbedUrl: SafeResourceUrl | null = null;
+  // Property untuk Iframe Youtube (REMOVED: Handled by Parent)
 
   baseUrl = environment.BASE_API;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] && this.data) {
-      // Generate Youtube URL saat data masuk
-      if (this.data.background_music_url) {
-        this.generateYoutubeEmbed(this.data.background_music_url);
-      }
-    }
+     // Changes logic
   }
 
   // --- Getters untuk mempermudah akses di HTML ---
@@ -60,18 +55,6 @@ export class NetflixTheme implements OnChanges {
     return `${base}/uploads/${filename}`;
   }
 
-  // Helper untuk mendapatkan ID Youtube dan sanitize URL
-  private generateYoutubeEmbed(url: string) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-
-    if (match && match[2].length === 11) {
-      const videoId = match[2];
-      // Autoplay, Loop, No Controls, Hidden
-      const rawUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&enablejsapi=1`;
-      this.youtubeEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
-    }
-  }
 
   // --- Actions ---
 
