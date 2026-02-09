@@ -1,154 +1,30 @@
 @use "sass:color";
 
-/* --- NEW COLOR PALETTE (Sage & Earthy) --- */
-$primary-color: #5D7066; /* Sage Green (Elegan & Kalem) */
-$primary-dark: #3F4F46;
-$secondary-color: #F3F0EB; /* Warm Grey / Broken White */
-$accent-color: #D9C6B0; /* Soft Sand */
-$bg-white: #FFFFFF;
-$text-main: #2C3330; /* Hampir hitam, tapi lebih lembut */
-$text-light: #6E7573;
-$border-color: #E5E5E5;
-
-/* --- NEW FONTS --- */
-$font-heading: 'Cormorant Garamond', serif;
-$font-body: 'Outfit', sans-serif;
+// NOTE: Global variables and fonts are now in app.scss
+// Local variables for valid compilation (since we don't have a shared variable file yet)
+$primary-color: #5d7066;
+$primary-dark: #3f4f46;
+$secondary-color: #f3f0eb;
+$accent-color: #d9c6b0;
+$bg-white: #ffffff;
+$text-main: #2c3330;
+$text-light: #6e7573;
+$border-color: #e5e5e5;
+$font-heading: "Cormorant Garamond", serif;
+$font-body: "Outfit", sans-serif;
 
 :host {
-  font-family: $font-body;
-  background-color: $bg-white;
-  color: $text-main;
   display: block;
-  width: 100%;
-  overflow-x: hidden;
 }
 
 .landing-container {
   background-color: $bg-white;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+.hidden-wa {
+  display: none;
 }
-
-/* --- 1. NAVBAR (Minimalis Modern) --- */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.9); /* Glass effect putih */
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  z-index: 1000;
-  transition: all 0.3s ease;
-
-  &__container {
-    @extend .container;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-  }
-
-  &__logo {
-    font-family: $font-heading;
-    font-size: 2rem; /* Lebih besar dikit */
-    font-weight: 700;
-    color: $primary-dark;
-    letter-spacing: -0.5px; /* Modern look */
-    text-transform: lowercase; /* Opsional: gaya lowercase sedang tren */
-    &::first-letter { text-transform: uppercase; }
-  }
-
-  &__menu {
-    display: flex;
-    gap: 40px;
-    list-style: none;
-    align-items: center;
-
-    a {
-      color: $text-main;
-      text-decoration: none;
-      font-weight: 400; /* Font tipis lebih elegan */
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.8rem;
-      position: relative;
-      transition: color 0.3s;
-
-      /* Efek garis bawah saat hover */
-      &::after {
-        content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
-        background: $primary-color; transition: width 0.3s;
-      }
-      &:hover {
-        color: $primary-color;
-        &::after { width: 100%; }
-      }
-    }
-  }
-
-  &__cta {
-    /* Tombol Navbar yang lebih rapi */
-    background: $primary-color;
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 4px; /* Kotak tumpul, bukan bulat penuh */
-    font-family: $font-body;
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      background: $primary-dark;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba($primary-color, 0.2);
-    }
-
-    @media (max-width: 768px) { display: none; }
-  }
-
-  &__cta-mobile {
-    display: none;
-    @media (max-width: 768px) {
-      display: flex;            /* 1. Ubah jadi flexbox */
-      justify-content: center;  /* 2. Tengahkan isi secara horizontal */
-      align-items: center;      /* 3. Tengahkan secara vertikal */
-      width: 100%;
-      margin-top: 10px;         /* Sesuaikan jarak jika perlu */
-    }
-  }
-
-  &__toggle {
-    display: none;
-    flex-direction: column;
-    gap: 6px;
-    cursor: pointer;
-    span { width: 24px; height: 2px; background-color: $text-main; transition: 0.3s; }
-    @media (max-width: 768px) { display: flex; }
-  }
-}
-
-/* Mobile Menu */
-@media (max-width: 768px) {
-  .navbar__menu {
-    position: absolute; top: 80px; left: 0; width: 100%;
-    background: white; flex-direction: column; gap: 0; padding: 0;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
-
-    &.active { max-height: 400px; }
-
-    li { width: 100%; border-bottom: 1px solid $border-color; }
-    li a { display: block; padding: 20px; text-align: center; width: 100%; }
-    li:last-child { border: none; padding: 20px; }
-  }
-}
+// Navbar styles moved to app.scss
 
 /* --- 2. HERO SECTION (Re-designed) --- */
 .hero {
@@ -159,7 +35,10 @@ $font-body: 'Outfit', sans-serif;
   text-align: center;
   padding: 120px 20px 80px;
   background-color: $secondary-color; /* Background abu-abu hangat */
-  background-image: radial-gradient(#e8e6e1 1px, transparent 1px); /* Pola titik halus */
+  background-image: radial-gradient(
+    #e8e6e1 1px,
+    transparent 1px
+  ); /* Pola titik halus */
   background-size: 24px 24px;
 
   &__content {
@@ -197,7 +76,9 @@ $font-body: 'Outfit', sans-serif;
       color: $primary-dark;
     }
 
-    @media (max-width: 768px) { font-size: 3rem; }
+    @media (max-width: 768px) {
+      font-size: 3rem;
+    }
   }
 
   &__subtitle {
@@ -213,7 +94,10 @@ $font-body: 'Outfit', sans-serif;
     display: flex;
     justify-content: center;
     gap: 16px;
-    @media (max-width: 480px) { flex-direction: column; width: 100%; }
+    @media (max-width: 480px) {
+      flex-direction: column;
+      width: 100%;
+    }
   }
 }
 
@@ -265,7 +149,9 @@ $font-body: 'Outfit', sans-serif;
     }
   }
 
-  &--block { width: 100%; }
+  &--block {
+    width: 100%;
+  }
 }
 
 .btn-link {
@@ -273,14 +159,23 @@ $font-body: 'Outfit', sans-serif;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   transition: gap 0.3s;
-  &:hover { gap: 12px; color: $primary-dark; }
+  &:hover {
+    gap: 12px;
+    color: $primary-dark;
+  }
 }
 
 /* --- 4. SECTIONS GENERAL --- */
 .section {
-  padding: 100px 0;
+  padding: 100px;
+
+  @media (max-width: 768px) {
+    padding: 50px;
+  }
   scroll-margin-top: 100px; /* Offset for fixed navbar + breathing room */
 
   &__header {
@@ -303,70 +198,125 @@ $font-body: 'Outfit', sans-serif;
       font-weight: 400;
       margin-bottom: 20px;
       color: $text-main;
-      @media (max-width: 768px) { font-size: 2.2rem; }
+      @media (max-width: 768px) {
+        font-size: 2.2rem;
+      }
     }
-    p { color: $text-light; font-size: 1.1rem; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+    p {
+      color: $text-light;
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
   }
 }
 
 /* --- 5. THEMES --- */
 .themes__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 40px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
 }
 
 .theme-card {
   background: white;
   border-radius: 0; /* Kotak tajam lebih artistik */
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08); /* Shadow lembut besar */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); /* Shadow lembut besar */
   transition: transform 0.4s ease;
 
-  &:hover { transform: translateY(-10px); }
+  &:hover {
+    transform: translateY(-10px);
+  }
 
   &__image {
     height: 350px; /* Lebih tinggi */
     position: relative;
-    background-size: cover; background-position: center;
+    background-size: cover;
+    background-position: center;
 
     /* Ganti warna gradient norak dengan yang soft */
-    &.netflix-bg { background: #141414; }
-    &.ig-bg { background: #fafafa; border-bottom: 1px solid #eee; }
+    &.netflix-bg {
+      background: #141414;
+    }
+    &.ig-bg {
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
 
     /* Icon di tengah overlay */
     .overlay {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.2); /* Gelap dikit */
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: white; gap: 15px; opacity: 0; transition: opacity 0.3s;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.2); /* Gelap dikit */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      gap: 15px;
+      opacity: 0;
+      transition: opacity 0.3s;
 
-      i { font-size: 4rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+      i {
+        font-size: 4rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
 
       /* Khusus IG, iconnya kita kasih warna biar keliatan di bg putih */
-      &.ig-overlay i { color: #E1306C; }
+      &.ig-overlay i {
+        color: #e1306c;
+      }
     }
 
-    &:hover .overlay { opacity: 1; }
+    &:hover .overlay {
+      opacity: 1;
+    }
 
     .badge {
-      position: absolute; top: 20px; left: 20px; /* Pindah ke kiri */
-      padding: 5px 12px; background: white; color: $text-main;
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      position: absolute;
+      top: 20px;
+      left: 20px; /* Pindah ke kiri */
+      padding: 5px 12px;
+      background: white;
+      color: $text-main;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
   }
 
   &__content {
     padding: 30px;
     text-align: center;
-    h3 { font-family: $font-heading; font-size: 1.8rem; margin-bottom: 10px; }
-    p { color: $text-light; font-size: 0.95rem; margin-bottom: 25px; }
+    h3 {
+      font-family: $font-heading;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    p {
+      color: $text-light;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
   }
 }
 
 /* --- 6. FEATURES --- */
 /* --- 6. FEATURES --- */
-.features { background-color: $secondary-color; } /* Background abu-abu hangat */
+.features {
+  background-color: $secondary-color;
+} /* Background abu-abu hangat */
 
 .features__grid {
   display: grid;
@@ -384,16 +334,17 @@ $font-body: 'Outfit', sans-serif;
   }
 
   .feature-icon {
-    width: 60px; height: 60px; /* Ukuran lingkaran */
+    width: 60px;
+    height: 60px; /* Ukuran lingkaran */
     background: white;
     color: $primary-color; /* Warna ikon hijau sage */
     border-radius: 50%; /* Membuat bulat */
     display: flex;
-    align-items: center;     /* Tengahkan vertikal */
+    align-items: center; /* Tengahkan vertikal */
     justify-content: center; /* Tengahkan horizontal */
-    font-size: 1.5rem;       /* Ukuran ikon */
-    margin-bottom: 20px;     /* Jarak ke judul */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Bayangan halus */
+    font-size: 1.5rem; /* Ukuran ikon */
+    margin-bottom: 20px; /* Jarak ke judul */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Bayangan halus */
     transition: all 0.3s ease;
     border: 1px solid rgba($primary-color, 0.1); /* Border tipis */
     font-family: "Font Awesome 6 Free", sans-serif;
@@ -403,9 +354,9 @@ $font-body: 'Outfit', sans-serif;
   /* Efek Hover pada Ikon */
   &:hover .feature-icon {
     background: $primary-color; /* Background jadi hijau */
-    color: white;               /* Ikon jadi putih */
+    color: white; /* Ikon jadi putih */
     box-shadow: 0 8px 20px rgba($primary-color, 0.3);
-    transform: scale(1.1);      /* Sedikit membesar */
+    transform: scale(1.1); /* Sedikit membesar */
   }
 
   h3 {
@@ -425,8 +376,11 @@ $font-body: 'Outfit', sans-serif;
 
 /* --- 7. PRICING --- */
 .pricing__grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
-  max-width: 1000px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .pricing-card {
@@ -437,89 +391,155 @@ $font-body: 'Outfit', sans-serif;
   text-align: center;
   transition: all 0.3s;
 
-  &:hover { border-color: $primary-color; }
+  &:hover {
+    border-color: $primary-color;
+  }
 
   &.popular {
-    background: #2C3330; /* Dark card untuk yang populer (kontras) */
+    background: #2c3330; /* Dark card untuk yang populer (kontras) */
     color: white;
     border: none;
     transform: scale(1.05);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     z-index: 2;
 
-    .pricing-card__name, .pricing-card__price, li, .pricing-card__desc { color: white; }
-    .pricing-card__divider { border-color: rgba(255,255,255,0.1); }
-    li i { color: $accent-color; } /* Icon warna sand */
+    .pricing-card__name,
+    .pricing-card__price,
+    li,
+    .pricing-card__desc {
+      color: white;
+    }
+    .pricing-card__divider {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    li i {
+      color: $accent-color;
+    } /* Icon warna sand */
 
     .popular-tag {
-      position: absolute; top: 0; left: 0; width: 100%;
-      background: $accent-color; color: $text-main;
-      padding: 8px 0; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: $accent-color;
+      color: $text-main;
+      padding: 8px 0;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
   }
 
-  &__name { font-family: $font-heading; font-size: 1.8rem; margin-bottom: 10px; }
-  &__desc { color: $text-light; font-size: 0.9rem; margin-bottom: 30px; }
+  &__name {
+    font-family: $font-heading;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  &__desc {
+    color: $text-light;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
 
   &__price {
-    display: flex; align-items: baseline; justify-content: center; margin-bottom: 30px;
-    .currency { font-size: 1.2rem; margin-right: 5px; font-weight: 500; }
-    .amount { font-size: 3.5rem; font-weight: 700; font-family: $font-heading; }
-    .period { color: $text-light; margin-left: 5px; font-size: 0.9rem; }
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 30px;
+    .currency {
+      font-size: 1.2rem;
+      margin-right: 5px;
+      font-weight: 500;
+    }
+    .amount {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-family: $font-heading;
+    }
+    .period {
+      color: $text-light;
+      margin-left: 5px;
+      font-size: 0.9rem;
+    }
   }
 
   &__features {
-    list-style: none; padding: 0; margin-bottom: 40px; text-align: left;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 40px;
+    text-align: left;
     li {
-      margin-bottom: 12px; color: $text-main; display: flex; align-items: center; gap: 10px; font-size: 0.95rem;
-      i { color: $primary-color; font-size: 1rem; }
+      margin-bottom: 12px;
+      color: $text-main;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      i {
+        color: $primary-color;
+        font-size: 1rem;
+      }
     }
   }
 }
 
 /* --- 8. REVIEWS --- */
-.reviews { background-color: $secondary-color; }
-.reviews__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.reviews {
+  background-color: $secondary-color;
+}
+.reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
 
 .review-card {
-  background: white; padding: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  background: white;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 
-  .stars { color: #E3C08D; margin-bottom: 20px; font-size: 0.9rem; }
-  .review-text { font-family: $font-heading; font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; color: $text-main; }
+  .stars {
+    color: #e3c08d;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+  }
+  .review-text {
+    font-family: $font-heading;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: $text-main;
+  }
 
   &__footer {
-    display: flex; align-items: center; gap: 15px;
-    .avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
     .info {
-      h4 { font-size: 0.9rem; font-weight: 700; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-      .date { font-size: 0.75rem; color: $text-light; }
+      h4 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .date {
+        font-size: 0.75rem;
+        color: $text-light;
+      }
     }
   }
 }
 
 /* --- 9. FOOTER --- */
-.footer {
-  padding: 80px 0 30px; background: #222; color: white;
-  &__content {
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; margin-bottom: 60px;
-    @media (max-width: 768px) { flex-direction: column; text-align: center; align-items: center; }
-  }
-  &__brand {
-    max-width: 300px;
-    h3 { font-family: $font-heading; font-size: 2rem; margin-bottom: 15px; color: white; }
-    p { color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.6; }
-  }
-  &__links {
-    display: flex; flex-direction: column; gap: 15px;
-    h4 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: $accent-color; }
-    a { color: rgba(255,255,255,0.8); text-decoration: none; transition: 0.3s; font-size: 0.9rem; &:hover { color: white; } }
-  }
-  &__bottom {
-    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center;
-    p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
-  }
-}
+// Footer styles moved to app.scss
 
 /* --- 10. TRUST SECTION --- */
 .trust {
@@ -544,7 +564,7 @@ $font-body: 'Outfit', sans-serif;
   border-radius: 0; /* Keep consistency with sharp theme cards */
   position: relative;
   text-align: left;
-  
+
   /* Quote icon decorative */
   &::before {
     content: "“";
@@ -575,40 +595,87 @@ $font-body: 'Outfit', sans-serif;
   font-weight: 600;
   color: $primary-dark; /* Darker green name */
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding-left: 20px;
+  padding: 8px 0;
 }
 
-/* --- 11. FLOATING WHATSAPP --- */
-.floating-wa {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 60px;
-  height: 60px;
-  background-color: #25D366;
-  color: white;
-  border-radius: 50%;
+/* --- 11. CUSTOM HOOK SECTION --- */
+.custom-hook {
+  background-color: $bg-white;
+  padding: 100px;
+  border-top: 1px solid $border-color;
+  border-bottom: 1px solid $border-color;
+}
+
+.hook-content {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); /* Green shadow */
-  z-index: 9999;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
-  border: 2px solid white; /* Border putih biar kontras */
-  
-  &:hover {
-    transform: scale(1.1) rotate(10deg);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
-  }
-  
+  justify-content: space-between;
+  gap: 50px;
+
   @media (max-width: 768px) {
-    bottom: 20px;
-    right: 20px;
-    width: 55px;
-    height: 55px;
-    font-size: 1.8rem;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.hook-text {
+  flex: 1;
+
+  .section__uptitle {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $primary-color;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-family: $font-heading;
+    font-size: 3rem;
+    color: $text-main;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $text-light;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+}
+
+.hook-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .placeholder-art {
+    font-size: 10rem;
+    background: $secondary-color;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
   }
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import {RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,32 +9,29 @@ import {RouterLink} from '@angular/router';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home implements OnInit{
+export class Home implements OnInit {
   private titleService = inject(Title);
   private metaService = inject(Meta);
+  private route = inject(Router);
 
-  isMenuOpen = false;
+  customPage: boolean = false;
 
   ngOnInit(): void {
     this.updateMetaData();
-  }
-
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  closeMenu() {
-    this.isMenuOpen = false;
+    this.customPage = this.route.url.includes('custom');
   }
 
   updateMetaData() {
     // 1. Set Browser Title
-    const pageTitle = 'Artela - Undangan Pernikahan Digital Tema Netflix & Instagram';
+    const pageTitle =
+      'Artela - Undangan Pernikahan Digital Tema Netflix & Instagram';
     this.titleService.setTitle(pageTitle);
 
     // 2. Deskripsi & Keywords
-    const description = 'Platform pembuatan undangan pernikahan digital dengan tema unik seperti Netflix dan Instagram. Buat momen bahagiamu lebih berkesan, hemat biaya, dan mudah dibagikan.';
-    const keywords = 'undangan digital, wedding invitation, undangan online, tema netflix, tema instagram, undangan pernikahan murah, artela';
+    const description =
+      'Platform pembuatan undangan pernikahan digital dengan tema unik seperti Netflix dan Instagram. Buat momen bahagiamu lebih berkesan, hemat biaya, dan mudah dibagikan.';
+    const keywords =
+      'undangan digital, wedding invitation, undangan online, tema netflix, tema instagram, undangan pernikahan murah, artela';
 
     // Construct Image URL (Menggunakan logo dari assets)
     // window.location.origin memastikan URL menjadi absolut (https://artela.id/...) agar valid di crawler
@@ -47,16 +44,28 @@ export class Home implements OnInit{
 
     // 4. Open Graph (Facebook/WhatsApp)
     this.metaService.updateTag({ property: 'og:title', content: pageTitle });
-    this.metaService.updateTag({ property: 'og:description', content: description });
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: description,
+    });
     this.metaService.updateTag({ property: 'og:image', content: imageUrl });
-    this.metaService.updateTag({ property: 'og:url', content: window.location.href });
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: window.location.href,
+    });
     this.metaService.updateTag({ property: 'og:type', content: 'website' });
     this.metaService.updateTag({ property: 'og:site_name', content: 'Artela' });
 
     // 5. Twitter Card
-    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
     this.metaService.updateTag({ name: 'twitter:title', content: pageTitle });
-    this.metaService.updateTag({ name: 'twitter:description', content: description });
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content: description,
+    });
     this.metaService.updateTag({ name: 'twitter:image', content: imageUrl });
   }
 
@@ -73,11 +82,12 @@ export class Home implements OnInit{
         'Masa Aktif 3 Bulan',
         'Musik Background (Default)',
         'Kuota 300 Tamu',
-        'Tidak Ada RSVP'
+        'Tidak Ada RSVP',
       ],
       isPopular: false,
       buttonText: 'Pilih Basic',
-      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Basic%20dong%2C%20Ka'
+      waLink:
+        'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Basic%20dong%2C%20Ka',
     },
     {
       id: 2,
@@ -91,11 +101,12 @@ export class Home implements OnInit{
         'Custom Musik (YouTube)',
         'RSVP & Ucapan Realtime',
         'Kuota Tamu Unlimited',
-        'Peta Lokasi Interaktif'
+        'Peta Lokasi Interaktif',
       ],
       isPopular: true, // Highlight card ini
       buttonText: 'Pilih Premium',
-      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Premium%20dong%2C%20Ka'
+      waLink:
+        'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20Paket%20Premium%20dong%2C%20Ka',
     },
     {
       id: 3,
@@ -109,22 +120,19 @@ export class Home implements OnInit{
         'Masa Aktif Selamanya',
         'Galeri Video',
         'Prioritas Support 24/7',
-        'Revisi Sepuasnya'
+        'Revisi Sepuasnya',
       ],
       isPopular: false,
       buttonText: 'Hubungi Kami',
-      waLink: 'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20dong%20Paket%20Exclusive%2C%20Ka'
+      waLink:
+        'https://wa.me/6285156922553?text=Halo%2C%20aku%20mau%20tanya-tanya%20dong%20Paket%20Exclusive%2C%20Ka',
     },
   ];
 
-  scrollToPricing() {
-    this.scrollToSection('pricing');
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
-
-  scrollToSection(sectionId: string) {
-    this.closeMenu();
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-  }
-
-
 }

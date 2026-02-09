@@ -4,7 +4,7 @@ export const routes: Routes = [
   // 1. Home Page (Landing)
   {
     path: '',
-    loadComponent: () => import('./features/home/home').then(m => m.Home)
+    loadComponent: () => import('./features/home/home').then((m) => m.Home),
   },
 
   // 2. Halaman 404 (Not Found) - Opsional jika sudah ada
@@ -13,16 +13,28 @@ export const routes: Routes = [
   //   loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFound)
   // },
 
+  // 2. Custom Invitation Builder (Must be before :slug)
+  {
+    path: 'custom',
+    loadComponent: () =>
+      import('./features/custom-invitation/custom-invitation').then(
+        (m) => m.CustomInvitation,
+      ),
+  },
+
   // 3. Dynamic Invitation Route (/:slug)
   // Ini yang akan menangkap /rizki-pearly dan /pearly-rizki
   {
     path: ':slug',
-    loadComponent: () => import('./features/wedding-invitation/wedding-invitation').then(m => m.WeddingInvitation)
+    loadComponent: () =>
+      import('./features/wedding-invitation/wedding-invitation').then(
+        (m) => m.WeddingInvitation,
+      ),
   },
 
   // 4. Wildcard (Redirect ke 404/Home jika route tidak dikenali)
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];

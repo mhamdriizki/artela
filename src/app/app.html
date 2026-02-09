@@ -1,1 +1,45 @@
+<nav class="navbar">
+  <div class="navbar__container">
+    <div class="navbar__logo" routerLink="/">Artela</div>
+    <div class="navbar__toggle" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="navbar__menu" [class.active]="isMenuOpen">
+      <li><a (click)="scrollToSection('themes')" style="cursor: pointer;">Tema</a></li>
+      <li><a (click)="scrollToSection('features')" style="cursor: pointer;">Fitur</a></li>
+      <li><a (click)="scrollToSection('custom-hook')" style="cursor: pointer;">Custom</a></li>
+    </ul>
+    <button class="navbar__cta" (click)="scrollToSection('pricing')">Buat Undangan</button>
+  </div>
+</nav>
+
 <router-outlet></router-outlet>
+
+<a href="https://wa.me/6285156922553?text=Halo%20saya%20ingin%20tanya" target="_blank"
+  [ngClass]="customPage ? 'hidden-wa' : 'floating-wa'" title="Hubungi Kami via WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__content">
+      <div class="footer__brand">
+        <h3>Artela</h3>
+        <p>Mewujudkan undangan pernikahan impian Anda dengan sentuhan teknologi modern.</p>
+      </div>
+      <div class="footer__links">
+        <h4>Sosial Media</h4>
+        <a href="https://www.instagram.com/artelainvite/" target="_blank"><i class="fab fa-instagram"></i>
+          Instagram</a>
+        <a href="https://x.com/artelainvite" target="_blank"><i class="fab fa-twitter"></i> X</a>
+        <a href="https://www.tiktok.com/@artelainvite" target="_blank"><i class="fab fa-tiktok"></i> Tiktok</a>
+        <a href="mailto:hello.artelainvite@gmail.com" target="_blank"><i class="far fa-envelope"></i> Email</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2025 Artela. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

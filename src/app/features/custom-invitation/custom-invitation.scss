@@ -1,0 +1,450 @@
+@use "sass:color";
+
+// --- COPIED PALETTE FROM HOME.SCSS ---
+$primary-color: #5d7066; /* Sage Green */
+$primary-dark: #3f4f46;
+$secondary-color: #f3f0eb; /* Warm Grey */
+$bg-white: #ffffff;
+$text-main: #2c3330;
+$text-light: #6e7573;
+$border-color: #e5e5e5;
+$netflix-red: #e50914;
+$insta-gradient: linear-gradient(
+  45deg,
+  #f09433 0%,
+  #e6683c 25%,
+  #dc2743 50%,
+  #cc2366 75%,
+  #bc1888 100%
+);
+
+// Fonts
+$font-heading: "Cormorant Garamond", serif;
+$font-body: "Outfit", sans-serif;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-white; // Completely Light
+  color: $text-main;
+  font-family: $font-body;
+}
+
+.custom-invitation-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 120px 20px 120px; // Padding bottom for footer
+}
+
+// Clean Header
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $border-color;
+
+  h1 {
+    font-family: $font-heading;
+    font-size: 3rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: $primary-dark;
+  }
+
+  p {
+    color: $text-light;
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+// Section Headings - Minimalist
+.step-section {
+  margin-bottom: 60px;
+
+  h2 {
+    font-family: $font-heading;
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    color: $primary-dark;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: $primary-color;
+    }
+  }
+}
+
+// Theme Cards - Clean & Modern
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.theme-card {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 8px; // Soft radius
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+    border-color: rgba($primary-color, 0.3);
+  }
+
+  &.selected {
+    border-color: $primary-color;
+    background-color: rgba($primary-color, 0.02);
+    box-shadow: 0 0 0 1px $primary-color;
+
+    .checkmark-circle {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .preview-box {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $secondary-color;
+
+    .preview-text {
+      font-family: $font-heading;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
+    }
+
+    &.netflix-preview .preview-text {
+      color: $netflix-red;
+    }
+    &.instagram-preview .preview-text {
+      background: $insta-gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .info {
+    padding: 20px;
+    text-align: center;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: $text-main;
+    }
+
+    .price {
+      color: $primary-color;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+  }
+
+  .checkmark-circle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 24px;
+    height: 24px;
+    background: $primary-color;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+// Clean Options - Pills Style
+.option-group {
+  margin-bottom: 40px;
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: $text-light;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+}
+
+.toggle-buttons {
+  // Used for Gallery
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.clean-btn {
+  background: white;
+  border: 1px solid $border-color;
+  color: $text-main;
+  padding: 12px 24px;
+  border-radius: 50px; // Pill shape
+  cursor: pointer;
+  font-family: $font-body;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $primary-color;
+    background: rgba($primary-color, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  &:hover {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.02);
+  }
+
+  &.active {
+    background: $primary-color;
+    color: white;
+    border-color: $primary-color;
+
+    .badge {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+  }
+}
+
+// Quota Grid
+.quota-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.quota-box {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $primary-color;
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background: $primary-color;
+    color: white;
+    border-color: $primary-color;
+    box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+
+    .plus-price {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  .pax {
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .plus-price {
+    font-size: 0.8rem;
+    color: $primary-color;
+  }
+}
+
+// Toggles Row
+.option-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toggle-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  gap: 16px;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.5);
+  }
+
+  &.active {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.02);
+
+    .toggle-ui {
+      background: $primary-color;
+      &::after {
+        transform: translateX(20px);
+        border-color: white;
+      }
+    }
+  }
+
+  .icon-box {
+    width: 40px;
+    height: 40px;
+    background: $secondary-color;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .content {
+    flex: 1;
+    h4 {
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+    p {
+      font-size: 0.85rem;
+      color: $text-light;
+    }
+  }
+
+  .price-tag {
+    font-weight: 600;
+    color: $primary-color;
+    font-size: 0.9rem;
+  }
+
+  .toggle-ui {
+    width: 44px;
+    height: 24px;
+    background: #e0e0e0;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.3s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+// Sticky Footer
+.price-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid $border-color;
+  padding: 20px 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  .price-info {
+    .label {
+      display: block;
+      font-size: 0.8rem;
+      color: $text-light;
+      text-transform: uppercase;
+    }
+    .amount {
+      font-family: $font-heading;
+      font-size: 2rem;
+      color: $primary-dark;
+    }
+  }
+
+  .consult-btn {
+    background: $primary-color;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Fade In
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-section {
+  animation: fadeIn 0.5s ease-out forwards;
+}

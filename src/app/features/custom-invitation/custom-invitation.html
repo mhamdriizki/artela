@@ -1,0 +1,112 @@
+<div class="custom-invitation-container">
+  <header class="header">
+    <h1>Rancang Undanganmu</h1>
+    <p>Sesuaikan fitur undangan digital pernikahanmu sesuai kebutuhan dan budget.</p>
+  </header>
+
+  <section class="step-section">
+    <h2>1. Pilih Tema</h2>
+    <div class="theme-grid">
+      <div class="theme-card" [class.selected]="selectedTheme() === 'netflix'" (click)="selectTheme('netflix')">
+        <div class="preview-box netflix-preview">
+          <span class="preview-text">NETFLIX</span>
+        </div>
+        <div class="info">
+          <h3>Tema Netflix</h3>
+          <p class="price">Rp 75.000</p>
+        </div>
+        <div class="checkmark-circle">✓</div>
+      </div>
+
+      <div class="theme-card" [class.selected]="selectedTheme() === 'instagram'" (click)="selectTheme('instagram')">
+        <div class="preview-box instagram-preview">
+          <span class="preview-text">INSTAGRAM</span>
+        </div>
+        <div class="info">
+          <h3>Tema Instagram</h3>
+          <p class="price">Rp 85.000</p>
+        </div>
+        <div class="checkmark-circle">✓</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="step-section" *ngIf="selectedTheme()">
+    <h2>2. Fitur Tambahan</h2>
+
+    <!-- Gallery -->
+    <div class="option-group">
+      <h3>Gallery</h3>
+      <div class="toggle-buttons">
+        <button class="clean-btn" [class.active]="selectedGallery() === 'none'" (click)="selectGallery('none')">Tidak
+          Ada</button>
+        <button class="clean-btn" [class.active]="selectedGallery() === 'photo'" (click)="selectGallery('photo')">
+          Foto Only <span class="badge">+15k</span>
+        </button>
+        <button class="clean-btn" [class.active]="selectedGallery() === 'photo-video'"
+          (click)="selectGallery('photo-video')">
+          Foto + Video <span class="badge">+25k</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quota -->
+    <div class="option-group">
+      <h3>Kuota Tamu</h3>
+      <div class="quota-options">
+        <div class="quota-box" [class.active]="selectedQuota() === '250'" (click)="selectQuota('250')">
+          <span class="pax">250</span>
+          <span class="plus-price">+15k</span>
+        </div>
+        <div class="quota-box" [class.active]="selectedQuota() === '300'" (click)="selectQuota('300')">
+          <span class="pax">300</span>
+          <span class="plus-price">+20k</span>
+        </div>
+        <div class="quota-box" [class.active]="selectedQuota() === '500'" (click)="selectQuota('500')">
+          <span class="pax">500</span>
+          <span class="plus-price">+25k</span>
+        </div>
+        <div class="quota-box" [class.active]="selectedQuota() === 'unlimited'" (click)="selectQuota('unlimited')">
+          <span class="pax">Unlimited</span>
+          <span class="plus-price">+35k</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="option-row">
+      <div class="toggle-card" [class.active]="selectedMap() === 'interactive'" (click)="toggleMap()">
+        <div class="icon-box">📍</div>
+        <div class="content">
+          <h4>Interactive Map</h4>
+          <p>Google Maps yang bisa digeser dan zoom.</p>
+        </div>
+        <div class="price-tag">+20k</div>
+        <div class="toggle-ui"></div>
+      </div>
+
+      <div class="toggle-card" [class.active]="selectedDomain() === 'custom'" (click)="toggleDomain()">
+        <div class="icon-box">🌐</div>
+        <div class="content">
+          <h4>Custom Domain</h4>
+          <p>nama-mempelai.com (tanpa .artela.id)</p>
+        </div>
+        <div class="price-tag">+35k</div>
+        <div class="toggle-ui"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky Footer Summary -->
+  <footer class="price-footer" [class.visible]="selectedTheme()">
+    <div class="container">
+      <div class="price-info">
+        <span class="label">Estimasi Biaya</span>
+        <div class="amount">Rp {{ totalPrice().toLocaleString('id-ID') }}</div>
+      </div>
+      <a [href]="whatsappLink()" target="_blank" class="consult-btn">
+        Konsultasi via WhatsApp
+      </a>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,269 @@
+@use "sass:color";
+
+/* --- GLOBAL VARIABES (Sage & Earthy) --- */
+$primary-color: #5d7066; /* Sage Green (Elegan & Kalem) */
+$primary-dark: #3f4f46;
+$secondary-color: #f3f0eb; /* Warm Grey / Broken White */
+$accent-color: #d9c6b0; /* Soft Sand */
+$bg-white: #ffffff;
+$text-main: #2c3330; /* Hampir hitam, tapi lebih lembut */
+$text-light: #6e7573;
+$border-color: #e5e5e5;
+
+/* --- FONTS --- */
+$font-heading: "Cormorant Garamond", serif;
+$font-body: "Outfit", sans-serif;
+
+:host {
+  font-family: $font-body;
+  background-color: $bg-white;
+  color: $text-main;
+  display: block;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- NAVBAR (Global) --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9); /* Glass effect putih */
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  transition: all 0.3s ease;
+
+  &__container {
+    @extend .container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+  }
+
+  &__logo {
+    font-family: $font-heading;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $primary-dark;
+    letter-spacing: -0.5px;
+    text-transform: lowercase;
+    cursor: pointer;
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    align-items: center;
+
+    a {
+      color: $text-main;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+      position: relative;
+      transition: color 0.3s;
+      cursor: pointer;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: $primary-color;
+        transition: width 0.3s;
+      }
+      &:hover {
+        color: $primary-color;
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &__cta {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-family: $font-body;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: $primary-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    span {
+      width: 24px;
+      height: 2px;
+      background-color: $text-main;
+      transition: 0.3s;
+    }
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
+  .navbar__menu {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+
+    &.active {
+      max-height: 400px;
+    }
+
+    li {
+      width: 100%;
+      border-bottom: 1px solid $border-color;
+    }
+    li a {
+      display: block;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+    }
+    li:last-child {
+      border: none;
+      padding: 20px;
+    }
+  }
+}
+
+/* --- FOOTER (Global) --- */
+.footer {
+  padding: 80px 0 30px;
+  background: #222;
+  color: white;
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 60px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+    }
+  }
+  &__brand {
+    max-width: 300px;
+    h3 {
+      font-family: $font-heading;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: white;
+    }
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    h4 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      color: $accent-color;
+    }
+    a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: 0.3s;
+      font-size: 0.9rem;
+      &:hover {
+        color: white;
+      }
+    }
+  }
+  &__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 30px;
+    text-align: center;
+    p {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+/* --- FLOATING WHATSAPP (Global) --- */
+.floating-wa {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #25d366;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  text-decoration: none;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    background-color: #20ba56;
+  }
+}
+
+.hidden-wa {
+  display: none !important;
+}
