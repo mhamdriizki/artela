@@ -1,59 +1,76 @@
-# InvitationWeddingApp
+# Artela - Digital Wedding Invitation (Frontend)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
+Artela is a premium digital wedding invitation platform offering Netflix and Instagram-style themes. This repository contains the Frontend application built with Angular.
 
-## Development server
+## 🚀 Features
+- **Modern Themes**: Cinematic Netflix & Instagram-style layouts.
+- **Real-time Data**: Dynamic content rendering (names, dates, locations).
+- **Responsive Design**: Optimized for mobile-first experience.
+- **Interactive**: RSVP, Real-time comments, and music playback.
+- **Core Pages**:
+    - **Home**: Landing page with pricing, features, and testimonials.
+    - **Wedding Invitation**: The actual digital invitation rendered for guests.
 
-To start a local development server, run:
+## 🛠 Tech Stack
+- **Framework**: [Angular 17+](https://angular.io/)
+- **Styling**: SCSS (Sass), CSS Variables, Flexbox/Grid
+- **Icons**: FontAwesome 6
+- **Routing**: Angular Router
+- **Build Tool**: Angular CLI
 
+## 📂 Project Structure
 ```bash
-ng serve
+src/
+├── app/
+│   ├── core/           # Singleton services, interceptors, guards
+│   ├── features/       # Feature modules (pages)
+│   │   ├── home/               # Landing page (Pricing, Themes, etc.)
+│   │   ├── wedding-invitation/ # The actual invitation logic
+│   ├── shared/         # Reusable components, pipes, directives
+│   └── app.component.ts # Root component
+├── assets/             # Images, fonts, static media
+└── styles.scss         # Global styles/variables
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🔧 Setup & Installation
 
-## Code scaffolding
+**Prerequisites:**
+- Node.js (v18 or higher)
+- npm or yarn
+- Angular CLI (`npm install -g @angular/cli`)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+**Steps:**
 
-```bash
-ng generate component component-name
-```
+1.  **Clone the repository**
+    ```bash
+    git clone <repository-url>
+    cd artela
+    ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-```bash
-ng generate --help
-```
+3.  **Run Development Server**
+    ```bash
+    npm start
+    # or
+    ng serve
+    ```
+    Open `http://localhost:4200` in your browser.
 
-## Building
+## 📦 Build for Production
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+To create an optimized build for deployment:
 
 ```bash
-ng e2e
+npm run build
 ```
+The artifacts will be stored in the `dist/` directory.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🔗 Related Repositories
+- **Backend Service**: `artela-service` (Go/Golang)
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+© 2025 Artela. All rights reserved.
